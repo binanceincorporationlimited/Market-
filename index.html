@@ -3,120 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Dashboard Mockup</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Add Funds | Institutional Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body {
-            background-color: #1e2329; /* Exact Binance dark grey */
-            color: #eaecef;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        :root {
+            --bg-color: #0b0e11;
+            --card-bg: rgba(30, 35, 41, 0.7);
+            --electric-blue: #007aff;
+            --text-main: #eaecef;
+            --text-muted: #848e9c;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-blur: blur(12px);
         }
-        .text-gray-custom { color: #848e9c; }
-        .bg-green-custom { background-color: #2ebd85; }
-        .border-b-custom { border-bottom: 1px solid #2b3139; }
-        .active-tab { color: #ffffff; border-bottom: 3px solid #f0b90b; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Header & Logo Section */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 10px;
+        }
+
+        .logo {
+            height: 40px; /* Scaled down for professional look */
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: var(--text-muted);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* Amount Selection */
+        .amount-chips {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 0;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .chip.active {
+            border-color: var(--electric-blue);
+            color: var(--electric-blue);
+            background: rgba(0, 122, 255, 0.1);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 18px;
+            box-sizing: border-box;
+        }
+
+        /* Payment Method List */
+        .method {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .method:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .method i {
+            margin-right: 12px;
+            font-size: 20px;
+        }
+
+        .method .info {
+            flex-grow: 1;
+        }
+
+        .method .badge {
+            font-size: 11px;
+            background: rgba(0, 255, 127, 0.1);
+            color: #00ff7f;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* Action Button */
+        .btn-primary {
+            background-color: var(--electric-blue);
+            color: white;
+            width: 100%;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+        }
+
+        .security-footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-top: 20px;
+        }
+
+        .security-footer i {
+            color: #00ff7f;
+            margin-right: 5px;
+        }
     </style>
 </head>
-<body class="flex justify-center items-start min-h-screen pt-10">
+<body>
 
-    <div class="w-full max-w-md p-4">
-        <div class="flex space-x-6 text-sm font-semibold text-gray-custom mb-6 overflow-x-auto whitespace-nowrap pb-2">
-            <span>Favorites</span>
-            <span class="text-white border-b-2 border-yellow-500 pb-1">Hot</span>
-            <span>Alpha</span>
-            <span>New</span>
-            <span>Gainers</span>
+<div class="mobile-container">
+    <header>
+        <div style="font-size: 30px; margin-bottom: 10px;"><i class="fa-solid fa-shield-halved" style="color: var(--electric-blue);"></i></div>
+        <h1>Welcome to the Platform</h1>
+    </header>
+
+    <div class="glass-card">
+        <span class="section-title">1. Select Amount</span>
+        <div class="amount-chips">
+            <div class="chip">$50</div>
+            <div class="chip">$100</div>
+            <div class="chip active">$250</div>
+            <div class="chip">$500</div>
+        </div>
+        <input type="number" value="250">
+    </div>
+
+    <div class="glass-card">
+        <span class="section-title">2. Choose Payment Method</span>
+        
+        <div class="method">
+            <div><i class="fa-brands fa-bitcoin" style="color: #f7931a;"></i> <span class="info">Bitcoin (BTC)</span></div>
+            <span class="badge">15-30m</span>
         </div>
 
-        <div class="flex space-x-6 text-lg font-bold mb-4">
-            <span class="text-white">Crypto</span>
-            <span class="text-gray-custom">Futures</span>
+        <div class="method">
+            <div><i class="fa-brands fa-paypal" style="color: #003087;"></i> <span class="info">PayPal</span></div>
+            <span class="badge">Instant</span>
         </div>
 
-        <div class="flex justify-between text-xs text-gray-custom mb-4 px-1">
-            <span class="w-1/3">Name</span>
-            <span class="w-1/3 text-right">Last Price</span>
-            <span class="w-1/3 text-right">24h chg%</span>
-        </div>
-
-        <div class="space-y-6">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center w-1/3">
-                    <span class="font-bold text-base">BNB</span>
-                    <div class="ml-1 w-3 h-3 bg-yellow-500 rounded-full flex items-center justify-center">
-                         <div class="w-1 h-1 bg-white rounded-full"></div>
-                    </div>
-                </div>
-                <div class="text-right w-1/3">
-                    <div class="text-base font-medium">633.88</div>
-                    <div class="text-xs text-gray-custom">$633.88</div>
-                </div>
-                <div class="w-1/3 flex justify-end">
-                    <div class="bg-green-custom text-white text-sm font-bold py-2 px-3 rounded-md min-w-[85px] text-center">
-                        +1.20%
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <div class="flex items-center w-1/3">
-                    <span class="font-bold text-base">BTC</span>
-                    <div class="ml-1 w-3 h-3 bg-yellow-500 rounded-full flex items-center justify-center"></div>
-                </div>
-                <div class="text-right w-1/3">
-                    <div class="text-base font-medium">70,551.90</div>
-                    <div class="text-xs text-gray-custom">$70,551.90</div>
-                </div>
-                <div class="w-1/3 flex justify-end">
-                    <div class="bg-green-custom text-white text-sm font-bold py-2 px-3 rounded-md min-w-[85px] text-center">
-                        +3.80%
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <div class="flex items-center w-1/3">
-                    <span class="font-bold text-base">ETH</span>
-                    <div class="ml-1 w-3 h-3 bg-yellow-500 rounded-full flex items-center justify-center"></div>
-                </div>
-                <div class="text-right w-1/3">
-                    <div class="text-base font-medium">2,138.05</div>
-                    <div class="text-xs text-gray-custom">$2,138.05</div>
-                </div>
-                <div class="w-1/3 flex justify-end">
-                    <div class="bg-green-custom text-white text-sm font-bold py-2 px-3 rounded-md min-w-[85px] text-center">
-                        +4.42%
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <div class="w-1/3 font-bold text-base">SOL</div>
-                <div class="text-right w-1/3">
-                    <div class="text-base font-medium">90.51</div>
-                    <div class="text-xs text-gray-custom">$90.51</div>
-                </div>
-                <div class="w-1/3 flex justify-end">
-                    <div class="bg-green-custom text-white text-sm font-bold py-2 px-3 rounded-md min-w-[85px] text-center">
-                        +5.00%
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <div class="w-1/3 font-bold text-base">DOGE</div>
-                <div class="text-right w-1/3">
-                    <div class="text-base font-medium">0.09361</div>
-                    <div class="text-xs text-gray-custom">$0.09361</div>
-                </div>
-                <div class="w-1/3 flex justify-end">
-                    <div class="bg-green-custom text-white text-sm font-bold py-2 px-3 rounded-md min-w-[85px] text-center">
-                        +3.40%
-                    </div>
-                </div>
-            </div>
+        <div class="method" id="giftcard-opt">
+            <div><i class="fa-solid fa-gift" style="color: #ff4757;"></i> <span class="info">Gift Card</span></div>
+            <span class="badge">Manual</span>
         </div>
     </div>
+
+    <button class="btn-primary" onclick="window.open('https://wa.me/yournumber', '_blank')">
+        <i class="fa-brands fa-whatsapp"></i> Verify & Add Funds
+    </button>
+
+    <div class="security-footer">
+        <i class="fa-solid fa-lock"></i> SSL Encrypted & Secure Institutional Payment
+    </div>
+</div>
+
+<script>
+    // Simple logic for the UI interactivity
+    const chips = document.querySelectorAll('.chip');
+    const input = document.querySelector('input[type="number"]');
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            chips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            input.value = chip.innerText.replace('$', '');
+        });
+    });
+</script>
 
 </body>
 </html>
