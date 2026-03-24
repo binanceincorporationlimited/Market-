@@ -3,232 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Funds | Institutional Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>SecurePay | Add Funds</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --bg-color: #0b0e11;
-            --card-bg: rgba(30, 35, 41, 0.7);
+            --header-bg: #ffffff;
+            --card-bg: rgba(22, 26, 30, 0.95);
             --electric-blue: #007aff;
             --text-main: #eaecef;
             --text-muted: #848e9c;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --glass-blur: blur(12px);
+            --border-color: #2b3139;
+            --success-green: #0ecb81;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
         }
 
-        .mobile-container {
+        .app-container {
             width: 100%;
-            max-width: 480px;
+            max-width: 450px;
             min-height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Header & Logo Section */
+        /* Institutional White Header */
         header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-top: 10px;
+            background: var(--header-bg);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .logo {
-            height: 40px; /* Scaled down for professional look */
-            margin-bottom: 10px;
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #003087; /* Professional Navy */
+            font-weight: 800;
+            font-size: 20px;
         }
 
-        h1 {
-            font-size: 22px;
-            font-weight: 600;
-            margin: 0;
+        .user-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
         }
 
-        /* Glassmorphism Card Style */
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+
+        /* Main Content */
+        main {
+            padding: 20px 16px;
+        }
+
+        .page-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
 
-        .section-title {
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .ssl-badge {
+            color: var(--success-green);
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Section Styling */
+        .section-label {
             color: var(--text-muted);
             font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: block;
         }
 
-        /* Amount Selection */
-        .amount-chips {
+        /* Amount Input Group */
+        .amount-container {
+            margin-bottom: 25px;
+        }
+
+        .amount-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
-        .chip {
-            background: rgba(255, 255, 255, 0.05);
+        .amount-btn {
+            background: #1e2329;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 4px;
             padding: 10px 0;
+            color: var(--text-main);
             text-align: center;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: 500;
-            transition: 0.3s;
         }
 
-        .chip.active {
+        .amount-btn.active {
             border-color: var(--electric-blue);
             color: var(--electric-blue);
             background: rgba(0, 122, 255, 0.1);
         }
 
-        input[type="number"] {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.2);
+        .input-wrapper {
+            position: relative;
+            background: #1e2329;
+            border-radius: 4px;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
             padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-wrapper input {
+            background: transparent;
+            border: none;
             color: white;
             font-size: 18px;
-            box-sizing: border-box;
+            font-weight: 600;
+            width: 80%;
+            outline: none;
         }
 
-        /* Payment Method List */
-        .method {
+        /* Payment Methods */
+        .payment-methods {
+            margin-bottom: 25px;
+        }
+
+        .method-card {
+            background: #1e2329;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .method-card.active {
+            border: 2px solid var(--electric-blue);
+            background: rgba(0, 122, 255, 0.05);
+        }
+
+        .method-info {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: 0.2s;
+            gap: 12px;
         }
 
-        .method:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .method i {
-            margin-right: 12px;
+        .method-icon {
             font-size: 20px;
         }
 
-        .method .info {
-            flex-grow: 1;
+        .status-text {
+            font-size: 13px;
         }
 
-        .method .badge {
-            font-size: 11px;
-            background: rgba(0, 255, 127, 0.1);
-            color: #00ff7f;
-            padding: 2px 8px;
-            border-radius: 4px;
+        .status-instant { color: var(--success-green); }
+        .status-manual { color: var(--text-muted); }
+
+        /* Summary Section */
+        .summary-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
         }
 
-        /* Action Button */
-        .btn-primary {
-            background-color: var(--electric-blue);
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .summary-row.total {
+            border-top: 1px solid var(--border-color);
+            padding-top: 8px;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* Footer Action */
+        .footer-action {
+            margin-top: auto;
+            padding-bottom: 30px;
+        }
+
+        .confirm-btn {
+            background: var(--electric-blue);
             color: white;
             width: 100%;
+            padding: 18px;
             border: none;
-            padding: 16px;
-            border-radius: 12px;
+            border-radius: 8px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.2);
         }
 
-        .security-footer {
+        .secure-notice {
             text-align: center;
-            color: var(--text-muted);
             font-size: 12px;
-            margin-top: 20px;
-        }
-
-        .security-footer i {
-            color: #00ff7f;
-            margin-right: 5px;
+            color: var(--text-muted);
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
         }
     </style>
 </head>
 <body>
 
-<div class="mobile-container">
+<div class="app-container">
     <header>
-        <div style="font-size: 30px; margin-bottom: 10px;"><i class="fa-solid fa-shield-halved" style="color: var(--electric-blue);"></i></div>
-        <h1>Welcome to the Platform</h1>
+        <div class="brand-logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>SecurePay</span>
+        </div>
+        <div class="user-icons">
+            <i class="fa-regular fa-bell" style="color: #444; position: relative;">
+                <span style="position: absolute; top: -5px; right: -5px; background: #d93025; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></span>
+            </i>
+            <div class="avatar"></div>
+        </div>
     </header>
 
-    <div class="glass-card">
-        <span class="section-title">1. Select Amount</span>
-        <div class="amount-chips">
-            <div class="chip">$50</div>
-            <div class="chip">$100</div>
-            <div class="chip active">$250</div>
-            <div class="chip">$500</div>
-        </div>
-        <input type="number" value="250">
-    </div>
-
-    <div class="glass-card">
-        <span class="section-title">2. Choose Payment Method</span>
-        
-        <div class="method">
-            <div><i class="fa-brands fa-bitcoin" style="color: #f7931a;"></i> <span class="info">Bitcoin (BTC)</span></div>
-            <span class="badge">15-30m</span>
+    <main>
+        <div class="page-title-row">
+            <h1 class="page-title">Add Funds</h1>
+            <div class="ssl-badge">
+                <i class="fa-solid fa-lock"></i> SSL
+            </div>
         </div>
 
-        <div class="method">
-            <div><i class="fa-brands fa-paypal" style="color: #003087;"></i> <span class="info">PayPal</span></div>
-            <span class="badge">Instant</span>
+        <div class="amount-container">
+            <span class="section-label">1. Select Amount</span>
+            <div class="amount-grid">
+                <div class="amount-btn">$50</div>
+                <div class="amount-btn">$100</div>
+                <div class="amount-btn active">$250</div>
+                <div class="amount-btn">$500</div>
+            </div>
+            <div class="input-wrapper">
+                <span>$</span>
+                <input type="number" id="main-amount" value="250">
+                <span style="color: var(--text-muted); font-size: 14px;">USD</span>
+            </div>
         </div>
 
-        <div class="method" id="giftcard-opt">
-            <div><i class="fa-solid fa-gift" style="color: #ff4757;"></i> <span class="info">Gift Card</span></div>
-            <span class="badge">Manual</span>
+        <div class="payment-methods">
+            <span class="section-label">2. Choose Payment Method</span>
+            
+            <div class="method-card" onclick="selectMethod(this, 'Bitcoin')">
+                <div class="method-info">
+                    <i class="fa-brands fa-bitcoin method-icon" style="color: #f7931a;"></i>
+                    <span>Bitcoin</span>
+                </div>
+                <span class="status-text status-manual">Instant <i class="fa-solid fa-chevron-down"></i></span>
+            </div>
+
+            <div class="method-card active" onclick="selectMethod(this, 'PayPal')">
+                <div class="method-info">
+                    <i class="fa-brands fa-paypal method-icon" style="color: #003087;"></i>
+                    <span>PayPal</span>
+                </div>
+                <span class="status-text status-instant">Instant <i class="fa-solid fa-chevron-up"></i></span>
+            </div>
+
+            <div class="method-card" onclick="selectMethod(this, 'Gift Card')">
+                <div class="method-info">
+                    <i class="fa-solid fa-gift method-icon" style="color: #0ecb81;"></i>
+                    <span>Gift Card</span>
+                </div>
+                <span class="status-text status-manual">Instant <i class="fa-solid fa-chevron-down"></i></span>
+            </div>
         </div>
-    </div>
 
-    <button class="btn-primary" onclick="window.open('https://wa.me/yournumber', '_blank')">
-        <i class="fa-brands fa-whatsapp"></i> Verify & Add Funds
-    </button>
+        <div class="summary-card">
+            <span class="section-label">Summary</span>
+            <div class="summary-row">
+                <span>Deposit Amount:</span>
+                <span id="summ-amount">$250.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Total:</span>
+                <span id="summ-total">$250.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Deposit Time:</span>
+                <span class="status-instant">Instant</span>
+            </div>
+        </div>
 
-    <div class="security-footer">
-        <i class="fa-solid fa-lock"></i> SSL Encrypted & Secure Institutional Payment
-    </div>
+        <div class="footer-action">
+            <span class="section-label">3. Confirm</span>
+            <button class="confirm-btn" id="confirm-action" onclick="handleDeposit()">Confirm Deposit</button>
+            <div class="secure-notice">
+                <i class="fa-solid fa-shield-check" style="color: var(--success-green);"></i>
+                SSL Encrypted
+            </div>
+        </div>
+    </main>
 </div>
 
 <script>
-    // Simple logic for the UI interactivity
-    const chips = document.querySelectorAll('.chip');
-    const input = document.querySelector('input[type="number"]');
+    let currentMethod = 'PayPal';
 
-    chips.forEach(chip => {
-        chip.addEventListener('click', () => {
-            chips.forEach(c => c.classList.remove('active'));
-            chip.classList.add('active');
-            input.value = chip.innerText.replace('$', '');
+    // Amount Selection Logic
+    const amountBtns = document.querySelectorAll('.amount-btn');
+    const amountInput = document.getElementById('main-amount');
+    const summAmount = document.getElementById('summ-amount');
+    const summTotal = document.getElementById('summ-total');
+
+    amountBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            amountBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const val = btn.innerText.replace('$', '');
+            amountInput.value = val;
+            updateSummary(val);
         });
     });
+
+    amountInput.addEventListener('input', (e) => {
+        updateSummary(e.target.value);
+    });
+
+    function updateSummary(val) {
+        const formatted = parseFloat(val || 0).toFixed(2);
+        summAmount.innerText = `$${formatted}`;
+        summTotal.innerText = `$${formatted}`;
+    }
+
+    // Payment Selection Logic
+    function selectMethod(element, name) {
+        document.querySelectorAll('.method-card').forEach(card => card.classList.remove('active'));
+        element.classList.add('active');
+        currentMethod = name;
+        
+        const btn = document.getElementById('confirm-action');
+        if(name === 'Gift Card') {
+            btn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Verify via WhatsApp';
+        } else {
+            btn.innerHTML = 'Confirm Deposit';
+        }
+    }
+
+    // Final Action Handler
+    function handleDeposit() {
+        const val = amountInput.value;
+        if(currentMethod === 'Gift Card') {
+            // Institutional Manual Verification Flow
+            window.open(`https://wa.me/YOUR_NUMBER?text=Hello, I want to verify a Gift Card deposit of $${val}`, '_blank');
+        } else if (currentMethod === 'Bitcoin') {
+            alert(`Generating Secure Bitcoin Address for $${val}...`);
+        } else {
+            alert(`Redirecting to PayPal Secure Gateway for $${val}...`);
+        }
+    }
 </script>
 
 </body>
