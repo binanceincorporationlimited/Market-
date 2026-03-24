@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Market Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #12161c; color: #ebecf0; font-family: sans-serif; }
+        .active-tab { border-bottom: 3px solid #f0b90b; color: #ffffff; }
+        .filter-pill { background-color: #2b3139; border-radius: 4px; padding: 2px 12px; font-size: 13px; }
+        .filter-active { background-color: #363c45; color: #ffffff; }
+        .bottom-nav-icon { color: #848e9c; }
+        .bottom-nav-active { color: #f0b90b; }
+        /* Smooth scrolling for the list */
+        .custom-scroll::-webkit-scrollbar { width: 0px; }
+    </style>
+</head>
+<body class="flex flex-col h-screen max-w-md mx-auto border-x border-gray-800">
+
+    <header class="p-4 pb-2">
+        <div class="flex justify-between items-center mb-4">
+            <span class="text-lg font-bold">2:03</span>
+            <div class="flex gap-2 items-center text-sm">
+                <i data-lucide="minus-circle" class="w-4 h-4"></i>
+                <i data-lucide="signal" class="w-4 h-4"></i>
+                <i data-lucide="battery" class="w-4 h-4"></i>
+            </div>
+        </div>
+        
+        <nav class="flex gap-6 text-gray-400 font-medium text-lg overflow-x-auto no-scrollbar">
+            <span>Favorites</span>
+            <span class="active-tab">Market</span>
+            <span>Alpha</span>
+            <span>Grow</span>
+            <span>Square</span>
+        </nav>
+    </header>
+
+    <div class="px-4 py-3 flex gap-4 text-sm font-semibold text-gray-400 border-b border-gray-800">
+        <span class="text-white border-b-2 border-white pb-1">Crypto</span>
+        <span>Spot</span>
+        <span>USDⓈ-M</span>
+        <span>COIN-M</span>
+        <span>Options</span>
+    </div>
+
+    <div class="px-4 py-3 flex gap-2 overflow-x-auto items-center no-scrollbar">
+        <span class="filter-pill filter-active">All</span>
+        <span class="filter-pill">BNB Chain</span>
+        <span class="filter-pill">Solana</span>
+        <span class="filter-pill">RWA</span>
+        <span class="filter-pill">MEME</span>
+        <i data-lucide="list" class="w-5 h-5 text-gray-500 ml-auto"></i>
+    </div>
+
+    <div class="px-4 py-2 flex justify-between text-[11px] text-gray-500 font-bold uppercase tracking-wider">
+        <div class="flex items-center gap-1">Name <i data-lucide="chevrons-up-down" class="w-3 h-3"></i></div>
+        <div class="flex gap-20">
+            <div class="flex items-center gap-1">Last Price <i data-lucide="chevrons-up-down" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-1">24h Chg% <i data-lucide="chevrons-up-down" class="w-3 h-3"></i></div>
+        </div>
+    </div>
+
+    <main class="flex-1 overflow-y-auto custom-scroll px-4">
+        <div id="crypto-list" class="space-y-5 py-2">
+            </div>
+    </main>
+
+    <footer class="flex justify-around py-3 border-t border-gray-800 bg-[#12161c]">
+        <div class="flex flex-col items-center bottom-nav-icon">
+            <i data-lucide="home" class="w-6 h-6"></i>
+            <span class="text-[10px] mt-1">Home</span>
+        </div>
+        <div class="flex flex-col items-center bottom-nav-active">
+            <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+            <span class="text-[10px] mt-1 font-bold">Markets</span>
+        </div>
+        <div class="flex flex-col items-center bottom-nav-icon">
+            <i data-lucide="repeat" class="w-6 h-6"></i>
+            <span class="text-[10px] mt-1">Trade</span>
+        </div>
+        <div class="flex flex-col items-center bottom-nav-icon">
+            <i data-lucide="file-text" class="w-6 h-6"></i>
+            <span class="text-[10px] mt-1">Futures</span>
+        </div>
+        <div class="flex flex-col items-center bottom-nav-icon">
+            <i data-lucide="wallet" class="w-6 h-6"></i>
+            <span class="text-[10px] mt-1">Assets</span>
+        </div>
+    </footer>
+
+    <script>
+        // Data derived from your screenshots
+        const assets = [
+            { symbol: 'BTC', name: 'Bitcoin', price: '70,674.11', change: '+4.49%' },
+            { symbol: 'AR', name: 'Arweave', price: '1.90', change: '+13.77%' },
+            { symbol: 'FET', name: 'Artificial Superint...', price: '0.2316', change: '+11.35%' },
+            { symbol: 'FIL', name: 'Filecoin', price: '0.922', change: '+8.34%' },
+            { symbol: 'SYS', name: 'Syscoin', price: '0.01132', change: '+6.69%' },
+            { symbol: 'AAVE', name: 'Aave', price: '109.64', change: '+3.10%' },
+            { symbol: 'C98', name: 'Coin98', price: '0.0285', change: '-3.06%' },
+            { symbol: 'LAZIO', name: 'Lazio Fan Token', price: '0.639', change: '-0.62%' },
+            { symbol: 'ILV', name: 'Illuvium', price: '3.68', change: '+2.79%' },
+            { symbol: 'YGG', name: 'Yield Guild Games', price: '0.03882', change: '+5.03%' },
+            { symbol: 'LINK', name: 'ChainLink', price: '9.07', change: '+4.61%' },
+            { symbol: 'LTC', name: 'Litecoin', price: '55.43', change: '+3.36%' }
+        ];
+
+        const listContainer = document.getElementById('crypto-list');
+
+        assets.forEach(asset => {
+            const isPositive = !asset.change.includes('-');
+            const bgColor = isPositive ? 'bg-[#2ebd85]' : 'bg-[#f6465d]';
+            
+            const row = `
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center font-bold text-[10px]">${asset.symbol[0]}</div>
+                        <div>
+                            <div class="font-bold text-sm">${asset.symbol}</div>
+                            <div class="text-xs text-gray-500">${asset.name}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="text-right mr-8">
+                            <div class="text-sm font-bold">${asset.price}</div>
+                            <div class="text-[10px] text-gray-500">$${asset.price}</div>
+                        </div>
+                        <div class="${bgColor} text-white text-xs font-bold px-3 py-2 rounded-[4px] min-w-[75px] text-center">
+                            ${asset.change}
+                        </div>
+                    </div>
+                </div>
+            `;
+            listContainer.innerHTML += row;
+        });
+
+        // Initialize Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
