@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecurePay - Add Funds</title>
+    <title>SecurePay - Payment Flow</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { background-color: #0b0e14; color: #ffffff; font-family: 'Inter', sans-serif; }
         .glass-panel { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; }
         .btn-gradient { background: linear-gradient(90deg, #2563eb, #7c3aed); transition: all 0.2s; }
-        .amount-btn.active { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+        .amount-btn.active { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
         
-        .method-card { border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; cursor: pointer; }
-        .method-card.active { border: 2px solid #3b82f6; background: rgba(59, 130, 246, 0.05); }
+        .method-card { border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s; cursor: pointer; opacity: 0.6; }
+        .method-card:hover { border-color: rgba(255,255,255,0.3); opacity: 0.8; }
+        .method-card.active { border: 2px solid #3b82f6; background: rgba(59, 130, 246, 0.05); opacity: 1; }
         
         .spinner {
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -26,6 +27,7 @@
             margin-right: 8px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .hidden { display: none; }
     </style>
 </head>
 <body class="flex justify-center py-10 px-4">
@@ -47,8 +49,35 @@
         <h2 class="text-2xl font-semibold mb-6">Add Funds</h2>
 
         <div class="mb-8">
-            <label class="text-gray-400 text-sm mb-3 block">1. Select Amount</label>
-            <div class="grid grid-cols-4 gap-3 mb-4">
+            <label class="text-gray-400 text-sm mb-3 block">1. Choose Payment Method</label>
+            
+            <div onclick="selectMethod('bitcoin', 0)" id="method-bitcoin" class="method-card p-4 rounded-xl mb-3 flex justify-between items-center">
+                <div class="flex items-center gap-3"><i class="fab fa-bitcoin text-yellow-500 text-2xl"></i><span class="font-medium">Bitcoin</span></div>
+                <span class="text-[10px] bg-white/5 px-2 py-1 rounded">Fast • 5-10 min</span>
+            </div>
+
+            <div onclick="selectMethod('paypal', 0.029)" id="method-paypal" class="method-card p-4 rounded-xl mb-3 flex justify-between items-center">
+                <div class="flex items-center gap-3 text-blue-400"><i class="fab fa-paypal text-2xl"></i><span class="font-bold">PayPal</span></div>
+                <span class="text-[10px] bg-white/5 px-2 py-1 rounded">Instant • 2.9% fee</span>
+            </div>
+
+            <div onclick="selectMethod('giftcard', 0)" id="method-giftcard" class="method-card active p-4 rounded-xl mb-3">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="flex items-center gap-3 text-green-400"><i class="fas fa-gift text-2xl"></i><span class="font-bold">Gift Card</span></div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-gray-400">Manual review • up to 1 hr</span>
+                        <i id="check-gift" class="fas fa-check-circle text-green-500"></i>
+                    </div>
+                </div>
+                <div id="gift-input-container">
+                    <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" class="w-full bg-black/40 border border-white/10 rounded p-3 text-sm focus:outline-none focus:border-blue-400 text-center tracking-widest font-mono">
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <label class="text-gray-400 text-sm mb-3 block">2. Select Amount</label>
+            <div class="grid grid-cols-4 gap-3 mb-4" id="presets">
                 <button onclick="updateAmount(50)" class="amount-btn bg-white/5 py-3 rounded-lg border border-white/10">$50</button>
                 <button onclick="updateAmount(100)" class="amount-btn bg-white/5 py-3 rounded-lg border border-white/10">$100</button>
                 <button onclick="updateAmount(250)" class="amount-btn active bg-white/5 py-3 rounded-lg border border-white/10 relative">
@@ -57,34 +86,9 @@
                 <button onclick="updateAmount(500)" class="amount-btn bg-white/5 py-3 rounded-lg border border-white/10">$500</button>
             </div>
             <div class="relative">
-                <input type="number" id="custom-amount" value="250.00" class="w-full bg-white/5 border border-white/10 rounded-lg py-4 px-10 text-xl font-bold focus:outline-none focus:border-blue-500">
+                <input type="number" id="custom-amount" value="250.00" oninput="calculate()" class="w-full bg-white/5 border border-white/10 rounded-lg py-4 px-10 text-xl font-bold focus:outline-none focus:border-blue-500">
                 <span class="absolute left-4 top-5 text-gray-500">$</span>
                 <span class="absolute right-4 top-6 w-5"><img src="https://flagcdn.com/w20/us.png" alt="US"></span>
-            </div>
-        </div>
-
-        <div class="mb-8">
-            <label class="text-gray-400 text-sm mb-3 block">2. Choose Payment Method</label>
-            
-            <div class="method-card p-4 rounded-xl mb-3 flex justify-between items-center opacity-60">
-                <div class="flex items-center gap-3"><i class="fab fa-bitcoin text-yellow-500 text-2xl"></i><span class="font-medium">Bitcoin</span></div>
-                <span class="text-[10px] bg-white/5 px-2 py-1 rounded">Fast • 5-10 min</span>
-            </div>
-
-            <div class="method-card p-4 rounded-xl mb-3 flex justify-between items-center opacity-60">
-                <div class="flex items-center gap-3 text-blue-400"><i class="fab fa-paypal text-2xl"></i><span class="font-bold">PayPal</span></div>
-                <span class="text-[10px] bg-white/5 px-2 py-1 rounded">Instant • 2.9% fee</span>
-            </div>
-
-            <div class="method-card active p-4 rounded-xl mb-3">
-                <div class="flex justify-between items-center mb-3">
-                    <div class="flex items-center gap-3 text-green-400"><i class="fas fa-gift text-2xl"></i><span class="font-bold">Gift Card</span></div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] text-gray-400">Manual review • up to 1 hr</span>
-                        <i class="fas fa-check-circle text-green-500"></i>
-                    </div>
-                </div>
-                <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" class="w-full bg-black/40 border border-white/10 rounded p-3 text-sm focus:outline-none focus:border-blue-400 text-center tracking-widest font-mono">
             </div>
         </div>
 
@@ -92,7 +96,7 @@
             <label class="text-gray-400 text-sm mb-3 block">3. Summary</label>
             <div class="space-y-2 text-sm">
                 <div class="flex justify-between opacity-70"><span>Deposit Amount</span><span id="sum-deposit">$250.00</span></div>
-                <div class="flex justify-between opacity-70 border-b border-white/10 pb-2"><span>Processing Fee</span><span>$0.00</span></div>
+                <div class="flex justify-between opacity-70 border-b border-white/10 pb-2"><span>Processing Fee</span><span id="sum-fee">$0.00</span></div>
                 <div class="flex justify-between text-xl font-bold pt-2"><span>Total</span><span id="sum-total">$250.00</span></div>
             </div>
         </div>
@@ -107,10 +111,22 @@
     </div>
 
     <script>
+        let currentFeeRate = 0; // Starts with Gift Card (0% fee)
         const amountInput = document.getElementById('custom-amount');
         const sumDeposit = document.getElementById('sum-deposit');
+        const sumFee = document.getElementById('sum-fee');
         const sumTotal = document.getElementById('sum-total');
         const buttons = document.querySelectorAll('.amount-btn');
+
+        function calculate() {
+            let val = parseFloat(amountInput.value) || 0;
+            let fee = val * currentFeeRate;
+            let total = val + fee;
+
+            sumDeposit.innerText = `$${val.toFixed(2)}`;
+            sumFee.innerText = `$${fee.toFixed(2)}`;
+            sumTotal.innerText = `$${total.toFixed(2)}`;
+        }
 
         function updateAmount(amt) {
             amountInput.value = amt.toFixed(2);
@@ -118,8 +134,20 @@
                 btn.classList.remove('active');
                 if(btn.innerText.includes(amt)) btn.classList.add('active');
             });
-            sumDeposit.innerText = `$${amt.toFixed(2)}`;
-            sumTotal.innerText = `$${amt.toFixed(2)}`;
+            calculate();
+        }
+
+        function selectMethod(method, feeRate) {
+            currentFeeRate = feeRate;
+            
+            // UI Updates
+            document.querySelectorAll('.method-card').forEach(card => card.classList.remove('active'));
+            document.getElementById(`method-${method}`).classList.add('active');
+            
+            // Toggle gift card input visibility if you want, or just leave it
+            document.getElementById('gift-input-container').style.opacity = (method === 'giftcard') ? "1" : "0.3";
+            
+            calculate();
         }
 
         function startLoading() {
@@ -132,7 +160,7 @@
             loader.classList.remove('hidden');
             
             setTimeout(() => {
-                alert("Success! Your request is being reviewed.");
+                alert("Payment initiated successfully!");
                 btn.disabled = false;
                 text.innerText = "Continue to Payment";
                 loader.classList.add('hidden');
