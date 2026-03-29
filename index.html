@@ -1,261 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SecurePay - Add Funds</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-}
-
-body {
-  background: #0B0F14;
-  color: #E5E7EB;
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-}
-
-.container {
-  width: 100%;
-  max-width: 420px;
-  background: #121821;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-}
-
-/* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.logo {
-  font-weight: 600;
-  font-size: 18px;
-}
-
-.balance {
-  font-size: 14px;
-  color: #9CA3AF;
-}
-
-/* Title */
-h1 {
-  font-size: 22px;
-  margin: 15px 0;
-}
-
-/* Section */
-.section {
-  margin-top: 20px;
-}
-
-.section-title {
-  font-size: 14px;
-  color: #9CA3AF;
-  margin-bottom: 10px;
-}
-
-/* Amount buttons */
-.amounts {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
-
-.amount {
-  padding: 12px;
-  text-align: center;
-  border-radius: 12px;
-  background: #1A222C;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.amount.active {
-  border: 1px solid #3B82F6;
-  background: #1E293B;
-}
-
-.amount:hover {
-  transform: translateY(-2px);
-}
-
-/* Input */
-.input-box {
-  margin-top: 12px;
-  padding: 14px;
-  background: #1A222C;
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-}
-
-/* Payment methods */
-.method {
-  background: #1A222C;
-  border-radius: 14px;
-  padding: 15px;
-  margin-top: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-  border: 1px solid transparent;
-}
-
-.method.active {
-  border: 1px solid #3B82F6;
-  background: #1E293B;
-}
-
-.method-title {
-  font-weight: 500;
-}
-
-.method-sub {
-  font-size: 12px;
-  color: #9CA3AF;
-  margin-top: 5px;
-}
-
-/* Summary */
-.summary {
-  background: #1A222C;
-  border-radius: 14px;
-  padding: 15px;
-  margin-top: 10px;
-}
-
-.summary-row {
-  display: flex;
-  justify-content: space-between;
-  margin: 6px 0;
-  font-size: 14px;
-}
-
-.total {
-  font-size: 16px;
-  font-weight: 600;
-  margin-top: 10px;
-}
-
-/* Button */
-.btn {
-  margin-top: 20px;
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 14px;
-  background: linear-gradient(90deg, #3B82F6, #06B6D4);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn:hover {
-  opacity: 0.9;
-}
-
-/* Footer */
-.footer {
-  text-align: center;
-  font-size: 12px;
-  color: #6B7280;
-  margin-top: 10px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecurePay - Add Funds</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #0b0e14; color: #ffffff; font-family: 'Inter', sans-serif; }
+        .glass-panel { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; }
+        .btn-gradient { background: linear-gradient(90deg, #2563eb, #7c3aed); transition: all 0.2s; }
+        .btn-gradient:hover { opacity: 0.9; transform: translateY(-1px); }
+        .amount-btn.active { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
+    </style>
 </head>
+<body class="flex justify-center py-10 px-4">
 
-<body>
+    <div class="max-w-xl w-full glass-panel p-8 shadow-2xl">
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center gap-2">
+                <div class="bg-blue-600 p-2 rounded-lg"><i class="fas fa-shield-alt text-white"></i></div>
+                <h1 class="text-xl font-bold tracking-tight">SecurePay</h1>
+            </div>
+            <div class="flex items-center gap-4 text-sm font-medium">
+                <span class="opacity-70"><i class="far fa-bell mr-2"></i>$1,240.50</span>
+                <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" class="w-8 h-8 rounded-full border border-gray-600" alt="Profile">
+            </div>
+        </div>
 
-<div class="container">
+        <div class="flex items-center gap-4 text-xs text-green-400 mb-8 border-t border-white/5 pt-4">
+            <span><i class="fas fa-check-circle"></i> Secure</span>
+            <span class="opacity-50 text-white">• PCI DSS Compliant</span>
+            <span class="opacity-50 text-white">• 256-bit Encryption</span>
+        </div>
 
-  <div class="header">
-    <div class="logo">SecurePay</div>
-    <div class="balance">$1,240.50</div>
-  </div>
+        <h2 class="text-2xl font-semibold mb-6">Add Funds</h2>
 
-  <h1>Add Funds</h1>
+        <div class="mb-8">
+            <label class="text-gray-400 text-sm mb-3 block">1. Select Amount</label>
+            <div class="grid grid-cols-4 gap-3 mb-4" id="amount-presets">
+                <button onclick="updateAmount(50)" class="amount-btn bg-white/5 py-3 rounded-lg border border-white/10 hover:bg-white/10 transition-all">$50</button>
+                <button onclick="updateAmount(100)" class="amount-btn bg-white/5 py-3 rounded-lg border border-white/10 hover:bg-white/10 relative transition-all">
+                    $100 <span class="absolute -top-2 right-1 text-[8px] bg-gray-700 px-1 rounded">Popular</span>
+                </button>
+                <button onclick="updateAmount(250)" class="amount-btn active bg-white/5 py-3 rounded-lg border border-white/10 hover:bg-white/10 relative transition-all">
+                    $250 <span class="absolute -top-2 right-1 text-[8px] bg-blue-600 px-1 rounded">Popular</span>
+                </button>
+                <button onclick="updateAmount(500)" class="amount-btn bg-white/5 py-3 rounded-lg border border-white/10 hover:bg-white/10 transition-all">$500</button>
+            </div>
+            <div class="relative">
+                <input type="number" id="custom-amount" value="250.00" step="0.01" class="w-full bg-white/5 border border-white/10 rounded-lg py-4 px-10 text-xl font-bold focus:outline-none focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                <span class="absolute left-4 top-5 text-gray-500">$</span>
+                <span class="absolute right-12 top-5 text-gray-500 text-sm">USD</span>
+                <img src="https://flagcdn.com/w20/us.png" class="absolute right-4 top-6 w-5" alt="US">
+            </div>
+            <p class="text-[10px] text-gray-500 mt-2 ml-1">+ <span id="fee-label">$2.50</span> processing fee</p>
+        </div>
 
-  <!-- Amount -->
-  <div class="section">
-    <div class="section-title">1. Select Amount</div>
+        <div class="mb-8">
+            <label class="text-gray-400 text-sm mb-3 block">2. Choose Payment Method</label>
+            <div class="p-4 rounded-xl border-2 border-blue-500 bg-blue-500/5 mb-3">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center gap-3 text-blue-400">
+                        <i class="fab fa-paypal text-2xl"></i>
+                        <span class="font-bold">PayPal</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] text-gray-400">Instant • 2.9% fee</span>
+                        <i class="fas fa-check-circle text-green-500"></i>
+                    </div>
+                </div>
+                <div class="flex justify-between text-[10px] text-green-400 uppercase tracking-widest font-bold">
+                    <span><i class="fas fa-check"></i> Instant • 2.9% fee</span>
+                    <span><i class="fas fa-check"></i> Selected</span>
+                </div>
+            </div>
+            <div class="glass-panel p-4 mb-3 opacity-40 flex justify-between items-center cursor-not-allowed">
+                <div class="flex items-center gap-3"><i class="fab fa-bitcoin text-yellow-500 text-2xl"></i><span class="font-medium">Bitcoin</span></div>
+                <span class="text-[10px]">Fast • 5-10 min</span>
+            </div>
+        </div>
 
-    <div class="amounts">
-      <div class="amount">$50</div>
-      <div class="amount">$100</div>
-      <div class="amount active">$250</div>
-      <div class="amount">$500</div>
+        <div class="mb-8">
+            <label class="text-gray-400 text-sm mb-3 block">3. Summary</label>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between opacity-70"><span>Deposit Amount</span><span id="sum-deposit">$250.00</span></div>
+                <div class="flex justify-between opacity-70"><span>Processing Fee (2.9%)</span><span id="sum-fee">$7.25</span></div>
+                <div class="flex justify-between opacity-70 border-b border-white/10 pb-2"><span>Tax</span><span>$0.00</span></div>
+                <div class="flex justify-between text-xl font-bold pt-2"><span>Total</span><span id="sum-total">$257.25</span></div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button class="w-full py-4 rounded-xl font-bold text-lg btn-gradient mb-4 shadow-lg shadow-blue-500/20">
+                Continue to Payment
+            </button>
+            <p class="text-[10px] text-gray-500"><i class="fas fa-lock mr-1"></i> Your transaction is encrypted</p>
+        </div>
     </div>
 
-    <div class="input-box">
-      <span>$250.00</span>
-      <span>USD</span>
-    </div>
-  </div>
+    <script>
+        const amountInput = document.getElementById('custom-amount');
+        const sumDeposit = document.getElementById('sum-deposit');
+        const sumFee = document.getElementById('sum-fee');
+        const sumTotal = document.getElementById('sum-total');
+        const feeLabel = document.getElementById('fee-label');
+        const buttons = document.querySelectorAll('.amount-btn');
 
-  <!-- Payment -->
-  <div class="section">
-    <div class="section-title">2. Payment Method</div>
+        function calculate() {
+            let val = parseFloat(amountInput.value) || 0;
+            let fee = val * 0.029;
+            let total = val + fee;
 
-    <div class="method">
-      <div class="method-title">Bitcoin</div>
-      <div class="method-sub">Fast • 5–10 min • Network fee</div>
-    </div>
+            sumDeposit.innerText = `$${val.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            sumFee.innerText = `$${fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            sumTotal.innerText = `$${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            feeLabel.innerText = `$${fee.toFixed(2)}`;
+        }
 
-    <div class="method active">
-      <div class="method-title">PayPal</div>
-      <div class="method-sub">Instant • 2.9% fee</div>
-    </div>
+        function updateAmount(amt) {
+            amountInput.value = amt.toFixed(2);
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText.includes(amt)) btn.classList.add('active');
+            });
+            calculate();
+        }
 
-    <div class="method">
-      <div class="method-title">Gift Card</div>
-      <div class="method-sub">Manual • up to 1 hr</div>
-    </div>
-  </div>
+        amountInput.addEventListener('input', () => {
+            buttons.forEach(btn => btn.classList.remove('active'));
+            calculate();
+        });
 
-  <!-- Summary -->
-  <div class="section">
-    <div class="section-title">3. Summary</div>
-
-    <div class="summary">
-      <div class="summary-row">
-        <span>Deposit</span>
-        <span>$250.00</span>
-      </div>
-      <div class="summary-row">
-        <span>Fee</span>
-        <span>$2.50</span>
-      </div>
-      <div class="summary-row">
-        <span>Tax</span>
-        <span>$0.00</span>
-      </div>
-
-      <div class="summary-row total">
-        <span>Total</span>
-        <span>$252.50</span>
-      </div>
-    </div>
-  </div>
-
-  <button class="btn">Continue to Payment</button>
-
-  <div class="footer">
-    🔒 Secure payment • No hidden fees
-  </div>
-
-</div>
-
+        // Initialize
+        calculate();
+    </script>
 </body>
 </html>
