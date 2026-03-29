@@ -10,21 +10,31 @@
         body { background-color: #0b0e14; color: #ffffff; font-family: 'Inter', sans-serif; }
         .glass-panel { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; }
         .btn-gradient { background: linear-gradient(90deg, #2563eb, #7c3aed); transition: all 0.2s; }
-        .btn-gradient:hover { opacity: 0.9; transform: translateY(-1px); }
-        .amount-btn.active { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
+        .amount-btn.active { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+        
+        .method-card { border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; cursor: pointer; }
+        .method-card.active { border: 2px solid #3b82f6; background: rgba(59, 130, 246, 0.05); }
+        
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 2px solid #fff;
+            width: 16px;
+            height: 16px;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="flex justify-center py-10 px-4">
 
     <div class="max-w-xl w-full glass-panel p-8 shadow-2xl">
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex justify-start items-center mb-6">
             <div class="flex items-center gap-2">
                 <div class="bg-blue-600 p-2 rounded-lg"><i class="fas fa-shield-alt text-white"></i></div>
                 <h1 class="text-xl font-bold tracking-tight">SecurePay</h1>
-            </div>
-            <div class="flex items-center gap-4 text-sm font-medium">
-                <span class="opacity-70"><i class="far fa-bell mr-2"></i>$1,240.50</span>
-                <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" class="w-8 h-8 rounded-full border border-gray-600" alt="Profile">
             </div>
         </div>
 
@@ -38,46 +48,43 @@
 
         <div class="mb-8">
             <label class="text-gray-400 text-sm mb-3 block">1. Select Amount</label>
-            <div class="grid grid-cols-4 gap-3 mb-4" id="amount-presets">
-                <button onclick="updateAmount(50)" class="amount-btn bg-white/5 py-3 rounded-lg border border-white/10 hover:bg-white/10 transition-all">$50</button>
-                <button onclick="updateAmount(100)" class="amount-btn bg-white/5 py-3 rounded-lg border border-white/10 hover:bg-white/10 relative transition-all">
-                    $100 <span class="absolute -top-2 right-1 text-[8px] bg-gray-700 px-1 rounded">Popular</span>
-                </button>
-                <button onclick="updateAmount(250)" class="amount-btn active bg-white/5 py-3 rounded-lg border border-white/10 hover:bg-white/10 relative transition-all">
+            <div class="grid grid-cols-4 gap-3 mb-4">
+                <button onclick="updateAmount(50)" class="amount-btn bg-white/5 py-3 rounded-lg border border-white/10">$50</button>
+                <button onclick="updateAmount(100)" class="amount-btn bg-white/5 py-3 rounded-lg border border-white/10">$100</button>
+                <button onclick="updateAmount(250)" class="amount-btn active bg-white/5 py-3 rounded-lg border border-white/10 relative">
                     $250 <span class="absolute -top-2 right-1 text-[8px] bg-blue-600 px-1 rounded">Popular</span>
                 </button>
-                <button onclick="updateAmount(500)" class="amount-btn bg-white/5 py-3 rounded-lg border border-white/10 hover:bg-white/10 transition-all">$500</button>
+                <button onclick="updateAmount(500)" class="amount-btn bg-white/5 py-3 rounded-lg border border-white/10">$500</button>
             </div>
             <div class="relative">
-                <input type="number" id="custom-amount" value="250.00" step="0.01" class="w-full bg-white/5 border border-white/10 rounded-lg py-4 px-10 text-xl font-bold focus:outline-none focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                <input type="number" id="custom-amount" value="250.00" class="w-full bg-white/5 border border-white/10 rounded-lg py-4 px-10 text-xl font-bold focus:outline-none focus:border-blue-500">
                 <span class="absolute left-4 top-5 text-gray-500">$</span>
-                <span class="absolute right-12 top-5 text-gray-500 text-sm">USD</span>
-                <img src="https://flagcdn.com/w20/us.png" class="absolute right-4 top-6 w-5" alt="US">
+                <span class="absolute right-4 top-6 w-5"><img src="https://flagcdn.com/w20/us.png" alt="US"></span>
             </div>
-            <p class="text-[10px] text-gray-500 mt-2 ml-1">+ <span id="fee-label">$2.50</span> processing fee</p>
         </div>
 
         <div class="mb-8">
             <label class="text-gray-400 text-sm mb-3 block">2. Choose Payment Method</label>
-            <div class="p-4 rounded-xl border-2 border-blue-500 bg-blue-500/5 mb-3">
-                <div class="flex justify-between items-center mb-2">
-                    <div class="flex items-center gap-3 text-blue-400">
-                        <i class="fab fa-paypal text-2xl"></i>
-                        <span class="font-bold">PayPal</span>
-                    </div>
+            
+            <div class="method-card p-4 rounded-xl mb-3 flex justify-between items-center opacity-60">
+                <div class="flex items-center gap-3"><i class="fab fa-bitcoin text-yellow-500 text-2xl"></i><span class="font-medium">Bitcoin</span></div>
+                <span class="text-[10px] bg-white/5 px-2 py-1 rounded">Fast • 5-10 min</span>
+            </div>
+
+            <div class="method-card p-4 rounded-xl mb-3 flex justify-between items-center opacity-60">
+                <div class="flex items-center gap-3 text-blue-400"><i class="fab fa-paypal text-2xl"></i><span class="font-bold">PayPal</span></div>
+                <span class="text-[10px] bg-white/5 px-2 py-1 rounded">Instant • 2.9% fee</span>
+            </div>
+
+            <div class="method-card active p-4 rounded-xl mb-3">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="flex items-center gap-3 text-green-400"><i class="fas fa-gift text-2xl"></i><span class="font-bold">Gift Card</span></div>
                     <div class="flex items-center gap-2">
-                        <span class="text-[10px] text-gray-400">Instant • 2.9% fee</span>
+                        <span class="text-[10px] text-gray-400">Manual review • up to 1 hr</span>
                         <i class="fas fa-check-circle text-green-500"></i>
                     </div>
                 </div>
-                <div class="flex justify-between text-[10px] text-green-400 uppercase tracking-widest font-bold">
-                    <span><i class="fas fa-check"></i> Instant • 2.9% fee</span>
-                    <span><i class="fas fa-check"></i> Selected</span>
-                </div>
-            </div>
-            <div class="glass-panel p-4 mb-3 opacity-40 flex justify-between items-center cursor-not-allowed">
-                <div class="flex items-center gap-3"><i class="fab fa-bitcoin text-yellow-500 text-2xl"></i><span class="font-medium">Bitcoin</span></div>
-                <span class="text-[10px]">Fast • 5-10 min</span>
+                <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX" class="w-full bg-black/40 border border-white/10 rounded p-3 text-sm focus:outline-none focus:border-blue-400 text-center tracking-widest font-mono">
             </div>
         </div>
 
@@ -85,15 +92,15 @@
             <label class="text-gray-400 text-sm mb-3 block">3. Summary</label>
             <div class="space-y-2 text-sm">
                 <div class="flex justify-between opacity-70"><span>Deposit Amount</span><span id="sum-deposit">$250.00</span></div>
-                <div class="flex justify-between opacity-70"><span>Processing Fee (2.9%)</span><span id="sum-fee">$7.25</span></div>
-                <div class="flex justify-between opacity-70 border-b border-white/10 pb-2"><span>Tax</span><span>$0.00</span></div>
-                <div class="flex justify-between text-xl font-bold pt-2"><span>Total</span><span id="sum-total">$257.25</span></div>
+                <div class="flex justify-between opacity-70 border-b border-white/10 pb-2"><span>Processing Fee</span><span>$0.00</span></div>
+                <div class="flex justify-between text-xl font-bold pt-2"><span>Total</span><span id="sum-total">$250.00</span></div>
             </div>
         </div>
 
         <div class="text-center">
-            <button class="w-full py-4 rounded-xl font-bold text-lg btn-gradient mb-4 shadow-lg shadow-blue-500/20">
-                Continue to Payment
+            <button id="pay-btn" onclick="startLoading()" class="w-full py-4 rounded-xl font-bold text-lg btn-gradient mb-4 shadow-lg shadow-blue-500/20">
+                <span id="loader" class="spinner hidden"></span>
+                <span id="btn-text">Continue to Payment</span>
             </button>
             <p class="text-[10px] text-gray-500"><i class="fas fa-lock mr-1"></i> Your transaction is encrypted</p>
         </div>
@@ -102,21 +109,8 @@
     <script>
         const amountInput = document.getElementById('custom-amount');
         const sumDeposit = document.getElementById('sum-deposit');
-        const sumFee = document.getElementById('sum-fee');
         const sumTotal = document.getElementById('sum-total');
-        const feeLabel = document.getElementById('fee-label');
         const buttons = document.querySelectorAll('.amount-btn');
-
-        function calculate() {
-            let val = parseFloat(amountInput.value) || 0;
-            let fee = val * 0.029;
-            let total = val + fee;
-
-            sumDeposit.innerText = `$${val.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            sumFee.innerText = `$${fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            sumTotal.innerText = `$${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            feeLabel.innerText = `$${fee.toFixed(2)}`;
-        }
 
         function updateAmount(amt) {
             amountInput.value = amt.toFixed(2);
@@ -124,16 +118,26 @@
                 btn.classList.remove('active');
                 if(btn.innerText.includes(amt)) btn.classList.add('active');
             });
-            calculate();
+            sumDeposit.innerText = `$${amt.toFixed(2)}`;
+            sumTotal.innerText = `$${amt.toFixed(2)}`;
         }
 
-        amountInput.addEventListener('input', () => {
-            buttons.forEach(btn => btn.classList.remove('active'));
-            calculate();
-        });
-
-        // Initialize
-        calculate();
+        function startLoading() {
+            const btn = document.getElementById('pay-btn');
+            const text = document.getElementById('btn-text');
+            const loader = document.getElementById('loader');
+            
+            btn.disabled = true;
+            text.innerText = "Processing...";
+            loader.classList.remove('hidden');
+            
+            setTimeout(() => {
+                alert("Success! Your request is being reviewed.");
+                btn.disabled = false;
+                text.innerText = "Continue to Payment";
+                loader.classList.add('hidden');
+            }, 2500);
+        }
     </script>
 </body>
 </html>
