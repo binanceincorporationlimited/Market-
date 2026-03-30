@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>SecurePay Premium | Secure Deposit Portal</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -31,20 +28,19 @@
             background: rgba(10, 14, 23, 0.75);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border-radius: 28px;
         }
 
         .method-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s ease;
             cursor: pointer;
         }
 
         .method-card.active {
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(139, 92, 246, 0.08));
             border: 1.5px solid #3b82f6;
-            box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.2);
         }
 
         .input-premium {
@@ -57,25 +53,21 @@
             outline: none;
             border-color: #3b82f6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-            background: rgba(0, 0, 0, 0.6);
         }
 
         .preset-btn {
             transition: all 0.2s ease;
-            font-weight: 600;
             cursor: pointer;
         }
 
         .preset-btn-active {
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             color: white;
-            border: none;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
         .btn-primary {
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
             cursor: pointer;
         }
 
@@ -86,7 +78,6 @@
         .btn-secondary {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.2s ease;
             cursor: pointer;
         }
 
@@ -108,21 +99,22 @@
             100% { transform: rotate(360deg); }
         }
 
-        .expandable-section {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
+        .step {
+            transition: all 0.3s ease;
         }
 
-        .expandable-section.show {
-            max-height: 200px;
-            opacity: 1;
-            margin-top: 16px;
+        .step-active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .step-completed {
+            background: #10b981;
+            color: white;
         }
 
         .fade-in {
-            animation: fadeIn 0.4s ease-out;
+            animation: fadeIn 0.3s ease-out;
         }
 
         @keyframes fadeIn {
@@ -137,7 +129,7 @@
         }
 
         /* Bitcoin Modal */
-        .bitcoin-modal-bg {
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -152,32 +144,14 @@
             padding: 16px;
         }
 
-        .bitcoin-modal-container {
+        .modal-content {
             width: 100%;
             max-width: 500px;
             max-height: 90vh;
             background: rgba(10, 14, 23, 0.98);
-            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 28px;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .close-modal-btn {
-            position: sticky;
-            top: 12px;
-            right: 12px;
-            float: right;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            margin: 12px 12px 0 0;
         }
 
         .qr-container {
@@ -198,83 +172,59 @@
             font-size: 13px;
         }
 
-        .copy-btn {
-            transition: all 0.2s ease;
-            cursor: pointer;
-            width: 100%;
-            padding: 14px;
-            font-weight: 600;
-        }
-
-        .step-active {
-            background: #3b82f6;
-            color: white;
-        }
-
-        .step-completed {
-            background: #10b981;
-            color: white;
-        }
-
         @media (max-width: 640px) {
-            body {
-                padding: 12px;
-            }
-            .wallet-address {
-                font-size: 11px;
-            }
+            body { padding: 12px; }
+            .wallet-address { font-size: 11px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="max-w-2xl w-full glass-premium rounded-3xl shadow-2xl overflow-hidden mx-auto">
+    <div class="max-w-2xl w-full glass-premium mx-auto overflow-hidden">
         <!-- Header -->
-        <div class="px-5 md:px-8 pt-6 pb-4 border-b border-white/10">
-            <div class="flex items-center justify-between flex-wrap gap-3">
+        <div class="px-5 pt-6 pb-4 border-b border-white/10">
+            <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="h-10 w-10 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center border border-blue-500/30">
                         <i class="fas fa-shield-halved text-blue-400 text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">SecurePay<span class="text-blue-500">.</span></h1>
+                        <h1 class="text-xl font-extrabold">SecurePay<span class="text-blue-500">.</span></h1>
                         <p class="text-[10px] text-gray-500">PCI DSS Level 1 Certified</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <i class="fas fa-lock text-emerald-400 text-xs"></i>
-                    <span class="text-[9px] uppercase text-gray-400 font-semibold bg-white/5 px-2 py-1 rounded-full">256-bit</span>
+                    <span class="text-[9px] text-gray-400 bg-white/5 px-2 py-1 rounded-full">256-bit</span>
                 </div>
             </div>
         </div>
 
-        <div class="p-5 md:p-8">
+        <div class="p-5">
             <!-- Progress Steps -->
             <div class="flex items-center justify-between mb-8">
                 <div class="flex-1 text-center">
-                    <div class="step w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-sm font-bold text-white mx-auto mb-1" id="step1-icon">1</div>
-                    <span class="text-[10px] text-blue-400" id="step1-text">Select Method</span>
+                    <div class="step w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-sm font-bold text-white mx-auto mb-1" id="step1Dot">1</div>
+                    <span class="text-[10px] text-blue-400" id="step1Label">Select Method</span>
                 </div>
                 <div class="w-12 h-px bg-white/20"></div>
                 <div class="flex-1 text-center">
-                    <div class="step w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-gray-400 mx-auto mb-1" id="step2-icon">2</div>
-                    <span class="text-[10px] text-gray-500" id="step2-text">Enter Amount</span>
+                    <div class="step w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-gray-400 mx-auto mb-1" id="step2Dot">2</div>
+                    <span class="text-[10px] text-gray-500" id="step2Label">Enter Amount</span>
                 </div>
                 <div class="w-12 h-px bg-white/20"></div>
                 <div class="flex-1 text-center">
-                    <div class="step w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-gray-400 mx-auto mb-1" id="step3-icon">3</div>
-                    <span class="text-[10px] text-gray-500" id="step3-text">Confirm</span>
+                    <div class="step w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-gray-400 mx-auto mb-1" id="step3Dot">3</div>
+                    <span class="text-[10px] text-gray-500" id="step3Label">Confirm</span>
                 </div>
             </div>
 
             <!-- STEP 1: PAYMENT METHODS -->
-            <div id="step1-container">
-                <div class="mb-4">
-                    <h2 class="text-sm font-semibold text-gray-200 mb-1">Choose payment method</h2>
-                    <p class="text-[10px] text-gray-500">All methods have $0 fee</p>
-                </div>
+            <div id="step1Container">
+                <h2 class="text-sm font-semibold text-gray-200 mb-3">Choose payment method</h2>
+                <p class="text-[10px] text-gray-500 mb-4">Tap a method to continue</p>
 
-                <div class="grid gap-2 mb-6">
+                <div class="space-y-2 mb-6">
                     <!-- Bitcoin -->
                     <div onclick="selectMethod('bitcoin')" id="method-bitcoin" class="method-card rounded-xl p-3 flex items-center justify-between">
                         <div class="flex items-center gap-3">
@@ -303,62 +253,50 @@
                         <i class="fas fa-chevron-right text-gray-600 text-xs"></i>
                     </div>
 
-                    <!-- Gift Card (Active by default) -->
-                    <div onclick="selectMethod('gift')" id="method-gift" class="method-card active rounded-xl p-3">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                                    <i class="fas fa-gift text-xl text-emerald-400"></i>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-sm text-white">Digital Gift Card</p>
-                                    <p class="text-[9px] text-gray-500">Visa/Mastercard prepaid</p>
-                                </div>
+                    <!-- Gift Card -->
+                    <div onclick="selectMethod('gift')" id="method-gift" class="method-card rounded-xl p-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                                <i class="fas fa-gift text-xl text-emerald-400"></i>
                             </div>
-                            <i class="fas fa-check-circle text-blue-500 text-sm" id="gift-check-icon"></i>
-                        </div>
-                        
-                        <div id="gift-expandable" class="expandable-section show">
-                            <input type="text" id="gift-card-input" placeholder="Gift card code" 
-                                   class="w-full input-premium rounded-xl p-3 text-sm text-white placeholder:text-gray-600 font-mono">
-                            <p class="text-[9px] text-gray-500 mt-2"><i class="fas fa-info-circle"></i> Accepted: Vanilla, OneVanilla, Mastercard Gift</p>
+                            <div>
+                                <p class="font-bold text-sm text-white">Digital Gift Card</p>
+                                <p class="text-[9px] text-gray-500">Visa/Mastercard prepaid</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div id="dynamic-method-panel" class="mb-4"></div>
-
-                <button onclick="proceedToAmount()" id="proceed-btn" class="btn-primary w-full py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2">
-                    <span>Continue to amount</span>
-                    <i class="fas fa-arrow-right text-xs"></i>
-                </button>
             </div>
 
             <!-- STEP 2: ENTER AMOUNT (Hidden initially) -->
-            <div id="step2-container" style="display: none;" class="fade-in">
-                <div class="mb-6">
-                    <h2 class="text-sm font-semibold text-gray-200 mb-3">Enter amount (USD)</h2>
-                    
-                    <div class="grid grid-cols-4 gap-2 mb-4">
-                        <button onclick="setPresetAmount(50)" id="preset-50" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$50</button>
-                        <button onclick="setPresetAmount(100)" id="preset-100" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$100</button>
-                        <button onclick="setPresetAmount(250)" id="preset-250" class="preset-btn preset-btn-active py-2 rounded-xl text-sm">$250</button>
-                        <button onclick="setPresetAmount(500)" id="preset-500" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$500</button>
-                    </div>
-                    
-                    <div class="relative">
-                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">$</span>
-                        <input type="number" id="amount-input" value="250.00" step="10" min="10" max="10000"
-                               class="w-full input-premium rounded-2xl py-4 pl-9 pr-16 text-xl font-bold text-white">
-                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-[10px] bg-white/5 px-2 py-1 rounded">USD</span>
-                    </div>
-                    <p id="amount-error" class="text-red-400 text-xs mt-2 hidden">Amount must be between $10 and $10,000</p>
+            <div id="step2Container" style="display: none;" class="fade-in">
+                <div class="flex items-center gap-2 mb-4">
+                    <button onclick="backToMethods()" class="text-gray-400 hover:text-white text-sm">
+                        <i class="fas fa-arrow-left mr-1"></i> Back to methods
+                    </button>
                 </div>
+                
+                <h2 class="text-sm font-semibold text-gray-200 mb-3">Enter amount (USD)</h2>
+                
+                <div class="grid grid-cols-4 gap-2 mb-4">
+                    <button onclick="setPresetAmount(50)" id="preset-50" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$50</button>
+                    <button onclick="setPresetAmount(100)" id="preset-100" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$100</button>
+                    <button onclick="setPresetAmount(250)" id="preset-250" class="preset-btn preset-btn-active py-2 rounded-xl text-sm">$250</button>
+                    <button onclick="setPresetAmount(500)" id="preset-500" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$500</button>
+                </div>
+                
+                <div class="relative mb-4">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">$</span>
+                    <input type="number" id="amountInput" value="250.00" step="10" min="10" max="10000"
+                           class="w-full input-premium rounded-2xl py-4 pl-9 pr-16 text-xl font-bold text-white">
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-[10px] bg-white/5 px-2 py-1 rounded">USD</span>
+                </div>
+                <p id="amountError" class="text-red-400 text-xs mt-1 mb-4 hidden">Amount must be between $10 and $10,000</p>
 
                 <div class="bg-black/30 rounded-2xl p-4 border border-white/10 mb-6">
                     <div class="flex justify-between text-sm mb-2">
                         <span class="text-gray-400">Subtotal</span>
-                        <span id="subtotal-display" class="text-white font-medium">$250.00</span>
+                        <span id="subtotalDisplay" class="text-white font-medium">$250.00</span>
                     </div>
                     <div class="flex justify-between text-sm mb-2">
                         <span class="text-gray-400">Processing fee</span>
@@ -367,22 +305,23 @@
                     <div class="border-t border-white/10 my-2"></div>
                     <div class="flex justify-between items-center">
                         <span class="text-xs text-gray-500 font-bold">TOTAL</span>
-                        <span id="total-display" class="text-xl font-extrabold text-white">$250.00</span>
+                        <span id="totalDisplay" class="text-xl font-extrabold text-white">$250.00</span>
                     </div>
                 </div>
 
-                <div class="flex gap-3">
-                    <button onclick="backToMethods()" class="btn-secondary flex-1 py-3 rounded-xl font-semibold text-white text-sm">
-                        <i class="fas fa-arrow-left mr-1"></i> Back
-                    </button>
-                    <button onclick="proceedToConfirm()" class="btn-primary flex-1 py-3 rounded-xl font-bold text-white text-sm">
-                        Continue <i class="fas fa-arrow-right ml-1"></i>
-                    </button>
-                </div>
+                <button onclick="goToConfirm()" class="btn-primary w-full py-3 rounded-xl font-bold text-white text-sm">
+                    Continue to confirmation <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                </button>
             </div>
 
             <!-- STEP 3: CONFIRM (Hidden initially) -->
-            <div id="step3-container" style="display: none;" class="fade-in">
+            <div id="step3Container" style="display: none;" class="fade-in">
+                <div class="flex items-center gap-2 mb-4">
+                    <button onclick="backToAmount()" class="text-gray-400 hover:text-white text-sm">
+                        <i class="fas fa-arrow-left mr-1"></i> Back to amount
+                    </button>
+                </div>
+                
                 <div class="text-center mb-6">
                     <div class="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-3">
                         <i class="fas fa-check-circle text-2xl text-emerald-400"></i>
@@ -394,11 +333,11 @@
                 <div class="bg-black/30 rounded-2xl p-5 border border-white/10 mb-6">
                     <div class="flex justify-between items-center py-2 border-b border-white/10">
                         <span class="text-gray-400 text-sm">Payment Method</span>
-                        <span id="confirm-method" class="text-white text-sm font-semibold">Gift Card</span>
+                        <span id="confirmMethod" class="text-white text-sm font-semibold">Gift Card</span>
                     </div>
                     <div class="flex justify-between items-center py-2 border-b border-white/10">
                         <span class="text-gray-400 text-sm">Amount</span>
-                        <span id="confirm-amount" class="text-white text-xl font-bold">$250.00</span>
+                        <span id="confirmAmount" class="text-white text-xl font-bold">$250.00</span>
                     </div>
                     <div class="flex justify-between items-center py-2">
                         <span class="text-gray-400 text-sm">Processing Fee</span>
@@ -406,16 +345,11 @@
                     </div>
                 </div>
 
-                <div class="flex gap-3">
-                    <button onclick="backToAmount()" class="btn-secondary flex-1 py-3 rounded-xl font-semibold text-white text-sm">
-                        <i class="fas fa-arrow-left mr-1"></i> Back
-                    </button>
-                    <button onclick="processDeposit()" id="deposit-button" class="btn-primary flex-1 py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2">
-                        <span id="btn-text">Confirm & Deposit</span>
-                        <i id="btn-icon" class="fas fa-lock text-xs"></i>
-                        <div id="btn-spinner" class="spinner hidden"></div>
-                    </button>
-                </div>
+                <button onclick="processDeposit()" id="depositBtn" class="btn-primary w-full py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2">
+                    <span id="btnText">Confirm & Deposit</span>
+                    <i id="btnIcon" class="fas fa-lock text-xs"></i>
+                    <div id="btnSpinner" class="spinner hidden"></div>
+                </button>
             </div>
 
             <!-- Trust Badges -->
@@ -428,14 +362,16 @@
     </div>
 
     <!-- BITCOIN MODAL -->
-    <div id="bitcoin-modal" style="display: none;">
-        <div class="bitcoin-modal-bg" onclick="closeBitcoinModal(event)">
-            <div class="bitcoin-modal-container" onclick="event.stopPropagation()">
-                <div class="close-modal-btn" onclick="closeBitcoinModal()">
-                    <i class="fas fa-times text-white text-sm"></i>
+    <div id="bitcoinModal" style="display: none;">
+        <div class="modal-overlay" onclick="closeBitcoinModal()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div class="sticky top-0 flex justify-end p-3">
+                    <button onclick="closeBitcoinModal()" class="bg-white/10 rounded-full w-8 h-8 flex items-center justify-center">
+                        <i class="fas fa-times text-white text-sm"></i>
+                    </button>
                 </div>
-                <div class="px-5 pb-6 pt-2">
-                    <div class="text-center mt-2 mb-5">
+                <div class="px-5 pb-6">
+                    <div class="text-center mb-5">
                         <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-orange-500/20 border border-orange-500/30 mb-3">
                             <i class="fab fa-bitcoin text-2xl text-orange-400"></i>
                         </div>
@@ -443,48 +379,37 @@
                         <p class="text-gray-300 text-xs">To deposit funds, make a bitcoin transfer to the BTC-wallet shown below. Copy wallet address or scan QR code with your camera.</p>
                     </div>
                     
-                    <div class="border-t border-white/10 my-4"></div>
-                    
                     <div class="flex justify-center mb-5">
-                        <div class="qr-container bg-white rounded-xl shadow-lg">
-                            <img 
-                                src="https://images.unsplash.com/photo-1774868693677-c2fd7594825f?q=80&w=876&auto=format&fit=crop"
-                                alt="Bitcoin QR Code"
-                                class="w-40 h-40 object-cover rounded-lg"
-                                onerror="this.src='https://placehold.co/400x400/1a1a2e/ff8c00?text=QR+Code'"
-                            >
+                        <div class="qr-container bg-white rounded-xl">
+                            <img src="https://images.unsplash.com/photo-1774868693677-c2fd7594825f?q=80&w=876&auto=format&fit=crop" 
+                                 alt="Bitcoin QR Code" class="w-40 h-40 object-cover rounded-lg"
+                                 onerror="this.src='https://placehold.co/400x400/1a1a2e/ff8c00?text=QR+Code'">
                         </div>
                     </div>
                     
                     <div class="mb-5">
-                        <p class="text-gray-400 text-[10px] uppercase tracking-wider text-center mb-2">YOUR UNIQUE BITCOIN WALLET ADDRESS</p>
-                        <div class="wallet-address text-orange-300 font-mono text-center mb-3">
+                        <p class="text-gray-400 text-[10px] uppercase text-center mb-2">YOUR UNIQUE BITCOIN WALLET ADDRESS</p>
+                        <div class="wallet-address text-orange-300 text-center mb-3">
                             bc1qqgy9uf9uzqu4c85kdn<br>qkn7vlurwwqjxmwa4wcp
                         </div>
-                        <button onclick="copyBitcoinAddress()" class="copy-btn bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl flex items-center justify-center gap-2">
+                        <button onclick="copyBitcoinAddress()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl py-3 flex items-center justify-center gap-2">
                             <i class="far fa-copy"></i>
-                            <span id="copy-btn-text">Copy address</span>
+                            <span id="copyBtnText">Copy address</span>
                         </button>
                     </div>
                     
-                    <div class="bg-black/30 rounded-xl p-4 border border-white/10">
-                        <div class="flex items-center gap-2 mb-2">
-                            <i class="fas fa-file-contract text-gray-400 text-xs"></i>
-                            <h3 class="text-gray-300 font-semibold text-xs uppercase">Terms</h3>
-                        </div>
+                    <div class="bg-black/30 rounded-xl p-4">
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-gray-400 text-xs">Average payment time</span>
-                            <span class="text-emerald-400 text-xs font-semibold"><i class="fas fa-bolt text-[10px]"></i> Instant</span>
+                            <span class="text-emerald-400 text-xs">Instant</span>
                         </div>
                         <div class="flex justify-between items-center mb-3">
                             <span class="text-gray-400 text-xs">Fee</span>
-                            <span class="text-white text-xs font-semibold">0%</span>
+                            <span class="text-white text-xs">0%</span>
                         </div>
-                        <div class="border-t border-white/10 pt-2">
-                            <p class="text-gray-500 text-[9px] text-center">
-                                All crypto wallet services are provided by Thecorio Ltd, a company incorporated in Seychelles, with registration number 8437417-1.
-                            </p>
-                        </div>
+                        <p class="text-gray-500 text-[9px] text-center border-t border-white/10 pt-3">
+                            Services provided by Thecorio Ltd, Seychelles (8437417-1)
+                        </p>
                     </div>
                 </div>
             </div>
@@ -494,61 +419,62 @@
     <script>
         // State
         let currentMethod = 'gift';
-        let currentAmount = 250.00;
+        let currentAmount = 250;
         let isProcessing = false;
         let selectedMethodName = 'Gift Card';
-        let paypalEmailValidated = false;
+        let methodData = {};
 
         // DOM Elements
-        const amountInput = document.getElementById('amount-input');
-        const subtotalSpan = document.getElementById('subtotal-display');
-        const totalSpan = document.getElementById('total-display');
-        const dynamicPanel = document.getElementById('dynamic-method-panel');
-        const giftExpandable = document.getElementById('gift-expandable');
-        const amountError = document.getElementById('amount-error');
-        const step1Container = document.getElementById('step1-container');
-        const step2Container = document.getElementById('step2-container');
-        const step3Container = document.getElementById('step3-container');
-        const step1Icon = document.getElementById('step1-icon');
-        const step2Icon = document.getElementById('step2-icon');
-        const step3Icon = document.getElementById('step3-icon');
-        const step1Text = document.getElementById('step1-text');
-        const step2Text = document.getElementById('step2-text');
-        const step3Text = document.getElementById('step3-text');
+        const step1Container = document.getElementById('step1Container');
+        const step2Container = document.getElementById('step2Container');
+        const step3Container = document.getElementById('step3Container');
+        const amountInput = document.getElementById('amountInput');
+        const subtotalDisplay = document.getElementById('subtotalDisplay');
+        const totalDisplay = document.getElementById('totalDisplay');
+        const amountError = document.getElementById('amountError');
 
+        // Update progress steps
         function updateSteps(step) {
+            const step1Dot = document.getElementById('step1Dot');
+            const step2Dot = document.getElementById('step2Dot');
+            const step3Dot = document.getElementById('step3Dot');
+            const step1Label = document.getElementById('step1Label');
+            const step2Label = document.getElementById('step2Label');
+            const step3Label = document.getElementById('step3Label');
+
             // Reset all
-            [step1Icon, step2Icon, step3Icon].forEach(icon => {
-                icon.classList.remove('bg-blue-600', 'bg-emerald-600');
-                icon.classList.add('bg-white/10');
-                icon.classList.remove('text-white');
-                icon.classList.add('text-gray-400');
+            [step1Dot, step2Dot, step3Dot].forEach(dot => {
+                dot.classList.remove('bg-blue-600', 'bg-emerald-600');
+                dot.classList.add('bg-white/10');
+                dot.classList.remove('text-white');
+                dot.classList.add('text-gray-400');
             });
-            [step1Text, step2Text, step3Text].forEach(text => {
-                text.classList.remove('text-blue-400', 'text-emerald-400');
-                text.classList.add('text-gray-500');
+            [step1Label, step2Label, step3Label].forEach(label => {
+                label.classList.remove('text-blue-400', 'text-emerald-400');
+                label.classList.add('text-gray-500');
             });
 
             if (step >= 1) {
-                step1Icon.classList.remove('bg-white/10', 'text-gray-400');
-                step1Icon.classList.add('bg-emerald-600', 'text-white');
-                step1Text.classList.remove('text-gray-500');
-                step1Text.classList.add('text-emerald-400');
+                step1Dot.classList.remove('bg-white/10', 'text-gray-400');
+                step1Dot.classList.add('bg-emerald-600', 'text-white');
+                step1Label.classList.remove('text-gray-500');
+                step1Label.classList.add('text-emerald-400');
             }
             if (step >= 2) {
-                step2Icon.classList.remove('bg-white/10', 'text-gray-400');
-                step2Icon.classList.add('bg-blue-600', 'text-white');
-                step2Text.classList.remove('text-gray-500');
-                step2Text.classList.add('text-blue-400');
+                step2Dot.classList.remove('bg-white/10', 'text-gray-400');
+                step2Dot.classList.add('bg-blue-600', 'text-white');
+                step2Label.classList.remove('text-gray-500');
+                step2Label.classList.add('text-blue-400');
             }
             if (step >= 3) {
-                step3Icon.classList.remove('bg-white/10', 'text-gray-400');
-                step3Icon.classList.add('bg-blue-600', 'text-white');
-                step3Text.classList.remove('text-gray-500');
-                step3Text.classList.add('text-blue-400');
+                step3Dot.classList.remove('bg-white/10', 'text-gray-400');
+                step3Dot.classList.add('bg-blue-600', 'text-white');
+                step3Label.classList.remove('text-gray-500');
+                step3Label.classList.add('text-blue-400');
             }
         }
 
+        // Select payment method - immediately goes to amount page
         function selectMethod(method) {
             if (isProcessing) return;
             currentMethod = method;
@@ -559,69 +485,23 @@
                 return;
             } else if (method === 'paypal') {
                 selectedMethodName = 'PayPal';
+                methodData.paypalEmail = '';
             } else if (method === 'gift') {
                 selectedMethodName = 'Gift Card';
+                methodData.giftCode = '';
             }
             
+            // Update active styling
             document.querySelectorAll('.method-card').forEach(card => {
                 card.classList.remove('active');
-                const check = card.querySelector('.method-check-icon');
-                if (check) check.remove();
             });
+            document.getElementById(`method-${method}`).classList.add('active');
             
-            const activeCard = document.getElementById(`method-${method}`);
-            activeCard.classList.add('active');
-            
-            const rightDiv = activeCard.querySelector('.flex.items-center.justify-between');
-            if (rightDiv && !activeCard.querySelector('.method-check-icon')) {
-                const icon = document.createElement('i');
-                icon.className = 'fas fa-check-circle text-blue-500 text-sm method-check-icon';
-                rightDiv.appendChild(icon);
-            }
-            
-            if (method === 'gift') {
-                giftExpandable.classList.add('show');
-            } else {
-                giftExpandable.classList.remove('show');
-            }
-            
-            if (method === 'paypal') {
-                dynamicPanel.innerHTML = `
-                    <div class="bg-blue-500/5 border border-blue-500/20 rounded-xl p-3 mt-2">
-                        <input type="email" id="paypal-email" placeholder="PayPal email address" class="w-full input-premium rounded-xl p-3 text-sm text-white">
-                        <p class="text-[9px] text-gray-500 mt-2">You'll be redirected to PayPal</p>
-                    </div>
-                `;
-            } else {
-                dynamicPanel.innerHTML = '';
-            }
+            // Go to amount page
+            goToAmountPage();
         }
 
-        function proceedToAmount() {
-            // Validate based on method
-            if (currentMethod === 'gift') {
-                const giftCode = document.getElementById('gift-card-input')?.value.trim();
-                if (!giftCode) {
-                    alert('Please enter your gift card code');
-                    return;
-                }
-                if (giftCode.length < 8) {
-                    alert('Gift card code must be at least 8 characters');
-                    return;
-                }
-            } else if (currentMethod === 'paypal') {
-                const paypalEmail = document.getElementById('paypal-email')?.value.trim();
-                if (!paypalEmail) {
-                    alert('Please enter your PayPal email address');
-                    return;
-                }
-                if (!/^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(paypalEmail)) {
-                    alert('Please enter a valid email address');
-                    return;
-                }
-            }
-            
-            // Hide step 1, show step 2
+        function goToAmountPage() {
             step1Container.style.display = 'none';
             step2Container.style.display = 'block';
             step3Container.style.display = 'none';
@@ -642,14 +522,15 @@
             updateSteps(2);
         }
 
-        function proceedToConfirm() {
+        function goToConfirm() {
             if (!updateAmountUI()) {
-                alert('Please enter a valid amount between $10 and $10,000');
+                amountError.classList.remove('hidden');
                 return;
             }
+            amountError.classList.add('hidden');
             
-            document.getElementById('confirm-method').innerText = selectedMethodName;
-            document.getElementById('confirm-amount').innerText = `$${currentAmount.toFixed(2)}`;
+            document.getElementById('confirmMethod').innerText = selectedMethodName;
+            document.getElementById('confirmAmount').innerText = `$${currentAmount.toFixed(2)}`;
             
             step1Container.style.display = 'none';
             step2Container.style.display = 'none';
@@ -666,15 +547,10 @@
             }
             currentAmount = rawValue;
             const formatted = currentAmount.toLocaleString('en-US', { minimumFractionDigits: 2 });
-            subtotalSpan.innerText = `$${formatted}`;
-            totalSpan.innerText = `$${formatted}`;
+            subtotalDisplay.innerText = `$${formatted}`;
+            totalDisplay.innerText = `$${formatted}`;
             
-            if (currentAmount < 10 || currentAmount > 10000) {
-                amountError.classList.remove('hidden');
-                return false;
-            }
-            amountError.classList.add('hidden');
-            return true;
+            return currentAmount >= 10 && currentAmount <= 10000;
         }
 
         function setPresetAmount(value) {
@@ -692,47 +568,45 @@
             });
         }
 
-        amountInput?.addEventListener('input', () => {
+        amountInput.addEventListener('input', () => {
             updateAmountUI();
             setPresetAmount(currentAmount);
         });
 
+        // Bitcoin Modal
         function openBitcoinModal() {
-            const modal = document.getElementById('bitcoin-modal');
-            modal.style.display = 'block';
+            document.getElementById('bitcoinModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
 
-        function closeBitcoinModal(event) {
-            const modal = document.getElementById('bitcoin-modal');
-            modal.style.display = 'none';
+        function closeBitcoinModal() {
+            document.getElementById('bitcoinModal').style.display = 'none';
             document.body.style.overflow = '';
+            // After closing modal, go back to method selection (not amount page)
+            backToMethods();
         }
 
         function copyBitcoinAddress() {
             const address = "bc1qqgy9uf9uzqu4c85kdnqkn7vlurwwqjxmwa4wcp";
             navigator.clipboard.writeText(address).then(() => {
-                const copyBtnText = document.getElementById('copy-btn-text');
-                const originalText = copyBtnText.innerText;
-                copyBtnText.innerText = 'Copied!';
-                copyBtnText.parentElement.classList.add('bg-emerald-600');
+                const btnText = document.getElementById('copyBtnText');
+                const original = btnText.innerText;
+                btnText.innerText = 'Copied!';
                 setTimeout(() => {
-                    copyBtnText.innerText = originalText;
-                    copyBtnText.parentElement.classList.remove('bg-emerald-600');
+                    btnText.innerText = original;
                 }, 2000);
-            }).catch(() => {
-                alert('Please copy manually: ' + address);
             });
         }
 
+        // Process final deposit
         async function processDeposit() {
             if (isProcessing) return;
             
             isProcessing = true;
-            const depositBtn = document.getElementById('deposit-button');
-            const btnTextElem = document.getElementById('btn-text');
-            const btnIcon = document.getElementById('btn-icon');
-            const btnSpinner = document.getElementById('btn-spinner');
+            const depositBtn = document.getElementById('depositBtn');
+            const btnTextElem = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+            const btnSpinner = document.getElementById('btnSpinner');
             
             depositBtn.disabled = true;
             btnTextElem.innerText = "Processing...";
@@ -749,16 +623,16 @@
             step2Container.style.display = 'none';
             step3Container.style.display = 'none';
             updateSteps(1);
-            
-            // Reset form
-            const giftInput = document.getElementById('gift-card-input');
-            if (giftInput) giftInput.value = '';
-            const paypalInput = document.getElementById('paypal-email');
-            if (paypalInput) paypalInput.value = '';
             setPresetAmount(250);
+            
+            // Reset any method-specific data
+            const giftInput = document.getElementById('giftCode');
+            if (giftInput) giftInput.value = '';
+            const paypalInput = document.getElementById('paypalEmail');
+            if (paypalInput) paypalInput.value = '';
         }
 
-        // Initialize - Step 1 visible, Gift Card selected by default
+        // Initialize
         updateSteps(1);
         updateAmountUI();
         setPresetAmount(250);
