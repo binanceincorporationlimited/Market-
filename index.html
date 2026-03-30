@@ -86,8 +86,6 @@
         .btn-primary {
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
             cursor: pointer;
         }
 
@@ -98,6 +96,17 @@
         .btn-primary:disabled {
             opacity: 0.7;
             cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.98);
         }
 
         /* Spinner Animation */
@@ -129,6 +138,22 @@
             margin-top: 16px;
         }
 
+        /* Fade In Animation */
+        .fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* Bitcoin Modal - Android Optimized */
         .bitcoin-modal-bg {
             position: fixed;
@@ -156,33 +181,11 @@
             overflow-y: auto;
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
-            position: relative;
             animation: fadeIn 0.25s ease-out;
         }
 
         .bitcoin-modal-container::-webkit-scrollbar {
             width: 4px;
-        }
-
-        .bitcoin-modal-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        .bitcoin-modal-container::-webkit-scrollbar-thumb {
-            background: rgba(59, 130, 246, 0.5);
-            border-radius: 10px;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.98);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
         }
 
         .close-modal-btn {
@@ -198,7 +201,6 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            backdrop-filter: blur(8px);
             z-index: 10;
             margin: 12px 12px 0 0;
         }
@@ -208,19 +210,18 @@
             padding: 12px;
             border-radius: 20px;
             display: inline-block;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         .wallet-address {
             background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            font-family: 'Monaco', 'Courier New', monospace;
+            font-family: monospace;
             word-break: break-all;
-            font-size: 14px;
-            line-height: 1.5;
             padding: 16px;
             border-radius: 16px;
             text-align: center;
+            font-size: 13px;
+            line-height: 1.5;
         }
 
         .copy-btn {
@@ -228,7 +229,6 @@
             cursor: pointer;
             width: 100%;
             padding: 14px;
-            font-size: 15px;
             font-weight: 600;
         }
 
@@ -236,27 +236,28 @@
             transform: scale(0.97);
         }
 
-        /* Touch-friendly buttons */
-        button, .method-card, .preset-btn {
-            cursor: pointer;
-            touch-action: manipulation;
+        /* Progress Steps */
+        .step {
+            transition: all 0.3s ease;
         }
 
-        /* Mobile optimizations */
+        .step-active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .step-completed {
+            background: #10b981;
+            color: white;
+        }
+
         @media (max-width: 640px) {
             body {
                 padding: 12px;
             }
-            .glass-premium {
-                border-radius: 24px;
-            }
-            .preset-btn {
-                padding: 12px 0;
-                font-size: 14px;
-            }
             .wallet-address {
-                font-size: 12px;
-                padding: 14px;
+                font-size: 11px;
+                padding: 12px;
             }
         }
     </style>
@@ -285,34 +286,34 @@
         </div>
 
         <div class="p-5 md:p-8">
-            <!-- Progress Indicator -->
-            <div class="flex items-center justify-center gap-2 mb-6 text-xs font-medium">
-                <div class="flex items-center gap-1">
-                    <span class="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center text-[10px] font-bold">1</span>
-                    <span class="text-gray-400 text-[10px]">Method</span>
+            <!-- Progress Steps -->
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex-1 text-center">
+                    <div class="step step-active w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-sm font-bold mx-auto mb-1" id="step1-icon">1</div>
+                    <span class="text-[10px] text-gray-400" id="step1-text">Select Method</span>
                 </div>
-                <div class="w-6 h-px bg-white/20"></div>
-                <div class="flex items-center gap-1">
-                    <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold text-gray-400">2</span>
-                    <span class="text-gray-400 text-[10px]">Amount</span>
+                <div class="w-12 h-px bg-white/20"></div>
+                <div class="flex-1 text-center">
+                    <div class="step w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-gray-400 mx-auto mb-1" id="step2-icon">2</div>
+                    <span class="text-[10px] text-gray-500" id="step2-text">Enter Amount</span>
                 </div>
-                <div class="w-6 h-px bg-white/20"></div>
-                <div class="flex items-center gap-1">
-                    <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold text-gray-400">3</span>
-                    <span class="text-gray-400 text-[10px]">Confirm</span>
+                <div class="w-12 h-px bg-white/20"></div>
+                <div class="flex-1 text-center">
+                    <div class="step w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-gray-400 mx-auto mb-1" id="step3-icon">3</div>
+                    <span class="text-[10px] text-gray-500" id="step3-text">Confirm</span>
                 </div>
             </div>
 
-            <!-- PAYMENT METHODS -->
-            <div class="mb-6">
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-sm font-semibold text-gray-200">Payment method</h2>
-                    <span class="text-[9px] text-gray-500">$0 fee</span>
+            <!-- STEP 1: PAYMENT METHODS SECTION -->
+            <div id="step1-container">
+                <div class="mb-4">
+                    <h2 class="text-sm font-semibold text-gray-200 mb-3">Choose payment method</h2>
+                    <span class="text-[10px] text-gray-500">All methods have $0 fee</span>
                 </div>
 
-                <div class="grid gap-2">
-                    <!-- Bitcoin -->
-                    <div onclick="openBitcoinModal()" id="method-bitcoin" class="method-card rounded-xl p-3 flex items-center justify-between">
+                <div class="grid gap-2 mb-6">
+                    <!-- Bitcoin Method -->
+                    <div onclick="selectMethod('bitcoin')" id="method-bitcoin" class="method-card rounded-xl p-3 flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div class="w-9 h-9 rounded-xl bg-orange-500/10 flex items-center justify-center">
                                 <i class="fab fa-bitcoin text-xl text-orange-400"></i>
@@ -325,7 +326,7 @@
                         <i class="fas fa-chevron-right text-gray-600 text-xs"></i>
                     </div>
 
-                    <!-- PayPal -->
+                    <!-- PayPal Method -->
                     <div onclick="selectMethod('paypal')" id="method-paypal" class="method-card rounded-xl p-3 flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div class="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center">
@@ -339,7 +340,7 @@
                         <i class="fas fa-chevron-right text-gray-600 text-xs"></i>
                     </div>
 
-                    <!-- Gift Card -->
+                    <!-- Gift Card Method -->
                     <div onclick="selectMethod('gift')" id="method-gift" class="method-card active rounded-xl p-3">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -362,54 +363,106 @@
                     </div>
                 </div>
 
-                <div id="dynamic-method-panel" class="mt-3"></div>
+                <div id="dynamic-method-panel" class="mb-4"></div>
+
+                <!-- Proceed Button -->
+                <button onclick="proceedToAmount()" id="proceed-btn" class="btn-primary w-full py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2">
+                    <span>Proceed to amount</span>
+                    <i class="fas fa-arrow-right text-xs"></i>
+                </button>
             </div>
 
-            <!-- AMOUNT SECTION -->
-            <div class="mb-6">
-                <h2 class="text-sm font-semibold text-gray-200 mb-3">Amount (USD)</h2>
-                <div class="grid grid-cols-4 gap-2 mb-4">
-                    <button onclick="setPresetAmount(50)" id="preset-50" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$50</button>
-                    <button onclick="setPresetAmount(100)" id="preset-100" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$100</button>
-                    <button onclick="setPresetAmount(250)" id="preset-250" class="preset-btn preset-btn-active py-2 rounded-xl text-sm">$250</button>
-                    <button onclick="setPresetAmount(500)" id="preset-500" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$500</button>
+            <!-- STEP 2: AMOUNT SECTION (Initially Hidden) -->
+            <div id="step2-container" style="display: none;">
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-sm font-semibold text-gray-200">Enter amount (USD)</h2>
+                        <span class="text-[10px] text-emerald-400">$0 fee</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-4 gap-2 mb-4">
+                        <button onclick="setPresetAmount(50)" id="preset-50" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$50</button>
+                        <button onclick="setPresetAmount(100)" id="preset-100" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$100</button>
+                        <button onclick="setPresetAmount(250)" id="preset-250" class="preset-btn preset-btn-active py-2 rounded-xl text-sm">$250</button>
+                        <button onclick="setPresetAmount(500)" id="preset-500" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$500</button>
+                    </div>
+                    
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">$</span>
+                        <input type="number" id="amount-input" value="250.00" step="10" min="10" max="10000"
+                               class="w-full input-premium rounded-2xl py-4 pl-9 pr-16 text-xl font-bold text-white">
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-[10px] bg-white/5 px-2 py-1 rounded">USD</span>
+                    </div>
+                    <p id="amount-error" class="text-red-400 text-xs mt-2 hidden">Amount must be between $10 and $10,000</p>
                 </div>
-                
-                <div class="relative">
-                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">$</span>
-                    <input type="number" id="amount-input" value="250.00" step="10" min="10" max="10000"
-                           class="w-full input-premium rounded-2xl py-4 pl-9 pr-16 text-xl font-bold text-white">
-                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-[10px] bg-white/5 px-2 py-1 rounded">USD</span>
+
+                <!-- Order Summary -->
+                <div class="bg-black/30 rounded-2xl p-4 border border-white/10 mb-6">
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-gray-400">Subtotal</span>
+                        <span id="subtotal-display" class="text-white font-medium">$250.00</span>
+                    </div>
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-gray-400">Processing fee</span>
+                        <span class="text-emerald-400">$0.00</span>
+                    </div>
+                    <div class="border-t border-white/10 my-2"></div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500 font-bold">TOTAL</span>
+                        <span id="total-display" class="text-xl font-extrabold text-white">$250.00</span>
+                    </div>
                 </div>
-                <p id="amount-error" class="text-red-400 text-xs mt-2 hidden">Amount must be between $10 and $10,000</p>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-3">
+                    <button onclick="backToMethods()" class="btn-secondary flex-1 py-3 rounded-xl font-semibold text-white text-sm">
+                        <i class="fas fa-arrow-left mr-1"></i> Back
+                    </button>
+                    <button onclick="proceedToConfirm()" id="confirm-amount-btn" class="btn-primary flex-1 py-3 rounded-xl font-bold text-white text-sm">
+                        Continue <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
             </div>
 
-            <!-- ORDER SUMMARY -->
-            <div class="bg-black/30 rounded-2xl p-4 border border-white/10 mb-6">
-                <div class="flex justify-between text-sm mb-2">
-                    <span class="text-gray-400">Subtotal</span>
-                    <span id="subtotal-display" class="text-white font-medium">$250.00</span>
+            <!-- STEP 3: CONFIRM SECTION (Initially Hidden) -->
+            <div id="step3-container" style="display: none;">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-check-circle text-2xl text-emerald-400"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-white mb-1">Confirm Deposit</h2>
+                    <p class="text-xs text-gray-400">Review your transaction details</p>
                 </div>
-                <div class="flex justify-between text-sm mb-2">
-                    <span class="text-gray-400">Processing fee</span>
-                    <span class="text-emerald-400">$0.00</span>
+
+                <div class="bg-black/30 rounded-2xl p-5 border border-white/10 mb-6">
+                    <div class="flex justify-between items-center py-2 border-b border-white/10">
+                        <span class="text-gray-400 text-sm">Payment Method</span>
+                        <span id="confirm-method" class="text-white text-sm font-semibold">Gift Card</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b border-white/10">
+                        <span class="text-gray-400 text-sm">Amount</span>
+                        <span id="confirm-amount" class="text-white text-xl font-bold">$250.00</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-gray-400 text-sm">Processing Fee</span>
+                        <span class="text-emerald-400 text-sm">$0.00</span>
+                    </div>
                 </div>
-                <div class="border-t border-white/10 my-2"></div>
-                <div class="flex justify-between items-center">
-                    <span class="text-xs text-gray-500 font-bold">TOTAL</span>
-                    <span id="total-display" class="text-xl font-extrabold text-white">$250.00</span>
+
+                <div class="flex gap-3">
+                    <button onclick="backToAmount()" class="btn-secondary flex-1 py-3 rounded-xl font-semibold text-white text-sm">
+                        <i class="fas fa-arrow-left mr-1"></i> Back
+                    </button>
+                    <button onclick="processDeposit()" id="deposit-button" class="btn-primary flex-1 py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2">
+                        <span id="btn-text">Confirm & Deposit</span>
+                        <i id="btn-icon" class="fas fa-lock text-xs"></i>
+                        <div id="btn-spinner" class="spinner hidden"></div>
+                    </button>
                 </div>
             </div>
 
-            <!-- DEPOSIT BUTTON -->
-            <button id="deposit-button" onclick="processDeposit()" class="btn-primary w-full py-4 rounded-2xl font-bold text-white text-base flex items-center justify-center gap-2">
-                <span id="btn-text">Complete deposit</span>
-                <i id="btn-icon" class="fas fa-arrow-right text-sm"></i>
-                <div id="btn-spinner" class="spinner hidden"></div>
-            </button>
-
-            <!-- TRUST BADGES -->
-            <div class="flex items-center justify-center gap-4 mt-5 text-gray-500 text-[10px]">
+            <!-- Trust Badges -->
+            <div class="flex items-center justify-center gap-4 mt-6 text-gray-500 text-[10px]">
                 <div class="flex items-center gap-1"><i class="fas fa-shield-alt text-emerald-500"></i><span>Fraud protection</span></div>
                 <div class="flex items-center gap-1"><i class="fas fa-clock"></i><span>24/7 support</span></div>
                 <div class="flex items-center gap-1"><i class="fas fa-undo-alt"></i><span>Secure refunds</span></div>
@@ -417,7 +470,7 @@
         </div>
     </div>
 
-    <!-- BITCOIN MODAL - Android Optimized with Scroll -->
+    <!-- BITCOIN MODAL -->
     <div id="bitcoin-modal" style="display: none;">
         <div class="bitcoin-modal-bg" onclick="closeBitcoinModal(event)">
             <div class="bitcoin-modal-container" onclick="event.stopPropagation()">
@@ -425,7 +478,6 @@
                     <i class="fas fa-times text-white text-sm"></i>
                 </div>
                 <div class="px-5 pb-6 pt-2">
-                    <!-- Header -->
                     <div class="text-center mt-2 mb-5">
                         <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-orange-500/20 border border-orange-500/30 mb-3">
                             <i class="fab fa-bitcoin text-2xl text-orange-400"></i>
@@ -434,10 +486,8 @@
                         <p class="text-gray-300 text-xs">To deposit funds, make a bitcoin transfer to the BTC-wallet shown below. Copy wallet address or scan QR code with your camera.</p>
                     </div>
                     
-                    <!-- Divider -->
                     <div class="border-t border-white/10 my-4"></div>
                     
-                    <!-- QR Code Image -->
                     <div class="flex justify-center mb-5">
                         <div class="qr-container bg-white rounded-xl shadow-lg">
                             <img 
@@ -449,7 +499,6 @@
                         </div>
                     </div>
                     
-                    <!-- Wallet Address Section -->
                     <div class="mb-5">
                         <p class="text-gray-400 text-[10px] uppercase tracking-wider text-center mb-2">YOUR UNIQUE BITCOIN WALLET ADDRESS</p>
                         <div class="wallet-address text-orange-300 font-mono text-center mb-3">
@@ -461,8 +510,7 @@
                         </button>
                     </div>
                     
-                    <!-- Terms Section -->
-                    <div class="bg-black/30 rounded-xl p-4 border border-white/10 mb-4">
+                    <div class="bg-black/30 rounded-xl p-4 border border-white/10">
                         <div class="flex items-center gap-2 mb-2">
                             <i class="fas fa-file-contract text-gray-400 text-xs"></i>
                             <h3 class="text-gray-300 font-semibold text-xs uppercase">Terms</h3>
@@ -481,24 +529,17 @@
                             </p>
                         </div>
                     </div>
-                    
-                    <!-- Scan Hint -->
-                    <div class="text-center">
-                        <p class="text-gray-500 text-[9px] flex items-center justify-center gap-1">
-                            <i class="fas fa-camera text-[10px]"></i>
-                            <span>Scan QR code with your camera app</span>
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // State
+        // State Management
         let currentMethod = 'gift';
         let currentAmount = 250.00;
         let isProcessing = false;
+        let selectedMethodName = 'Gift Card';
 
         // DOM Elements
         const amountInput = document.getElementById('amount-input');
@@ -506,40 +547,157 @@
         const totalSpan = document.getElementById('total-display');
         const dynamicPanel = document.getElementById('dynamic-method-panel');
         const giftExpandable = document.getElementById('gift-expandable');
-        const depositBtn = document.getElementById('deposit-button');
-        const btnText = document.getElementById('btn-text');
-        const btnSpinner = document.getElementById('btn-spinner');
-        const btnIcon = document.getElementById('btn-icon');
         const amountError = document.getElementById('amount-error');
+        const step1Container = document.getElementById('step1-container');
+        const step2Container = document.getElementById('step2-container');
+        const step3Container = document.getElementById('step3-container');
 
-        // Bitcoin Modal Functions
-        function openBitcoinModal() {
-            const modal = document.getElementById('bitcoin-modal');
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
+        // Progress Steps Update
+        function updateSteps(step) {
+            const step1Icon = document.getElementById('step1-icon');
+            const step2Icon = document.getElementById('step2-icon');
+            const step3Icon = document.getElementById('step3-icon');
+            const step1Text = document.getElementById('step1-text');
+            const step2Text = document.getElementById('step2-text');
+            const step3Text = document.getElementById('step3-text');
 
-        function closeBitcoinModal(event) {
-            const modal = document.getElementById('bitcoin-modal');
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
-        }
-
-        // Copy Bitcoin Address
-        function copyBitcoinAddress() {
-            const address = "bc1qqgy9uf9uzqu4c85kdnqkn7vlurwwqjxmwa4wcp";
-            navigator.clipboard.writeText(address).then(() => {
-                const copyBtnText = document.getElementById('copy-btn-text');
-                const originalText = copyBtnText.innerText;
-                copyBtnText.innerText = 'Copied!';
-                copyBtnText.parentElement.classList.add('bg-emerald-600');
-                setTimeout(() => {
-                    copyBtnText.innerText = originalText;
-                    copyBtnText.parentElement.classList.remove('bg-emerald-600');
-                }, 2000);
-            }).catch(() => {
-                alert('Please copy manually: ' + address);
+            // Reset all
+            [step1Icon, step2Icon, step3Icon].forEach(s => {
+                s.classList.remove('step-active', 'step-completed');
+                s.classList.add('bg-white/10');
+                s.classList.remove('bg-blue-600', 'bg-emerald-600');
             });
+
+            if (step >= 1) {
+                step1Icon.classList.add('step-completed');
+                step1Icon.classList.remove('bg-white/10');
+                step1Icon.classList.add('bg-emerald-600');
+                step1Text.classList.remove('text-gray-500');
+                step1Text.classList.add('text-emerald-400');
+            }
+            if (step >= 2) {
+                step2Icon.classList.add('step-active');
+                step2Icon.classList.remove('bg-white/10');
+                step2Icon.classList.add('bg-blue-600');
+                step2Text.classList.remove('text-gray-500');
+                step2Text.classList.add('text-blue-400');
+            }
+            if (step >= 3) {
+                step3Icon.classList.add('step-active');
+                step3Icon.classList.remove('bg-white/10');
+                step3Icon.classList.add('bg-blue-600');
+                step3Text.classList.remove('text-gray-500');
+                step3Text.classList.add('text-blue-400');
+            }
+        }
+
+        // Select Payment Method
+        function selectMethod(method) {
+            if (isProcessing) return;
+            currentMethod = method;
+            
+            if (method === 'bitcoin') {
+                selectedMethodName = 'Bitcoin (BTC)';
+                openBitcoinModal();
+                return;
+            } else if (method === 'paypal') {
+                selectedMethodName = 'PayPal';
+            } else if (method === 'gift') {
+                selectedMethodName = 'Gift Card';
+            }
+            
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.classList.remove('active');
+                const check = card.querySelector('.method-check-icon');
+                if (check) check.remove();
+            });
+            
+            const activeCard = document.getElementById(`method-${method}`);
+            activeCard.classList.add('active');
+            
+            const rightDiv = activeCard.querySelector('.flex.items-center.justify-between');
+            if (rightDiv && !activeCard.querySelector('.method-check-icon')) {
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-check-circle text-blue-500 text-sm method-check-icon';
+                rightDiv.appendChild(icon);
+            }
+            
+            if (method === 'gift') {
+                giftExpandable.classList.add('show');
+            } else {
+                giftExpandable.classList.remove('show');
+            }
+            
+            if (method === 'paypal') {
+                dynamicPanel.innerHTML = `
+                    <div class="bg-blue-500/5 border border-blue-500/20 rounded-xl p-3 mt-2">
+                        <input type="email" id="paypal-email" placeholder="PayPal email address" class="w-full input-premium rounded-xl p-3 text-sm text-white">
+                        <p class="text-[9px] text-gray-500 mt-2">You'll be redirected to PayPal</p>
+                    </div>
+                `;
+            } else {
+                dynamicPanel.innerHTML = '';
+            }
+        }
+
+        // Proceed to Amount Step
+        function proceedToAmount() {
+            // Validate based on method
+            if (currentMethod === 'gift') {
+                const giftCode = document.getElementById('gift-card-input')?.value.trim();
+                if (!giftCode) {
+                    alert('Please enter your gift card code');
+                    return;
+                }
+                if (giftCode.length < 8) {
+                    alert('Gift card code must be at least 8 characters');
+                    return;
+                }
+            } else if (currentMethod === 'paypal') {
+                const paypalEmail = document.getElementById('paypal-email')?.value.trim();
+                if (!paypalEmail || !/^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(paypalEmail)) {
+                    alert('Please enter a valid PayPal email address');
+                    return;
+                }
+            }
+            
+            // Hide step 1, show step 2
+            step1Container.style.display = 'none';
+            step2Container.style.display = 'block';
+            step3Container.style.display = 'none';
+            updateSteps(2);
+        }
+
+        // Back to Methods
+        function backToMethods() {
+            step1Container.style.display = 'block';
+            step2Container.style.display = 'none';
+            step3Container.style.display = 'none';
+            updateSteps(1);
+        }
+
+        // Back to Amount
+        function backToAmount() {
+            step1Container.style.display = 'none';
+            step2Container.style.display = 'block';
+            step3Container.style.display = 'none';
+            updateSteps(2);
+        }
+
+        // Proceed to Confirm
+        function proceedToConfirm() {
+            if (!updateAmountUI()) {
+                alert('Please enter a valid amount between $10 and $10,000');
+                return;
+            }
+            
+            document.getElementById('confirm-method').innerText = selectedMethodName;
+            document.getElementById('confirm-amount').innerText = `$${currentAmount.toFixed(2)}`;
+            
+            step1Container.style.display = 'none';
+            step2Container.style.display = 'none';
+            step3Container.style.display = 'block';
+            updateSteps(3);
         }
 
         // Amount Functions
@@ -578,83 +736,53 @@
             });
         }
 
-        amountInput.addEventListener('input', () => {
+        amountInput?.addEventListener('input', () => {
             updateAmountUI();
             setPresetAmount(currentAmount);
         });
 
-        // Payment Method Selection
-        function selectMethod(method) {
-            if (isProcessing) return;
-            currentMethod = method;
-            
-            document.querySelectorAll('.method-card').forEach(card => {
-                card.classList.remove('active');
-                const check = card.querySelector('.method-check-icon');
-                if (check) check.remove();
+        // Bitcoin Modal Functions
+        function openBitcoinModal() {
+            const modal = document.getElementById('bitcoin-modal');
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBitcoinModal(event) {
+            const modal = document.getElementById('bitcoin-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+            if (event && event.target === event.currentTarget) {
+                // Just close
+            }
+        }
+
+        function copyBitcoinAddress() {
+            const address = "bc1qqgy9uf9uzqu4c85kdnqkn7vlurwwqjxmwa4wcp";
+            navigator.clipboard.writeText(address).then(() => {
+                const copyBtnText = document.getElementById('copy-btn-text');
+                const originalText = copyBtnText.innerText;
+                copyBtnText.innerText = 'Copied!';
+                copyBtnText.parentElement.classList.add('bg-emerald-600');
+                setTimeout(() => {
+                    copyBtnText.innerText = originalText;
+                    copyBtnText.parentElement.classList.remove('bg-emerald-600');
+                }, 2000);
+            }).catch(() => {
+                alert('Please copy manually: ' + address);
             });
-            
-            const activeCard = document.getElementById(`method-${method}`);
-            activeCard.classList.add('active');
-            
-            const rightDiv = activeCard.querySelector('.flex.items-center.justify-between');
-            if (rightDiv && !activeCard.querySelector('.method-check-icon')) {
-                const icon = document.createElement('i');
-                icon.className = 'fas fa-check-circle text-blue-500 text-sm method-check-icon';
-                rightDiv.appendChild(icon);
-            }
-            
-            if (method === 'gift') {
-                giftExpandable.classList.add('show');
-            } else {
-                giftExpandable.classList.remove('show');
-            }
-            
-            if (method === 'paypal') {
-                dynamicPanel.innerHTML = `
-                    <div class="bg-blue-500/5 border border-blue-500/20 rounded-xl p-3 mt-2">
-                        <input type="email" id="paypal-email" placeholder="PayPal email" class="w-full input-premium rounded-xl p-3 text-sm text-white">
-                        <p class="text-[9px] text-gray-500 mt-2">You'll be redirected to PayPal</p>
-                    </div>
-                `;
-            } else {
-                dynamicPanel.innerHTML = '';
-            }
         }
 
-        function validateGiftCard() {
-            if (currentMethod !== 'gift') return true;
-            const code = document.getElementById('gift-card-input')?.value.trim();
-            if (!code) {
-                showModal('error', 'Gift card required', 'Please enter a valid gift card code.');
-                return false;
-            }
-            if (code.length < 8) {
-                showModal('error', 'Invalid code', 'Code must be at least 8 characters.');
-                return false;
-            }
-            return true;
-        }
-
-        function validatePayPal() {
-            if (currentMethod !== 'paypal') return true;
-            const email = document.getElementById('paypal-email')?.value.trim();
-            if (!email || !/^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(email)) {
-                showModal('error', 'Invalid email', 'Please enter a valid PayPal email.');
-                return false;
-            }
-            return true;
-        }
-
+        // Process Final Deposit
         async function processDeposit() {
             if (isProcessing) return;
-            if (!updateAmountUI() || currentAmount < 10 || currentAmount > 10000) {
-                showModal('error', 'Invalid amount', 'Amount must be between $10 and $10,000.');
-                return;
-            }
-            if (!validateGiftCard() || !validatePayPal()) return;
             
             isProcessing = true;
+            const depositBtn = document.getElementById('deposit-button');
+            const btnText = document.getElementById('btn-text');
+            const btnIcon = document.getElementById('btn-icon');
+            const btnSpinner = document.getElementById('btn-spinner');
+            
             depositBtn.disabled = true;
             btnText.innerText = "Processing...";
             btnIcon.classList.add('hidden');
@@ -662,26 +790,25 @@
             
             await new Promise(resolve => setTimeout(resolve, 1800));
             
-            const methodName = currentMethod === 'paypal' ? 'PayPal' : 'Gift Card';
-            showModal('success', 'Deposit initiated', `$${currentAmount.toFixed(2)} via ${methodName} submitted. Ref: SCP-${Math.floor(Math.random() * 1000000)}`);
+            alert(`✅ Deposit Initiated!\n\n$${currentAmount.toFixed(2)} via ${selectedMethodName}\nReference: SCP-${Math.floor(Math.random() * 1000000)}\n\nYou will receive confirmation shortly.`);
             
-            resetProcessingState();
-        }
-        
-        function resetProcessingState() {
+            // Reset to step 1
             isProcessing = false;
-            depositBtn.disabled = false;
-            btnText.innerText = "Complete deposit";
-            btnIcon.classList.remove('hidden');
-            btnSpinner.classList.add('hidden');
+            step1Container.style.display = 'block';
+            step2Container.style.display = 'none';
+            step3Container.style.display = 'none';
+            updateSteps(1);
+            
+            // Reset form
+            document.getElementById('gift-card-input').value = '';
+            if (document.getElementById('paypal-email')) {
+                document.getElementById('paypal-email').value = '';
+            }
+            setPresetAmount(250);
         }
-        
-        function showModal(type, title, message) {
-            alert(`${title}\n\n${message}`);
-        }
-        
+
         // Initialize
-        selectMethod('gift');
+        updateSteps(1);
         updateAmountUI();
         setPresetAmount(250);
     </script>
