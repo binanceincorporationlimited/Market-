@@ -117,7 +117,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Slide-down animation for conditional fields */
+        /* Expandable sections */
         .expandable-section {
             max-height: 0;
             overflow: hidden;
@@ -129,6 +129,24 @@
             max-height: 180px;
             opacity: 1;
             margin-top: 16px;
+        }
+
+        /* Image Modal */
+        .image-modal {
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(16px);
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         /* Custom scrollbar */
@@ -144,12 +162,6 @@
         ::-webkit-scrollbar-thumb {
             background: rgba(59, 130, 246, 0.5);
             border-radius: 10px;
-        }
-
-        /* Modal backdrop */
-        .modal-backdrop {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(12px);
         }
     </style>
 </head>
@@ -203,8 +215,8 @@
                 </div>
 
                 <div class="grid gap-3">
-                    <!-- Bitcoin Method -->
-                    <div onclick="selectMethod('bitcoin')" id="method-bitcoin" class="method-card rounded-xl p-4 flex items-center justify-between group">
+                    <!-- Bitcoin Method - Opens Image Modal -->
+                    <div onclick="openBitcoinModal()" id="method-bitcoin" class="method-card rounded-xl p-4 flex items-center justify-between group cursor-pointer">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
                                 <i class="fab fa-bitcoin text-2xl text-orange-400"></i>
@@ -218,7 +230,7 @@
                     </div>
 
                     <!-- PayPal Method -->
-                    <div onclick="selectMethod('paypal')" id="method-paypal" class="method-card rounded-xl p-4 flex items-center justify-between group">
+                    <div onclick="selectMethod('paypal')" id="method-paypal" class="method-card rounded-xl p-4 flex items-center justify-between group cursor-pointer">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
                                 <i class="fab fa-paypal text-2xl text-blue-400"></i>
@@ -231,7 +243,7 @@
                         <i class="fas fa-chevron-right text-gray-600 text-xs"></i>
                     </div>
 
-                    <!-- Gift Card Method (Default Active) -->
+                    <!-- Gift Card Method -->
                     <div onclick="selectMethod('gift')" id="method-gift" class="method-card active rounded-xl p-4">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-4">
@@ -251,14 +263,13 @@
                             <div class="relative mt-1">
                                 <input type="text" id="gift-card-input" placeholder="Gift card code (e.g., 6011-XXXX-XXXX-XXXX)" 
                                        class="w-full input-premium rounded-xl p-3.5 text-sm text-white placeholder:text-gray-600 font-mono tracking-wide">
-                                <div id="gift-validation-icon" class="absolute right-4 top-1/2 -translate-y-1/2 hidden"></div>
                             </div>
                             <p class="text-[10px] text-gray-500 mt-2 flex items-center gap-1"><i class="fas fa-info-circle"></i> Accepted: Vanilla, OneVanilla, Mastercard Gift</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Dynamic Method-Specific Fields (Bitcoin/PayPal appear here) -->
+                <!-- Dynamic Method-Specific Fields (PayPal only) -->
                 <div id="dynamic-method-panel" class="mt-4"></div>
             </div>
 
@@ -315,19 +326,36 @@
         </div>
     </div>
 
-    <!-- Custom Modal (Production Style) -->
-    <div id="notification-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden transition-all duration-300" style="background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);">
-        <div class="bg-[#0f1119] border border-white/20 rounded-2xl max-w-sm w-full mx-4 p-6 text-center transform transition-all">
-            <div id="modal-icon" class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4"></div>
-            <h3 id="modal-title" class="text-xl font-bold text-white mb-2"></h3>
-            <p id="modal-message" class="text-gray-300 text-sm mb-6"></p>
-            <button onclick="closeModal()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-white font-semibold text-sm w-full">Continue</button>
+    <!-- BITCOIN IMAGE MODAL -->
+    <div id="bitcoin-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(16px);">
+        <div class="relative max-w-3xl w-full image-modal">
+            <!-- Close Button -->
+            <button onclick="closeBitcoinModal()" class="absolute -top-12 right-0 text-white/70 hover:text-white text-2xl transition-all">
+                <i class="fas fa-times-circle"></i>
+            </button>
+            
+            <!-- Image Container -->
+            <div class="rounded-2xl overflow-hidden shadow-2xl border border-white/20">
+                <img 
+                    src="https://images.unsplash.com/photo-1774867129097-db3b2d3068fb?q=80&w=762&auto=format&fit=crop"
+                    alt="Bitcoin Deposit Instructions"
+                    class="w-full h-auto object-cover"
+                    onerror="this.onerror=null; this.src='https://placehold.co/800x1000/1a1a2e/ff8c00?text=Bitcoin+Deposit+Instructions'"
+                >
+            </div>
+            
+            <!-- Caption/Info Bar -->
+            <div class="mt-4 text-center text-white/60 text-xs flex items-center justify-center gap-4">
+                <span><i class="fab fa-bitcoin text-orange-400 mr-1"></i> Bitcoin Network</span>
+                <span><i class="fas fa-bolt text-yellow-400 mr-1"></i> Instant Processing</span>
+                <span><i class="fas fa-shield-alt text-green-400 mr-1"></i> Secure Transfer</span>
+            </div>
         </div>
     </div>
 
     <script>
         // ---------- STATE MANAGEMENT ----------
-        let currentMethod = 'gift';      // gift, bitcoin, paypal
+        let currentMethod = 'gift';
         let currentAmount = 250.00;
         let isProcessing = false;
 
@@ -343,6 +371,35 @@
         const btnIcon = document.getElementById('btn-icon');
         const amountError = document.getElementById('amount-error');
 
+        // Bitcoin Modal Functions
+        function openBitcoinModal() {
+            const modal = document.getElementById('bitcoin-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBitcoinModal() {
+            const modal = document.getElementById('bitcoin-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeBitcoinModal();
+            }
+        });
+
+        // Close modal on backdrop click
+        document.getElementById('bitcoin-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBitcoinModal();
+            }
+        });
+
         // Helper: Update all amount displays + validation
         function updateAmountUI() {
             let rawValue = parseFloat(amountInput.value);
@@ -356,7 +413,6 @@
             subtotalSpan.innerText = `$${formatted}`;
             totalSpan.innerText = `$${formatted}`;
             
-            // Validation visual
             if (currentAmount < 10 || currentAmount > 10000) {
                 amountError.classList.remove('hidden');
                 return false;
@@ -370,7 +426,6 @@
         function setPresetAmount(value) {
             amountInput.value = value.toFixed(2);
             updateAmountUI();
-            // Update active style on preset buttons
             const presets = [50, 100, 250, 500];
             presets.forEach(p => {
                 const btn = document.getElementById(`preset-${p}`);
@@ -386,18 +441,16 @@
 
         amountInput.addEventListener('input', () => {
             updateAmountUI();
-            setPresetAmount(currentAmount); // re-sync preset highlights
+            setPresetAmount(currentAmount);
         });
 
-        // Payment method selection core
+        // Payment method selection (PayPal and Gift Card)
         function selectMethod(method) {
             if (isProcessing) return;
             currentMethod = method;
             
-            // Reset all method cards active state
             document.querySelectorAll('.method-card').forEach(card => {
                 card.classList.remove('active');
-                // remove any existing check icon inside the flex area (if any)
                 const existingCheck = card.querySelector('.method-check-icon');
                 if (existingCheck) existingCheck.remove();
             });
@@ -405,14 +458,11 @@
             const activeCard = document.getElementById(`method-${method}`);
             activeCard.classList.add('active');
             
-            // Add checkmark to active method (right side)
             const rightContainer = activeCard.querySelector('.flex.items-center.justify-between');
             if (rightContainer && !activeCard.querySelector('.method-check-icon')) {
                 const checkIcon = document.createElement('i');
                 checkIcon.className = 'fas fa-check-circle text-blue-500 text-sm method-check-icon';
                 rightContainer.appendChild(checkIcon);
-            } else if (activeCard.querySelector('.method-check-icon')) {
-                activeCard.querySelector('.method-check-icon').style.display = 'inline-block';
             }
             
             // Handle Gift Card expandable
@@ -422,22 +472,8 @@
                 giftExpandable.classList.remove('show');
             }
             
-            // Render dynamic fields for Bitcoin / PayPal
-            if (method === 'bitcoin') {
-                dynamicPanel.innerHTML = `
-                    <div class="bg-gradient-to-r from-orange-500/5 to-transparent border border-orange-500/20 rounded-xl p-4 mt-1">
-                        <div class="flex items-center gap-3 mb-2">
-                            <i class="fab fa-bitcoin text-orange-400 text-xl"></i>
-                            <span class="text-xs font-semibold text-gray-300">BTC Deposit Address</span>
-                        </div>
-                        <div class="flex items-center justify-between gap-2 bg-black/40 rounded-xl p-3 border border-white/10">
-                            <code class="text-xs text-orange-200 break-all font-mono">bc1qxy2kg9z8g0k8g0k8g0k8g0k8g0k8g0k8g0k8g</code>
-                            <button onclick="copyToClipboard('bc1qxy2kg9z8g0k8g0k8g0k8g0k8g0k8g0k8g0k8g')" class="text-blue-400 hover:text-blue-300 text-sm px-2"><i class="far fa-copy"></i></button>
-                        </div>
-                        <p class="text-[10px] text-gray-500 mt-2">Minimum 0.001 BTC • Confirmation within 10-30 mins</p>
-                    </div>
-                `;
-            } else if (method === 'paypal') {
+            // Render PayPal fields
+            if (method === 'paypal') {
                 dynamicPanel.innerHTML = `
                     <div class="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
                         <label class="text-xs text-gray-400 block mb-2">PayPal email address</label>
@@ -446,17 +482,11 @@
                     </div>
                 `;
             } else {
-                dynamicPanel.innerHTML = ''; // Gift card: no extra dynamic panel needed
+                dynamicPanel.innerHTML = '';
             }
         }
 
-        // Copy helper
-        window.copyToClipboard = (text) => {
-            navigator.clipboard.writeText(text);
-            showModal('success', 'Copied!', 'Bitcoin address copied to clipboard.');
-        };
-
-        // Gift card validation (basic)
+        // Gift card validation
         function validateGiftCard() {
             if (currentMethod !== 'gift') return true;
             const giftInput = document.getElementById('gift-card-input');
@@ -487,57 +517,29 @@
             return true;
         }
 
-        // Main deposit process (Production mock)
+        // Main deposit process
         async function processDeposit() {
             if (isProcessing) return;
             
-            // Validate amount
             if (!updateAmountUI() || currentAmount < 10 || currentAmount > 10000) {
                 showModal('error', 'Invalid amount', 'Amount must be between $10 and $10,000 USD.');
                 return;
             }
             
-            // Method-specific validations
             if (!validateGiftCard()) return;
             if (!validatePayPal()) return;
             
-            // Start processing UI
             isProcessing = true;
             depositBtn.disabled = true;
             btnText.innerText = "Processing secure transaction";
             btnIcon.classList.add('hidden');
             btnSpinner.classList.remove('hidden');
             
-            // Simulate API call (1.8 sec realistic delay)
-            try {
-                await new Promise(resolve => setTimeout(resolve, 1800));
-                
-                // Production mock: show success with details
-                let methodName = '';
-                if (currentMethod === 'bitcoin') methodName = 'Bitcoin';
-                else if (currentMethod === 'paypal') methodName = 'PayPal';
-                else methodName = 'Gift Card';
-                
-                showModal('success', 'Deposit initiated', `$${currentAmount.toFixed(2)} via ${methodName} has been submitted. Reference ID: SCP-${Math.floor(Math.random() * 1000000)}. You'll receive confirmation within minutes.`);
-                
-                // Reset UI after modal close will happen via reload or reset? We'll reset state but keep form.
-                resetFormAfterSuccess();
-            } catch (err) {
-                showModal('error', 'Transaction failed', 'Network error. Please try again.');
-                resetProcessingState();
-            }
-        }
-        
-        function resetFormAfterSuccess() {
-            // optionally reset fields but keep the form ready for new deposit
-            if (currentMethod === 'gift') {
-                const giftInput = document.getElementById('gift-card-input');
-                if (giftInput) giftInput.value = '';
-            }
-            if (currentMethod === 'paypal') {
-                const paypalEmail = document.getElementById('paypal-email');
-                if (paypalEmail) paypalEmail.value = '';
-            }
+            await new Promise(resolve => setTimeout(resolve, 1800));
+            
+            let methodName = currentMethod === 'paypal' ? 'PayPal' : 'Gift Card';
+            showModal('success', 'Deposit initiated', `$${currentAmount.toFixed(2)} via ${methodName} has been submitted. Reference ID: SCP-${Math.floor(Math.random() * 1000000)}.`);
+            
             resetProcessingState();
         }
         
@@ -552,6 +554,10 @@
         // Modal System
         function showModal(type, title, message) {
             const modal = document.getElementById('notification-modal');
+            if (!modal) {
+                alert(`${title}: ${message}`);
+                return;
+            }
             const modalIcon = document.getElementById('modal-icon');
             const modalTitle = document.getElementById('modal-title');
             const modalMsg = document.getElementById('modal-message');
@@ -572,30 +578,27 @@
         
         window.closeModal = function() {
             const modal = document.getElementById('notification-modal');
-            modal.classList.add('hidden');
-            if (!isProcessing) {
-                // optional: if success, we keep state.
-            }
+            if (modal) modal.classList.add('hidden');
         };
         
-        // Initialize: set default active method + gift check, preset highlight
+        // Initialize
         function init() {
             selectMethod('gift');
             updateAmountUI();
             setPresetAmount(250);
-            // Remove any stray check icons duplication fix: ensure gift has check
-            const giftCardMethod = document.getElementById('method-gift');
-            if (!giftCardMethod.querySelector('.method-check-icon')) {
-                const rightDiv = giftCardMethod.querySelector('.flex.items-center.justify-between');
-                if (rightDiv) {
-                    const icon = document.createElement('i');
-                    icon.className = 'fas fa-check-circle text-blue-500 text-sm method-check-icon';
-                    rightDiv.appendChild(icon);
-                }
-            }
         }
         
         init();
     </script>
+
+    <!-- Notification Modal -->
+    <div id="notification-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden transition-all duration-300" style="background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);">
+        <div class="bg-[#0f1119] border border-white/20 rounded-2xl max-w-sm w-full mx-4 p-6 text-center">
+            <div id="modal-icon" class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4"></div>
+            <h3 id="modal-title" class="text-xl font-bold text-white mb-2"></h3>
+            <p id="modal-message" class="text-gray-300 text-sm mb-6"></p>
+            <button onclick="closeModal()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-white font-semibold text-sm w-full">Continue</button>
+        </div>
+    </div>
 </body>
 </html>
