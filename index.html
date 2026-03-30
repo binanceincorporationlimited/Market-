@@ -51,12 +51,19 @@
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
         }
 
-        /* Input Premium */
+        /* Input Premium - FIXED for custom typing */
         .input-premium {
             background: #ffffff;
             border: 2px solid #e2e8f0;
             transition: all 0.2s ease;
             font-weight: 500;
+            -moz-appearance: textfield;
+        }
+        
+        .input-premium::-webkit-outer-spin-button,
+        .input-premium::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
         .input-premium:focus {
@@ -218,15 +225,6 @@
             animation: fadeIn 0.3s ease-out;
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -284,9 +282,8 @@
                 </div>
             </div>
             
-            <!-- Three Certification Badges Row (PCI DSS, 256-bit SSL, Enterprise Grade) -->
+            <!-- Three Certification Badges Row -->
             <div class="grid grid-cols-3 gap-3">
-                <!-- PCI DSS Level 1 Badge -->
                 <div class="header-cert-badge rounded-xl p-3 text-center">
                     <div class="flex items-center justify-center mb-1">
                         <i class="fas fa-credit-card text-blue-500 text-lg"></i>
@@ -296,7 +293,6 @@
                     <div class="text-[9px] text-gray-500 mt-0.5">Certified</div>
                 </div>
                 
-                <!-- 256-bit SSL Badge -->
                 <div class="header-cert-badge rounded-xl p-3 text-center">
                     <div class="flex items-center justify-center mb-1">
                         <i class="fas fa-lock text-emerald-500 text-lg"></i>
@@ -306,7 +302,6 @@
                     <div class="text-[9px] text-gray-500 mt-0.5">Encryption</div>
                 </div>
                 
-                <!-- Enterprise Grade Badge -->
                 <div class="header-cert-badge rounded-xl p-3 text-center">
                     <div class="flex items-center justify-center mb-1">
                         <i class="fas fa-building text-purple-500 text-lg"></i>
@@ -424,7 +419,7 @@
                 </div>
             </div>
 
-            <!-- STEP 2: ENTER AMOUNT -->
+            <!-- STEP 2: ENTER AMOUNT - FIXED for custom typing -->
             <div id="step2Container" style="display: none;" class="fade-in">
                 <div class="flex items-center gap-3 mb-6">
                     <button onclick="backToMethods()" class="btn-secondary px-4 py-2 rounded-xl text-sm flex items-center gap-2">
@@ -436,7 +431,7 @@
                 
                 <div class="mb-6">
                     <h2 class="text-lg font-bold text-gray-900 mb-1">Enter deposit amount</h2>
-                    <p class="text-sm text-gray-500">Choose an amount or enter your own</p>
+                    <p class="text-sm text-gray-500">Type any amount between $10 - $10,000</p>
                 </div>
                 
                 <!-- Preset Amounts -->
@@ -447,19 +442,21 @@
                     <button onclick="setPresetAmount(500)" id="preset-500" class="preset-btn py-3 rounded-xl text-sm font-semibold">$500</button>
                 </div>
                 
-                <!-- Custom Amount Input -->
+                <!-- Custom Amount Input - FULLY EDITABLE -->
                 <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Custom amount</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Custom amount (type any number)</label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-xl font-semibold">$</span>
-                        <input type="number" id="amountInput" value="250.00" step="1" min="10" max="10000"
-                               class="w-full input-premium rounded-2xl py-4 pl-10 pr-20 text-xl font-bold text-gray-900">
+                        <input type="text" id="amountInput" value="250.00" 
+                               inputmode="decimal" pattern="[0-9]*"
+                               class="w-full input-premium rounded-2xl py-4 pl-10 pr-20 text-xl font-bold text-gray-900"
+                               placeholder="Enter amount">
                         <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm bg-gray-50 px-2 py-1 rounded-lg">USD</span>
                     </div>
-                    <p id="amountError" class="text-red-500 text-xs mt-2 hidden">Amount must be between $10 and $10,000</p>
-                    <p class="text-xs text-gray-400 mt-2 flex items-center gap-1">
-                        <i class="fas fa-info-circle"></i> Minimum $10 • Maximum $10,000
-                    </p>
+                    <div id="amountError" class="text-red-500 text-xs mt-2 hidden"></div>
+                    <div class="text-xs text-gray-400 mt-2 flex items-center gap-1">
+                        <i class="fas fa-info-circle"></i> Minimum $10 • Maximum $10,000 • You can type any amount
+                    </div>
                 </div>
 
                 <!-- Order Summary Premium -->
@@ -609,7 +606,6 @@
             const step2Label = document.getElementById('step2Label');
             const step3Label = document.getElementById('step3Label');
 
-            // Reset all to inactive
             [step1Dot, step2Dot, step3Dot].forEach(dot => {
                 dot.classList.remove('step-completed', 'step-active');
                 dot.classList.add('step-inactive');
@@ -677,36 +673,62 @@
             updateSteps(2);
         }
 
-        function goToBitcoinPayment() {
-            if (!updateAmountUI()) {
-                amountError.classList.remove('hidden');
-                return;
+        // Validate and parse amount from text input
+        function parseAndValidateAmount(value) {
+            // Remove any non-numeric characters except decimal point
+            let cleaned = value.toString().replace(/[^0-9.]/g, '');
+            
+            // Handle multiple decimal points - keep only first
+            const parts = cleaned.split('.');
+            if (parts.length > 2) {
+                cleaned = parts[0] + '.' + parts.slice(1).join('');
             }
-            amountError.classList.add('hidden');
             
-            const formattedAmount = `$${currentAmount.toFixed(2)}`;
-            document.getElementById('btcAmountDisplay').innerText = formattedAmount;
-            document.getElementById('instructionAmount').innerText = formattedAmount;
+            // Parse as float
+            let num = parseFloat(cleaned);
             
-            step1Container.style.display = 'none';
-            step2Container.style.display = 'none';
-            step3Container.style.display = 'block';
-            updateSteps(3);
+            if (isNaN(num)) {
+                return null;
+            }
+            
+            // Round to 2 decimal places
+            num = Math.round(num * 100) / 100;
+            
+            // Clamp to valid range
+            if (num < 10) num = 10;
+            if (num > 10000) num = 10000;
+            
+            return num;
         }
 
         function updateAmountUI() {
-            let rawValue = parseFloat(amountInput.value);
-            if (isNaN(rawValue)) rawValue = 0;
-            rawValue = Math.min(Math.max(rawValue, 10), 10000);
-            if (rawValue !== parseFloat(amountInput.value)) {
-                amountInput.value = rawValue.toFixed(2);
+            let rawValue = amountInput.value;
+            let validatedAmount = parseAndValidateAmount(rawValue);
+            
+            if (validatedAmount === null) {
+                validatedAmount = 10;
+                amountInput.value = '10.00';
             }
-            currentAmount = rawValue;
-            const formatted = currentAmount.toLocaleString('en-US', { minimumFractionDigits: 2 });
+            
+            currentAmount = validatedAmount;
+            const formatted = currentAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            amountInput.value = formatted;
             subtotalDisplay.innerText = `$${formatted}`;
             totalDisplay.innerText = `$${formatted}`;
             
-            return currentAmount >= 10 && currentAmount <= 10000;
+            // Validate range for error message
+            if (currentAmount < 10) {
+                amountError.textContent = 'Minimum amount is $10';
+                amountError.classList.remove('hidden');
+                return false;
+            } else if (currentAmount > 10000) {
+                amountError.textContent = 'Maximum amount is $10,000';
+                amountError.classList.remove('hidden');
+                return false;
+            } else {
+                amountError.classList.add('hidden');
+                return true;
+            }
         }
 
         function setPresetAmount(value) {
@@ -724,10 +746,49 @@
             });
         }
 
-        amountInput.addEventListener('input', () => {
+        // Real-time input handling
+        amountInput.addEventListener('input', (e) => {
+            let value = e.target.value;
+            // Allow user to type freely
+            if (value === '' || value === '.') {
+                return;
+            }
             updateAmountUI();
-            setPresetAmount(currentAmount);
+            
+            // Update preset button highlights
+            [50, 100, 250, 500].forEach(p => {
+                const btn = document.getElementById(`preset-${p}`);
+                if (btn) {
+                    if (Math.abs(p - currentAmount) < 0.01) {
+                        btn.className = 'preset-btn preset-btn-active py-3 rounded-xl text-sm font-semibold';
+                    } else {
+                        btn.className = 'preset-btn py-3 rounded-xl text-sm font-semibold';
+                    }
+                }
+            });
         });
+
+        amountInput.addEventListener('blur', () => {
+            if (amountInput.value === '' || amountInput.value === '.') {
+                amountInput.value = '10.00';
+                updateAmountUI();
+            }
+        });
+
+        function goToBitcoinPayment() {
+            if (!updateAmountUI()) {
+                return;
+            }
+            
+            const formattedAmount = `$${currentAmount.toFixed(2)}`;
+            document.getElementById('btcAmountDisplay').innerText = formattedAmount;
+            document.getElementById('instructionAmount').innerText = formattedAmount;
+            
+            step1Container.style.display = 'none';
+            step2Container.style.display = 'none';
+            step3Container.style.display = 'block';
+            updateSteps(3);
+        }
 
         // Copy Bitcoin Address
         function copyBitcoinAddress() {
