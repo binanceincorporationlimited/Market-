@@ -131,11 +131,30 @@
             margin-top: 16px;
         }
 
-        /* Image Modal */
-        .image-modal {
+        /* Bitcoin Modal Styles */
+        .bitcoin-modal-bg {
             background: rgba(0, 0, 0, 0.92);
             backdrop-filter: blur(16px);
-            animation: fadeIn 0.2s ease-out;
+        }
+
+        .bitcoin-card {
+            background: rgba(10, 14, 23, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .copy-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .copy-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .wallet-address {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: 'Monaco', 'Courier New', monospace;
         }
 
         @keyframes fadeIn {
@@ -147,6 +166,10 @@
                 opacity: 1;
                 transform: scale(1);
             }
+        }
+
+        .modal-animate {
+            animation: fadeIn 0.25s ease-out;
         }
 
         /* Custom scrollbar */
@@ -189,7 +212,7 @@
         </div>
 
         <div class="p-6 md:p-8">
-            <!-- Progress Indicator (Visual) -->
+            <!-- Progress Indicator -->
             <div class="flex items-center gap-2 mb-8 text-xs font-medium">
                 <div class="flex items-center gap-2">
                     <span class="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-[11px] font-bold">1</span>
@@ -215,7 +238,7 @@
                 </div>
 
                 <div class="grid gap-3">
-                    <!-- Bitcoin Method - Opens Image Modal -->
+                    <!-- Bitcoin Method - Opens Modal -->
                     <div onclick="openBitcoinModal()" id="method-bitcoin" class="method-card rounded-xl p-4 flex items-center justify-between group cursor-pointer">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
@@ -258,7 +281,6 @@
                             <i class="fas fa-check-circle text-blue-500 text-sm" id="gift-check-icon"></i>
                         </div>
                         
-                        <!-- Dynamic Gift Card Input Section -->
                         <div id="gift-expandable" class="expandable-section show">
                             <div class="relative mt-1">
                                 <input type="text" id="gift-card-input" placeholder="Gift card code (e.g., 6011-XXXX-XXXX-XXXX)" 
@@ -269,7 +291,6 @@
                     </div>
                 </div>
 
-                <!-- Dynamic Method-Specific Fields (PayPal only) -->
                 <div id="dynamic-method-panel" class="mt-4"></div>
             </div>
 
@@ -326,29 +347,84 @@
         </div>
     </div>
 
-    <!-- BITCOIN IMAGE MODAL -->
-    <div id="bitcoin-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(16px);">
-        <div class="relative max-w-3xl w-full image-modal">
+    <!-- BITCOIN MODAL with Image Background and Text Content -->
+    <div id="bitcoin-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bitcoin-modal-bg" style="background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(16px);">
+        <div class="relative max-w-2xl w-full modal-animate">
             <!-- Close Button -->
-            <button onclick="closeBitcoinModal()" class="absolute -top-12 right-0 text-white/70 hover:text-white text-2xl transition-all">
+            <button onclick="closeBitcoinModal()" class="absolute -top-12 right-0 text-white/70 hover:text-white text-2xl transition-all z-10">
                 <i class="fas fa-times-circle"></i>
             </button>
             
-            <!-- Image Container -->
-            <div class="rounded-2xl overflow-hidden shadow-2xl border border-white/20">
-                <img 
-                    src="https://images.unsplash.com/photo-1774867129097-db3b2d3068fb?q=80&w=762&auto=format&fit=crop"
-                    alt="Bitcoin Deposit Instructions"
-                    class="w-full h-auto object-cover"
-                    onerror="this.onerror=null; this.src='https://placehold.co/800x1000/1a1a2e/ff8c00?text=Bitcoin+Deposit+Instructions'"
-                >
-            </div>
-            
-            <!-- Caption/Info Bar -->
-            <div class="mt-4 text-center text-white/60 text-xs flex items-center justify-center gap-4">
-                <span><i class="fab fa-bitcoin text-orange-400 mr-1"></i> Bitcoin Network</span>
-                <span><i class="fas fa-bolt text-yellow-400 mr-1"></i> Instant Processing</span>
-                <span><i class="fas fa-shield-alt text-green-400 mr-1"></i> Secure Transfer</span>
+            <!-- Main Content Card with Background Image -->
+            <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-white/20">
+                <!-- Background Image -->
+                <div class="absolute inset-0 z-0">
+                    <img 
+                        src="https://images.unsplash.com/photo-1774868693677-c2fd7594825f?q=80&w=876&auto=format&fit=crop"
+                        alt="Bitcoin Background"
+                        class="w-full h-full object-cover"
+                        onerror="this.style.display='none'"
+                    >
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/60"></div>
+                </div>
+                
+                <!-- Content Overlay -->
+                <div class="relative z-10 p-8 md:p-10">
+                    <!-- Header -->
+                    <div class="text-center mb-8">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-orange-500/20 border border-orange-500/30 mb-4">
+                            <i class="fab fa-bitcoin text-3xl text-orange-400"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Bitcoin (BTC)</h2>
+                        <p class="text-gray-300 text-sm">To deposit funds, make a bitcoin transfer to the BTC-wallet shown below.</p>
+                    </div>
+                    
+                    <!-- Wallet Address Section -->
+                    <div class="bg-black/50 backdrop-blur-sm rounded-xl p-5 border border-white/10 mb-6">
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mb-3">Your unique Bitcoin wallet address</p>
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <code id="btc-wallet-address" class="wallet-address flex-1 bg-black/60 rounded-lg px-4 py-3 text-orange-300 text-sm md:text-base break-all font-mono">
+                                bc1qqgy9uf9uzqu4c85kdnqkn7vlurwwqjxmwa4wcp
+                            </code>
+                            <button onclick="copyBitcoinAddress()" class="copy-btn bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-5 py-3 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all">
+                                <i class="far fa-copy"></i>
+                                <span id="copy-btn-text">Copy address</span>
+                            </button>
+                        </div>
+                        <p class="text-gray-500 text-xs mt-3 flex items-center gap-1">
+                            <i class="fas fa-qrcode"></i> Scan QR code with your camera app
+                        </p>
+                    </div>
+                    
+                    <!-- Terms Section -->
+                    <div class="bg-black/40 backdrop-blur-sm rounded-xl p-5 border border-white/10">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fas fa-file-contract text-gray-400 text-sm"></i>
+                            <h3 class="text-gray-300 font-semibold text-sm uppercase tracking-wider">Terms</h3>
+                        </div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-gray-400 text-sm">Average payment time</span>
+                            <span class="text-emerald-400 font-semibold text-sm flex items-center gap-1"><i class="fas fa-bolt text-xs"></i> Instant</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-gray-400 text-sm">Fee</span>
+                            <span class="text-white font-semibold text-sm">0%</span>
+                        </div>
+                        <div class="border-t border-white/10 pt-3 mt-1">
+                            <p class="text-gray-500 text-xs text-center">
+                                All crypto wallet services are provided by Thecorio Ltd, a company incorporated in Seychelles, with registration number 8437417-1.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Security Note -->
+                    <div class="mt-6 text-center">
+                        <p class="text-gray-500 text-xs flex items-center justify-center gap-2">
+                            <i class="fas fa-shield-alt text-emerald-500"></i>
+                            <span>256-bit encrypted transaction • Confirmation within 10-30 minutes</span>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -386,6 +462,24 @@
             document.body.style.overflow = '';
         }
 
+        // Copy Bitcoin Address Function
+        function copyBitcoinAddress() {
+            const address = document.getElementById('btc-wallet-address').innerText;
+            navigator.clipboard.writeText(address).then(() => {
+                const copyBtnText = document.getElementById('copy-btn-text');
+                const originalText = copyBtnText.innerText;
+                copyBtnText.innerText = 'Copied!';
+                copyBtnText.parentElement.classList.add('bg-emerald-600');
+                setTimeout(() => {
+                    copyBtnText.innerText = originalText;
+                    copyBtnText.parentElement.classList.remove('bg-emerald-600');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                alert('Failed to copy address. Please select and copy manually.');
+            });
+        }
+
         // Close modal on escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
@@ -400,7 +494,7 @@
             }
         });
 
-        // Helper: Update all amount displays + validation
+        // Helper: Update all amount displays
         function updateAmountUI() {
             let rawValue = parseFloat(amountInput.value);
             if (isNaN(rawValue)) rawValue = 0;
@@ -422,7 +516,6 @@
             }
         }
 
-        // Sync amount with preset buttons highlight
         function setPresetAmount(value) {
             amountInput.value = value.toFixed(2);
             updateAmountUI();
@@ -444,7 +537,6 @@
             setPresetAmount(currentAmount);
         });
 
-        // Payment method selection (PayPal and Gift Card)
         function selectMethod(method) {
             if (isProcessing) return;
             currentMethod = method;
@@ -465,14 +557,12 @@
                 rightContainer.appendChild(checkIcon);
             }
             
-            // Handle Gift Card expandable
             if (method === 'gift') {
                 giftExpandable.classList.add('show');
             } else {
                 giftExpandable.classList.remove('show');
             }
             
-            // Render PayPal fields
             if (method === 'paypal') {
                 dynamicPanel.innerHTML = `
                     <div class="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
@@ -486,7 +576,6 @@
             }
         }
 
-        // Gift card validation
         function validateGiftCard() {
             if (currentMethod !== 'gift') return true;
             const giftInput = document.getElementById('gift-card-input');
@@ -503,7 +592,6 @@
             return true;
         }
 
-        // Validate PayPal email
         function validatePayPal() {
             if (currentMethod !== 'paypal') return true;
             const emailInput = document.getElementById('paypal-email');
@@ -517,7 +605,6 @@
             return true;
         }
 
-        // Main deposit process
         async function processDeposit() {
             if (isProcessing) return;
             
@@ -551,7 +638,6 @@
             btnSpinner.classList.add('hidden');
         }
         
-        // Modal System
         function showModal(type, title, message) {
             const modal = document.getElementById('notification-modal');
             if (!modal) {
@@ -581,7 +667,6 @@
             if (modal) modal.classList.add('hidden');
         };
         
-        // Initialize
         function init() {
             selectMethod('gift');
             updateAmountUI();
