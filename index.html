@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>SecurePay Premium | Secure Deposit Portal</title>
+    <title>SecurePay Pro | Enterprise Digital Payments</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,88 +17,111 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0c12;
-            background-image: radial-gradient(circle at 25% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-                              radial-gradient(circle at 75% 100%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #eef2f6 100%);
             min-height: 100vh;
-            padding: 16px;
+            padding: 20px;
         }
 
-        .glass-premium {
-            background: rgba(10, 14, 23, 0.75);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 28px;
+        /* Premium Card */
+        .premium-card {
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
         }
 
+        /* Method Cards */
         .method-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             transition: all 0.25s ease;
             cursor: pointer;
         }
 
-        .method-card.active {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(139, 92, 246, 0.08));
-            border: 1.5px solid #3b82f6;
+        .method-card:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
         }
 
+        .method-card.active {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+            border: 2px solid #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+
+        /* Input Premium */
         .input-premium {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
             transition: all 0.2s ease;
+            font-weight: 500;
         }
 
         .input-premium:focus {
             outline: none;
             border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
+        /* Preset Buttons */
         .preset-btn {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
             transition: all 0.2s ease;
             cursor: pointer;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .preset-btn:hover {
+            background: #e2e8f0;
+            transform: translateY(-1px);
         }
 
         .preset-btn-active {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
+        /* Primary Button */
         .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             transition: all 0.2s ease;
             cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
         }
 
         .btn-primary:active {
-            transform: scale(0.98);
+            transform: translateY(0);
         }
 
+        /* Secondary Button */
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
             cursor: pointer;
+            font-weight: 500;
+            color: #475569;
         }
 
-        .btn-secondary:active {
-            transform: scale(0.98);
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
         }
 
-        .spinner {
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top: 2px solid white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 0.6s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
+        /* Step Indicators */
         .step {
             transition: all 0.3s ease;
         }
@@ -106,15 +129,65 @@
         .step-active {
             background: #3b82f6;
             color: white;
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
         }
 
         .step-completed {
             background: #10b981;
             color: white;
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.2);
         }
 
-        .fade-in {
-            animation: fadeIn 0.3s ease-out;
+        .step-inactive {
+            background: #f1f5f9;
+            color: #94a3b8;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* QR/Bitcoin Payment Page */
+        .qr-container {
+            background: white;
+            padding: 20px;
+            border-radius: 24px;
+            display: inline-block;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .wallet-address {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            font-family: 'Monaco', 'Courier New', monospace;
+            word-break: break-all;
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+
+        .amount-highlight {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+            border: 1px solid #3b82f6;
+            border-radius: 20px;
+        }
+
+        .badge {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 100px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .trust-badge {
+            transition: all 0.2s ease;
+        }
+
+        .trust-badge:hover {
+            transform: translateY(-1px);
         }
 
         @keyframes fadeIn {
@@ -128,122 +201,164 @@
             }
         }
 
-        .qr-container {
-            background: white;
-            padding: 16px;
-            border-radius: 24px;
-            display: inline-block;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
         }
 
-        .wallet-address {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-family: monospace;
-            word-break: break-all;
-            padding: 16px;
-            border-radius: 16px;
-            text-align: center;
-            font-size: 13px;
-            line-height: 1.5;
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
         }
 
-        .amount-highlight {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
-            border: 1px solid rgba(59, 130, 246, 0.5);
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
 
         @media (max-width: 640px) {
-            body { padding: 12px; }
-            .wallet-address { font-size: 11px; }
+            body {
+                padding: 12px;
+            }
+            .wallet-address {
+                font-size: 11px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="max-w-2xl w-full glass-premium mx-auto overflow-hidden">
-        <!-- Header -->
-        <div class="px-5 pt-6 pb-4 border-b border-white/10">
+    <div class="max-w-2xl w-full mx-auto premium-card overflow-hidden">
+        <!-- Header with Premium Badge -->
+        <div class="px-6 pt-8 pb-6 border-b border-gray-100">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center border border-blue-500/30">
-                        <i class="fas fa-shield-halved text-blue-400 text-lg"></i>
+                    <div class="h-12 w-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
+                        <i class="fas fa-shield-halved text-white text-xl"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl font-extrabold">SecurePay<span class="text-blue-500">.</span></h1>
-                        <p class="text-[10px] text-gray-500">PCI DSS Level 1 Certified</p>
+                        <h1 class="text-2xl font-bold text-gray-900">SecurePay<span class="text-blue-600">.</span></h1>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="badge text-blue-600 bg-blue-50 border-blue-200">
+                                <i class="fas fa-check-circle text-xs mr-1"></i> PCI DSS Level 1
+                            </span>
+                            <span class="badge text-emerald-600 bg-emerald-50 border-emerald-200">
+                                <i class="fas fa-shield-alt text-xs mr-1"></i> 256-bit SSL
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <i class="fas fa-lock text-emerald-400 text-xs"></i>
-                    <span class="text-[9px] text-gray-400 bg-white/5 px-2 py-1 rounded-full">256-bit</span>
+                <div class="flex items-center gap-1 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200">
+                    <i class="fas fa-globe text-gray-400 text-xs"></i>
+                    <span class="text-[11px] font-medium text-gray-600">Enterprise Grade</span>
                 </div>
             </div>
         </div>
 
-        <div class="p-5">
-            <!-- Progress Steps -->
-            <div class="flex items-center justify-between mb-8">
-                <div class="flex-1 text-center">
-                    <div class="step w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-sm font-bold text-white mx-auto mb-1" id="step1Dot">1</div>
-                    <span class="text-[10px] text-blue-400" id="step1Label">Select Method</span>
-                </div>
-                <div class="w-12 h-px bg-white/20"></div>
-                <div class="flex-1 text-center">
-                    <div class="step w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-gray-400 mx-auto mb-1" id="step2Dot">2</div>
-                    <span class="text-[10px] text-gray-500" id="step2Label">Enter Amount</span>
-                </div>
-                <div class="w-12 h-px bg-white/20"></div>
-                <div class="flex-1 text-center">
-                    <div class="step w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-gray-400 mx-auto mb-1" id="step3Dot">3</div>
-                    <span class="text-[10px] text-gray-500" id="step3Label">Pay with BTC</span>
+        <div class="p-6 md:p-8">
+            <!-- Premium Progress Steps -->
+            <div class="mb-10">
+                <div class="flex items-center justify-between">
+                    <div class="flex-1 text-center">
+                        <div class="step w-10 h-10 rounded-full step-completed flex items-center justify-center text-sm font-bold mx-auto mb-2 shadow-sm" id="step1Dot">
+                            <i class="fas fa-check text-white text-xs"></i>
+                        </div>
+                        <span class="text-xs font-medium text-gray-600" id="step1Label">Select Method</span>
+                    </div>
+                    <div class="w-16 h-0.5 bg-gray-200"></div>
+                    <div class="flex-1 text-center">
+                        <div class="step w-10 h-10 rounded-full step-inactive flex items-center justify-center text-sm font-bold mx-auto mb-2 shadow-sm" id="step2Dot">2</div>
+                        <span class="text-xs font-medium text-gray-400" id="step2Label">Enter Amount</span>
+                    </div>
+                    <div class="w-16 h-0.5 bg-gray-200"></div>
+                    <div class="flex-1 text-center">
+                        <div class="step w-10 h-10 rounded-full step-inactive flex items-center justify-center text-sm font-bold mx-auto mb-2 shadow-sm" id="step3Dot">3</div>
+                        <span class="text-xs font-medium text-gray-400" id="step3Label">Bitcoin Payment</span>
+                    </div>
                 </div>
             </div>
 
             <!-- STEP 1: PAYMENT METHODS -->
             <div id="step1Container">
-                <h2 class="text-sm font-semibold text-gray-200 mb-3">Choose payment method</h2>
-                <p class="text-[10px] text-gray-500 mb-4">Tap a method to continue</p>
+                <div class="mb-6">
+                    <h2 class="text-lg font-bold text-gray-900 mb-1">Choose payment method</h2>
+                    <p class="text-sm text-gray-500">Select your preferred way to deposit funds</p>
+                </div>
 
-                <div class="space-y-2 mb-6">
+                <div class="space-y-3 mb-8">
                     <!-- Bitcoin -->
-                    <div onclick="selectMethod('bitcoin')" id="method-bitcoin" class="method-card rounded-xl p-3 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-orange-500/10 flex items-center justify-center">
-                                <i class="fab fa-bitcoin text-xl text-orange-400"></i>
+                    <div onclick="selectMethod('bitcoin')" id="method-bitcoin" class="method-card rounded-2xl p-4 flex items-center justify-between group">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center">
+                                <i class="fab fa-bitcoin text-2xl text-orange-500"></i>
                             </div>
                             <div>
-                                <p class="font-bold text-sm text-white">Bitcoin (BTC)</p>
-                                <p class="text-[9px] text-gray-500">Lightning & On-chain</p>
+                                <p class="font-bold text-gray-900">Bitcoin (BTC)</p>
+                                <p class="text-xs text-gray-500 mt-0.5">Lightning Network • On-chain</p>
                             </div>
                         </div>
-                        <i class="fas fa-chevron-right text-gray-600 text-xs"></i>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-emerald-600 font-medium bg-emerald-50 px-2 py-1 rounded-full">0% fee</span>
+                            <i class="fas fa-chevron-right text-gray-300 text-sm group-hover:text-blue-500 transition"></i>
+                        </div>
                     </div>
 
-                    <!-- PayPal -->
-                    <div onclick="selectMethod('paypal')" id="method-paypal" class="method-card rounded-xl p-3 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                                <i class="fab fa-paypal text-xl text-blue-400"></i>
+                    <!-- PayPal (Coming Soon) -->
+                    <div onclick="showComingSoon('PayPal')" class="method-card rounded-2xl p-4 flex items-center justify-between opacity-60">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center">
+                                <i class="fab fa-paypal text-2xl text-blue-500"></i>
                             </div>
                             <div>
-                                <p class="font-bold text-sm text-white">PayPal</p>
-                                <p class="text-[9px] text-gray-500">Instant • Digital wallet</p>
+                                <p class="font-bold text-gray-900">PayPal</p>
+                                <p class="text-xs text-gray-500 mt-0.5">Instant • Digital wallet</p>
                             </div>
                         </div>
-                        <i class="fas fa-chevron-right text-gray-600 text-xs"></i>
+                        <span class="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full">Coming soon</span>
                     </div>
 
-                    <!-- Gift Card -->
-                    <div onclick="selectMethod('gift')" id="method-gift" class="method-card rounded-xl p-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                                <i class="fas fa-gift text-xl text-emerald-400"></i>
+                    <!-- Gift Card (Coming Soon) -->
+                    <div onclick="showComingSoon('Gift Card')" class="method-card rounded-2xl p-4 flex items-center justify-between opacity-60">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center">
+                                <i class="fas fa-gift text-2xl text-emerald-500"></i>
                             </div>
                             <div>
-                                <p class="font-bold text-sm text-white">Digital Gift Card</p>
-                                <p class="text-[9px] text-gray-500">Visa/Mastercard prepaid</p>
+                                <p class="font-bold text-gray-900">Digital Gift Card</p>
+                                <p class="text-xs text-gray-500 mt-0.5">Visa • Mastercard • American Express</p>
                             </div>
+                        </div>
+                        <span class="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full">Coming soon</span>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-4 border border-blue-100">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-shield-alt text-blue-500 text-lg mt-0.5"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900">Secure & Instant</p>
+                            <p class="text-xs text-gray-600 mt-0.5">All transactions are protected with bank-grade encryption and processed instantly</p>
                         </div>
                     </div>
                 </div>
@@ -251,124 +366,156 @@
 
             <!-- STEP 2: ENTER AMOUNT -->
             <div id="step2Container" style="display: none;" class="fade-in">
-                <div class="flex items-center gap-2 mb-4">
-                    <button onclick="backToMethods()" class="text-gray-400 hover:text-white text-sm">
-                        <i class="fas fa-arrow-left mr-1"></i> Back to methods
+                <div class="flex items-center gap-3 mb-6">
+                    <button onclick="backToMethods()" class="btn-secondary px-4 py-2 rounded-xl text-sm flex items-center gap-2">
+                        <i class="fas fa-arrow-left text-xs"></i> Back
                     </button>
+                    <div class="h-6 w-px bg-gray-200"></div>
+                    <span class="text-xs text-gray-500">Step 2 of 3</span>
                 </div>
                 
-                <h2 class="text-sm font-semibold text-gray-200 mb-3">Enter amount (USD)</h2>
-                
-                <div class="grid grid-cols-4 gap-2 mb-4">
-                    <button onclick="setPresetAmount(50)" id="preset-50" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$50</button>
-                    <button onclick="setPresetAmount(100)" id="preset-100" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$100</button>
-                    <button onclick="setPresetAmount(250)" id="preset-250" class="preset-btn preset-btn-active py-2 rounded-xl text-sm">$250</button>
-                    <button onclick="setPresetAmount(500)" id="preset-500" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$500</button>
+                <div class="mb-6">
+                    <h2 class="text-lg font-bold text-gray-900 mb-1">Enter deposit amount</h2>
+                    <p class="text-sm text-gray-500">Choose an amount or enter your own</p>
                 </div>
                 
-                <div class="relative mb-4">
-                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">$</span>
-                    <input type="number" id="amountInput" value="250.00" step="10" min="10" max="10000"
-                           class="w-full input-premium rounded-2xl py-4 pl-9 pr-16 text-xl font-bold text-white">
-                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-[10px] bg-white/5 px-2 py-1 rounded">USD</span>
+                <!-- Preset Amounts -->
+                <div class="grid grid-cols-4 gap-3 mb-6">
+                    <button onclick="setPresetAmount(50)" id="preset-50" class="preset-btn py-3 rounded-xl text-sm font-semibold">$50</button>
+                    <button onclick="setPresetAmount(100)" id="preset-100" class="preset-btn py-3 rounded-xl text-sm font-semibold">$100</button>
+                    <button onclick="setPresetAmount(250)" id="preset-250" class="preset-btn preset-btn-active py-3 rounded-xl text-sm font-semibold">$250</button>
+                    <button onclick="setPresetAmount(500)" id="preset-500" class="preset-btn py-3 rounded-xl text-sm font-semibold">$500</button>
                 </div>
-                <p id="amountError" class="text-red-400 text-xs mt-1 mb-4 hidden">Amount must be between $10 and $10,000</p>
+                
+                <!-- Custom Amount Input -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Custom amount</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-xl font-semibold">$</span>
+                        <input type="number" id="amountInput" value="250.00" step="1" min="10" max="10000"
+                               class="w-full input-premium rounded-2xl py-4 pl-10 pr-20 text-xl font-bold text-gray-900">
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm bg-gray-50 px-2 py-1 rounded-lg">USD</span>
+                    </div>
+                    <p id="amountError" class="text-red-500 text-xs mt-2 hidden">Amount must be between $10 and $10,000</p>
+                    <p class="text-xs text-gray-400 mt-2 flex items-center gap-1">
+                        <i class="fas fa-info-circle"></i> Minimum $10 • Maximum $10,000
+                    </p>
+                </div>
 
-                <div class="bg-black/30 rounded-2xl p-4 border border-white/10 mb-6">
-                    <div class="flex justify-between text-sm mb-2">
-                        <span class="text-gray-400">Subtotal</span>
-                        <span id="subtotalDisplay" class="text-white font-medium">$250.00</span>
+                <!-- Order Summary Premium -->
+                <div class="bg-gray-50 rounded-2xl p-5 border border-gray-200 mb-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm text-gray-600">Subtotal</span>
+                        <span id="subtotalDisplay" class="text-lg font-semibold text-gray-900">$250.00</span>
                     </div>
-                    <div class="flex justify-between text-sm mb-2">
-                        <span class="text-gray-400">Processing fee</span>
-                        <span class="text-emerald-400">$0.00</span>
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm text-gray-600">Processing fee</span>
+                        <span class="text-sm font-medium text-emerald-600">$0.00</span>
                     </div>
-                    <div class="border-t border-white/10 my-2"></div>
+                    <div class="border-t border-gray-200 my-3"></div>
                     <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-500 font-bold">TOTAL</span>
-                        <span id="totalDisplay" class="text-xl font-extrabold text-white">$250.00</span>
+                        <span class="text-sm font-semibold text-gray-700">Total</span>
+                        <span id="totalDisplay" class="text-2xl font-bold text-gray-900">$250.00</span>
                     </div>
                 </div>
 
-                <button onclick="goToBitcoinPayment()" class="btn-primary w-full py-3 rounded-xl font-bold text-white text-sm">
-                    Continue to Bitcoin payment <i class="fab fa-bitcoin ml-1"></i>
+                <button onclick="goToBitcoinPayment()" class="btn-primary w-full py-4 rounded-xl font-bold text-white text-base flex items-center justify-center gap-2">
+                    Continue to Bitcoin Payment <i class="fab fa-bitcoin text-sm"></i>
                 </button>
             </div>
 
-            <!-- STEP 3: BITCOIN PAYMENT PAGE (QR + Wallet Address + Amount) -->
+            <!-- STEP 3: BITCOIN PAYMENT PAGE -->
             <div id="step3Container" style="display: none;" class="fade-in">
-                <div class="flex items-center gap-2 mb-4">
-                    <button onclick="backToAmount()" class="text-gray-400 hover:text-white text-sm">
-                        <i class="fas fa-arrow-left mr-1"></i> Back to amount
+                <div class="flex items-center gap-3 mb-6">
+                    <button onclick="backToAmount()" class="btn-secondary px-4 py-2 rounded-xl text-sm flex items-center gap-2">
+                        <i class="fas fa-arrow-left text-xs"></i> Back
                     </button>
+                    <div class="h-6 w-px bg-gray-200"></div>
+                    <span class="text-xs text-gray-500">Step 3 of 3</span>
                 </div>
                 
-                <div class="text-center mb-5">
-                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-orange-500/20 border border-orange-500/30 mb-3">
-                        <i class="fab fa-bitcoin text-2xl text-orange-400"></i>
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-orange-50 border border-orange-200 mb-4">
+                        <i class="fab fa-bitcoin text-3xl text-orange-500"></i>
                     </div>
-                    <h2 class="text-xl font-bold text-white mb-1">Bitcoin Payment</h2>
-                    <p class="text-gray-300 text-xs">Send exact amount to the wallet below</p>
+                    <h2 class="text-xl font-bold text-gray-900 mb-1">Bitcoin Payment</h2>
+                    <p class="text-sm text-gray-500">Send exact amount to complete your deposit</p>
                 </div>
                 
-                <!-- Amount to Pay -->
-                <div class="amount-highlight rounded-2xl p-4 text-center mb-5">
-                    <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Amount to send</p>
-                    <p class="text-3xl font-bold text-white" id="btcAmountDisplay">$250.00</p>
-                    <p class="text-orange-400 text-xs mt-1">≈ 0.0035 BTC*</p>
+                <!-- Amount to Pay Highlight -->
+                <div class="amount-highlight rounded-2xl p-5 text-center mb-6">
+                    <p class="text-gray-600 text-xs uppercase tracking-wider mb-1">Amount to send</p>
+                    <p class="text-3xl font-bold text-gray-900" id="btcAmountDisplay">$250.00</p>
+                    <p class="text-orange-500 text-xs mt-2 flex items-center justify-center gap-1">
+                        <i class="fas fa-chart-line text-[10px]"></i> ≈ 0.0035 BTC*
+                    </p>
                 </div>
                 
                 <!-- QR Code -->
-                <div class="flex justify-center mb-5">
-                    <div class="qr-container bg-white rounded-2xl">
+                <div class="flex justify-center mb-6">
+                    <div class="qr-container">
                         <img src="https://images.unsplash.com/photo-1774868693677-c2fd7594825f?q=80&w=876&auto=format&fit=crop" 
                              alt="Bitcoin QR Code" class="w-44 h-44 object-cover rounded-xl"
-                             onerror="this.src='https://placehold.co/400x400/1a1a2e/ff8c00?text=Scan+QR+Code'">
+                             onerror="this.src='https://placehold.co/400x400/f8fafc/3b82f6?text=QR+Code'">
                     </div>
                 </div>
                 
                 <!-- Wallet Address -->
-                <div class="mb-5">
-                    <p class="text-gray-400 text-[10px] uppercase tracking-wider text-center mb-2">YOUR UNIQUE BITCOIN WALLET ADDRESS</p>
-                    <div class="wallet-address text-orange-300 text-center mb-3">
+                <div class="mb-6">
+                    <p class="text-gray-500 text-xs uppercase tracking-wider text-center mb-2 flex items-center justify-center gap-2">
+                        <i class="fas fa-wallet text-xs"></i> YOUR UNIQUE BITCOIN WALLET ADDRESS
+                    </p>
+                    <div class="wallet-address text-gray-800 text-center mb-3 font-mono text-sm bg-gray-50">
                         bc1qqgy9uf9uzqu4c85kdn<br>qkn7vlurwwqjxmwa4wcp
                     </div>
-                    <button onclick="copyBitcoinAddress()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl py-3 flex items-center justify-center gap-2">
+                    <button onclick="copyBitcoinAddress()" class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl py-3.5 flex items-center justify-center gap-2 font-semibold hover:shadow-lg transition-all">
                         <i class="far fa-copy"></i>
-                        <span id="copyBtnText">Copy address</span>
+                        <span id="copyBtnText">Copy wallet address</span>
                     </button>
                 </div>
                 
-                <!-- Instructions -->
-                <div class="bg-black/30 rounded-xl p-4 mb-4">
-                    <p class="text-gray-400 text-[10px] text-center mb-2">
-                        <i class="fas fa-info-circle mr-1"></i> Send exactly <span id="instructionAmount" class="text-orange-400 font-bold">$250.00</span> USD worth of Bitcoin
-                    </p>
-                    <div class="flex justify-between items-center text-xs mb-2">
-                        <span class="text-gray-400">Average payment time</span>
-                        <span class="text-emerald-400">Instant</span>
+                <!-- Payment Instructions -->
+                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                    <div class="flex items-start gap-3 mb-3">
+                        <i class="fas fa-clock text-blue-500 text-sm mt-0.5"></i>
+                        <p class="text-xs text-gray-600">Send exactly <span id="instructionAmount" class="font-bold text-gray-900">$250.00</span> USD worth of Bitcoin to the address above</p>
                     </div>
-                    <div class="flex justify-between items-center text-xs">
-                        <span class="text-gray-400">Network fee</span>
-                        <span class="text-white">0%</span>
+                    <div class="flex items-start gap-3 mb-3">
+                        <i class="fas fa-bolt text-emerald-500 text-sm mt-0.5"></i>
+                        <p class="text-xs text-gray-600">Average confirmation time: <span class="font-medium text-gray-900">Instant - 10 minutes</span></p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-percent text-purple-500 text-sm mt-0.5"></i>
+                        <p class="text-xs text-gray-600">Network fee: <span class="font-medium text-gray-900">0%</span> (paid by SecurePay)</p>
                     </div>
                 </div>
                 
-                <button onclick="simulatePayment()" class="btn-primary w-full py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2">
-                    <span id="payBtnText">I have sent the payment</span>
-                    <i class="fas fa-check-circle text-xs"></i>
-                </button>
-                
-                <p class="text-center text-[9px] text-gray-500 mt-3">
-                    Services provided by Thecorio Ltd, Seychelles (8437417-1)
-                </p>
+                <!-- Security Note -->
+                <div class="mt-5 text-center">
+                    <p class="text-xs text-gray-400 flex items-center justify-center gap-2">
+                        <i class="fas fa-shield-alt text-emerald-500"></i>
+                        <span>Your transaction is protected with bank-grade encryption</span>
+                    </p>
+                    <p class="text-[10px] text-gray-400 mt-3">
+                        Services provided by Thecorio Ltd, Seychelles (8437417-1)
+                    </p>
+                </div>
             </div>
 
             <!-- Trust Badges -->
-            <div class="flex items-center justify-center gap-4 mt-6 text-gray-500 text-[10px]">
-                <div class="flex items-center gap-1"><i class="fas fa-shield-alt text-emerald-500"></i><span>Fraud protection</span></div>
-                <div class="flex items-center gap-1"><i class="fas fa-clock"></i><span>24/7 support</span></div>
-                <div class="flex items-center gap-1"><i class="fas fa-undo-alt"></i><span>Secure refunds</span></div>
+            <div class="flex items-center justify-center gap-6 mt-8 pt-4 border-t border-gray-100">
+                <div class="trust-badge flex items-center gap-2 text-gray-500 text-xs">
+                    <i class="fas fa-shield-alt text-emerald-500"></i>
+                    <span>Fraud protection</span>
+                </div>
+                <div class="trust-badge flex items-center gap-2 text-gray-500 text-xs">
+                    <i class="fas fa-headset text-blue-500"></i>
+                    <span>24/7 support</span>
+                </div>
+                <div class="trust-badge flex items-center gap-2 text-gray-500 text-xs">
+                    <i class="fas fa-undo-alt text-purple-500"></i>
+                    <span>Secure refunds</span>
+                </div>
             </div>
         </div>
     </div>
@@ -388,6 +535,11 @@
         const totalDisplay = document.getElementById('totalDisplay');
         const amountError = document.getElementById('amountError');
 
+        // Coming Soon Alert
+        function showComingSoon(method) {
+            alert(`${method} integration is coming soon. Please use Bitcoin for now.`);
+        }
+
         // Update progress steps
         function updateSteps(step) {
             const step1Dot = document.getElementById('step1Dot');
@@ -397,34 +549,35 @@
             const step2Label = document.getElementById('step2Label');
             const step3Label = document.getElementById('step3Label');
 
+            // Reset all to inactive
             [step1Dot, step2Dot, step3Dot].forEach(dot => {
-                dot.classList.remove('bg-blue-600', 'bg-emerald-600');
-                dot.classList.add('bg-white/10');
-                dot.classList.remove('text-white');
-                dot.classList.add('text-gray-400');
+                dot.classList.remove('step-completed', 'step-active');
+                dot.classList.add('step-inactive');
+                dot.innerHTML = dot === step1Dot ? '<i class="fas fa-check text-white text-xs"></i>' : 
+                               dot === step2Dot ? '2' : '3';
             });
             [step1Label, step2Label, step3Label].forEach(label => {
-                label.classList.remove('text-blue-400', 'text-emerald-400');
-                label.classList.add('text-gray-500');
+                label.classList.remove('text-gray-900', 'text-blue-600', 'text-emerald-600');
+                label.classList.add('text-gray-400');
             });
 
             if (step >= 1) {
-                step1Dot.classList.remove('bg-white/10', 'text-gray-400');
-                step1Dot.classList.add('bg-emerald-600', 'text-white');
-                step1Label.classList.remove('text-gray-500');
-                step1Label.classList.add('text-emerald-400');
+                step1Dot.classList.remove('step-inactive');
+                step1Dot.classList.add('step-completed');
+                step1Label.classList.remove('text-gray-400');
+                step1Label.classList.add('text-emerald-600');
             }
             if (step >= 2) {
-                step2Dot.classList.remove('bg-white/10', 'text-gray-400');
-                step2Dot.classList.add('bg-blue-600', 'text-white');
-                step2Label.classList.remove('text-gray-500');
-                step2Label.classList.add('text-blue-400');
+                step2Dot.classList.remove('step-inactive');
+                step2Dot.classList.add('step-active');
+                step2Label.classList.remove('text-gray-400');
+                step2Label.classList.add('text-blue-600');
             }
             if (step >= 3) {
-                step3Dot.classList.remove('bg-white/10', 'text-gray-400');
-                step3Dot.classList.add('bg-blue-600', 'text-white');
-                step3Label.classList.remove('text-gray-500');
-                step3Label.classList.add('text-blue-400');
+                step3Dot.classList.remove('step-inactive');
+                step3Dot.classList.add('step-active');
+                step3Label.classList.remove('text-gray-400');
+                step3Label.classList.add('text-blue-600');
             }
         }
 
@@ -433,22 +586,13 @@
             if (isProcessing) return;
             currentMethod = method;
             
-            // Update active styling
             document.querySelectorAll('.method-card').forEach(card => {
                 card.classList.remove('active');
             });
             document.getElementById(`method-${method}`).classList.add('active');
             
             if (method === 'bitcoin') {
-                // Bitcoin goes to amount page
                 goToAmountPage();
-            } else if (method === 'paypal') {
-                // For PayPal, you can add similar flow
-                alert('PayPal integration coming soon');
-                backToMethods();
-            } else if (method === 'gift') {
-                alert('Gift card integration coming soon');
-                backToMethods();
             }
         }
 
@@ -473,7 +617,6 @@
             updateSteps(2);
         }
 
-        // Go to Bitcoin payment page with the selected amount
         function goToBitcoinPayment() {
             if (!updateAmountUI()) {
                 amountError.classList.remove('hidden');
@@ -481,7 +624,6 @@
             }
             amountError.classList.add('hidden');
             
-            // Update Bitcoin payment page with the exact amount
             const formattedAmount = `$${currentAmount.toFixed(2)}`;
             document.getElementById('btcAmountDisplay').innerText = formattedAmount;
             document.getElementById('instructionAmount').innerText = formattedAmount;
@@ -514,9 +656,9 @@
                 const btn = document.getElementById(`preset-${p}`);
                 if (btn) {
                     if (Math.abs(p - currentAmount) < 0.01) {
-                        btn.className = 'preset-btn preset-btn-active py-2 rounded-xl text-sm';
+                        btn.className = 'preset-btn preset-btn-active py-3 rounded-xl text-sm font-semibold';
                     } else {
-                        btn.className = 'preset-btn bg-white/5 py-2 rounded-xl text-sm';
+                        btn.className = 'preset-btn py-3 rounded-xl text-sm font-semibold';
                     }
                 }
             });
@@ -533,38 +675,11 @@
             navigator.clipboard.writeText(address).then(() => {
                 const btnText = document.getElementById('copyBtnText');
                 const original = btnText.innerText;
-                btnText.innerText = 'Copied!';
+                btnText.innerHTML = '<i class="fas fa-check"></i> Copied!';
                 setTimeout(() => {
-                    btnText.innerText = original;
+                    btnText.innerHTML = '<i class="far fa-copy"></i> Copy wallet address';
                 }, 2000);
             });
-        }
-
-        // Simulate payment completion
-        async function simulatePayment() {
-            if (isProcessing) return;
-            isProcessing = true;
-            
-            const payBtn = document.querySelector('#step3Container .btn-primary');
-            const originalText = payBtn.innerHTML;
-            payBtn.innerHTML = '<div class="spinner"></div> Verifying payment...';
-            payBtn.disabled = true;
-            
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            alert(`✅ Payment Received!\n\n$${currentAmount.toFixed(2)} worth of Bitcoin has been received.\nReference: SCP-${Math.floor(Math.random() * 1000000)}\n\nYour deposit will be credited within 10 minutes.`);
-            
-            // Reset to method selection
-            isProcessing = false;
-            step1Container.style.display = 'block';
-            step2Container.style.display = 'none';
-            step3Container.style.display = 'none';
-            updateSteps(1);
-            setPresetAmount(250);
-            
-            // Reset button
-            payBtn.innerHTML = originalText;
-            payBtn.disabled = false;
         }
 
         // Initialize
