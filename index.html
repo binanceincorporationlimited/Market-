@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>SecurePay Premium | Secure Deposit Portal</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,6 +15,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -23,6 +24,7 @@
             background-image: radial-gradient(circle at 25% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
                               radial-gradient(circle at 75% 100%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
             min-height: 100vh;
+            padding: 16px;
         }
 
         /* Glassmorphism Premium Card */
@@ -44,7 +46,6 @@
         .method-card:hover {
             background: rgba(255, 255, 255, 0.05);
             border-color: rgba(59, 130, 246, 0.4);
-            transform: translateY(-1px);
         }
 
         .method-card.active {
@@ -71,6 +72,7 @@
         .preset-btn {
             transition: all 0.2s ease;
             font-weight: 600;
+            cursor: pointer;
         }
 
         .preset-btn-active {
@@ -86,15 +88,11 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 30px -12px rgba(59, 130, 246, 0.5);
-        }
-
-        .btn-primary:active:not(:disabled) {
-            transform: translateY(0);
+        .btn-primary:active {
+            transform: scale(0.98);
         }
 
         .btn-primary:disabled {
@@ -121,43 +119,59 @@
         .expandable-section {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.2s ease;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
             opacity: 0;
         }
 
         .expandable-section.show {
-            max-height: 180px;
+            max-height: 200px;
             opacity: 1;
             margin-top: 16px;
         }
 
-        /* Bitcoin Modal Styles */
+        /* Bitcoin Modal - Android Optimized */
         .bitcoin-modal-bg {
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(16px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
         }
 
-        .bitcoin-card {
-            background: rgba(10, 14, 23, 0.95);
+        .bitcoin-modal-container {
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            background: rgba(10, 14, 23, 0.98);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 28px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            animation: fadeIn 0.25s ease-out;
         }
 
-        .copy-btn {
-            transition: all 0.2s ease;
-        }
-        
-        .copy-btn:hover {
-            transform: translateY(-1px);
+        .bitcoin-modal-container::-webkit-scrollbar {
+            width: 4px;
         }
 
-        .wallet-address {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-family: 'Monaco', 'Courier New', monospace;
-            word-break: break-all;
-            white-space: pre-wrap;
-            line-height: 1.6;
+        .bitcoin-modal-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .bitcoin-modal-container::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.5);
+            border-radius: 10px;
         }
 
         @keyframes fadeIn {
@@ -171,281 +185,298 @@
             }
         }
 
-        .modal-animate {
-            animation: fadeIn 0.25s ease-out;
+        .close-modal-btn {
+            position: sticky;
+            top: 12px;
+            right: 12px;
+            float: right;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            z-index: 10;
+            margin: 12px 12px 0 0;
         }
 
-        /* QR Code Image Container */
         .qr-container {
             background: white;
             padding: 12px;
-            border-radius: 16px;
+            border-radius: 20px;
             display: inline-block;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
-        /* Scrollable Modal Content - IMPROVED */
-        .modal-scrollable {
-            max-height: 85vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-            scrollbar-width: thin;
-            scroll-behavior: smooth;
+        .wallet-address {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: 'Monaco', 'Courier New', monospace;
+            word-break: break-all;
+            font-size: 14px;
+            line-height: 1.5;
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
         }
 
-        .modal-scrollable::-webkit-scrollbar {
-            width: 8px;
+        .copy-btn {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            width: 100%;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 600;
         }
 
-        .modal-scrollable::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+        .copy-btn:active {
+            transform: scale(0.97);
         }
 
-        .modal-scrollable::-webkit-scrollbar-thumb {
-            background: rgba(59, 130, 246, 0.5);
-            border-radius: 10px;
+        /* Touch-friendly buttons */
+        button, .method-card, .preset-btn {
+            cursor: pointer;
+            touch-action: manipulation;
         }
 
-        .modal-scrollable::-webkit-scrollbar-thumb:hover {
-            background: rgba(59, 130, 246, 0.8);
-        }
-
-        /* Custom scrollbar for main page */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(59, 130, 246, 0.5);
-            border-radius: 10px;
+        /* Mobile optimizations */
+        @media (max-width: 640px) {
+            body {
+                padding: 12px;
+            }
+            .glass-premium {
+                border-radius: 24px;
+            }
+            .preset-btn {
+                padding: 12px 0;
+                font-size: 14px;
+            }
+            .wallet-address {
+                font-size: 12px;
+                padding: 14px;
+            }
         }
     </style>
 </head>
-<body class="flex items-center justify-center p-4 md:p-6 min-h-screen">
+<body>
 
     <!-- Main Card -->
-    <div class="max-w-2xl w-full glass-premium rounded-3xl shadow-2xl overflow-hidden">
-        <!-- Header with Security Badge -->
-        <div class="px-6 md:px-8 pt-8 pb-4 border-b border-white/10">
+    <div class="max-w-2xl w-full glass-premium rounded-3xl shadow-2xl overflow-hidden mx-auto">
+        <!-- Header -->
+        <div class="px-5 md:px-8 pt-6 pb-4 border-b border-white/10">
             <div class="flex items-center justify-between flex-wrap gap-3">
                 <div class="flex items-center gap-3">
-                    <div class="h-11 w-11 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center border border-blue-500/30 shadow-lg">
-                        <i class="fas fa-shield-halved text-blue-400 text-xl"></i>
+                    <div class="h-10 w-10 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center border border-blue-500/30">
+                        <i class="fas fa-shield-halved text-blue-400 text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">SecurePay<span class="text-blue-500">.</span></h1>
-                        <p class="text-[11px] text-gray-500 tracking-wide">PCI DSS Level 1 Certified</p>
+                        <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">SecurePay<span class="text-blue-500">.</span></h1>
+                        <p class="text-[10px] text-gray-500">PCI DSS Level 1 Certified</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <i class="fas fa-lock text-emerald-400 text-xs"></i>
-                    <span class="text-[10px] uppercase tracking-wider text-gray-400 font-semibold bg-white/5 px-3 py-1.5 rounded-full border border-white/10">256-bit Encrypted</span>
+                    <span class="text-[9px] uppercase text-gray-400 font-semibold bg-white/5 px-2 py-1 rounded-full">256-bit</span>
                 </div>
             </div>
         </div>
 
-        <div class="p-6 md:p-8">
+        <div class="p-5 md:p-8">
             <!-- Progress Indicator -->
-            <div class="flex items-center gap-2 mb-8 text-xs font-medium">
-                <div class="flex items-center gap-2">
-                    <span class="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-[11px] font-bold">1</span>
-                    <span class="text-gray-400">Method</span>
+            <div class="flex items-center justify-center gap-2 mb-6 text-xs font-medium">
+                <div class="flex items-center gap-1">
+                    <span class="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center text-[10px] font-bold">1</span>
+                    <span class="text-gray-400 text-[10px]">Method</span>
                 </div>
-                <div class="w-8 h-px bg-white/20"></div>
-                <div class="flex items-center gap-2">
-                    <span class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[11px] font-bold text-gray-400">2</span>
-                    <span class="text-gray-400">Amount</span>
+                <div class="w-6 h-px bg-white/20"></div>
+                <div class="flex items-center gap-1">
+                    <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold text-gray-400">2</span>
+                    <span class="text-gray-400 text-[10px]">Amount</span>
                 </div>
-                <div class="w-8 h-px bg-white/20"></div>
-                <div class="flex items-center gap-2">
-                    <span class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[11px] font-bold text-gray-400">3</span>
-                    <span class="text-gray-400">Confirm</span>
+                <div class="w-6 h-px bg-white/20"></div>
+                <div class="flex items-center gap-1">
+                    <span class="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold text-gray-400">3</span>
+                    <span class="text-gray-400 text-[10px]">Confirm</span>
                 </div>
             </div>
 
-            <!-- PAYMENT METHODS SECTION -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-sm font-semibold text-gray-200 tracking-wide">Payment method</h2>
-                    <span class="text-[10px] text-gray-500">All methods $0 fee</span>
+            <!-- PAYMENT METHODS -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-sm font-semibold text-gray-200">Payment method</h2>
+                    <span class="text-[9px] text-gray-500">$0 fee</span>
                 </div>
 
-                <div class="grid gap-3">
-                    <!-- Bitcoin Method - Opens Modal -->
-                    <div onclick="openBitcoinModal()" id="method-bitcoin" class="method-card rounded-xl p-4 flex items-center justify-between group cursor-pointer">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
-                                <i class="fab fa-bitcoin text-2xl text-orange-400"></i>
+                <div class="grid gap-2">
+                    <!-- Bitcoin -->
+                    <div onclick="openBitcoinModal()" id="method-bitcoin" class="method-card rounded-xl p-3 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-orange-500/10 flex items-center justify-center">
+                                <i class="fab fa-bitcoin text-xl text-orange-400"></i>
                             </div>
                             <div>
                                 <p class="font-bold text-sm text-white">Bitcoin (BTC)</p>
-                                <p class="text-[11px] text-gray-500">Network: Lightning & On-chain</p>
+                                <p class="text-[9px] text-gray-500">Lightning & On-chain</p>
                             </div>
                         </div>
                         <i class="fas fa-chevron-right text-gray-600 text-xs"></i>
                     </div>
 
-                    <!-- PayPal Method -->
-                    <div onclick="selectMethod('paypal')" id="method-paypal" class="method-card rounded-xl p-4 flex items-center justify-between group cursor-pointer">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                                <i class="fab fa-paypal text-2xl text-blue-400"></i>
+                    <!-- PayPal -->
+                    <div onclick="selectMethod('paypal')" id="method-paypal" class="method-card rounded-xl p-3 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                                <i class="fab fa-paypal text-xl text-blue-400"></i>
                             </div>
                             <div>
                                 <p class="font-bold text-sm text-white">PayPal</p>
-                                <p class="text-[11px] text-gray-500">Instant • Digital wallet</p>
+                                <p class="text-[9px] text-gray-500">Instant • Digital wallet</p>
                             </div>
                         </div>
                         <i class="fas fa-chevron-right text-gray-600 text-xs"></i>
                     </div>
 
-                    <!-- Gift Card Method -->
-                    <div onclick="selectMethod('gift')" id="method-gift" class="method-card active rounded-xl p-4">
+                    <!-- Gift Card -->
+                    <div onclick="selectMethod('gift')" id="method-gift" class="method-card active rounded-xl p-3">
                         <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                                    <i class="fas fa-gift text-2xl text-emerald-400"></i>
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                                    <i class="fas fa-gift text-xl text-emerald-400"></i>
                                 </div>
                                 <div>
                                     <p class="font-bold text-sm text-white">Digital Gift Card</p>
-                                    <p class="text-[11px] text-gray-500">Visa/Mastercard prepaid</p>
+                                    <p class="text-[9px] text-gray-500">Visa/Mastercard prepaid</p>
                                 </div>
                             </div>
                             <i class="fas fa-check-circle text-blue-500 text-sm" id="gift-check-icon"></i>
                         </div>
                         
                         <div id="gift-expandable" class="expandable-section show">
-                            <div class="relative mt-1">
-                                <input type="text" id="gift-card-input" placeholder="Gift card code (e.g., 6011-XXXX-XXXX-XXXX)" 
-                                       class="w-full input-premium rounded-xl p-3.5 text-sm text-white placeholder:text-gray-600 font-mono tracking-wide">
-                            </div>
-                            <p class="text-[10px] text-gray-500 mt-2 flex items-center gap-1"><i class="fas fa-info-circle"></i> Accepted: Vanilla, OneVanilla, Mastercard Gift</p>
+                            <input type="text" id="gift-card-input" placeholder="Gift card code" 
+                                   class="w-full input-premium rounded-xl p-3 text-sm text-white placeholder:text-gray-600 font-mono">
+                            <p class="text-[9px] text-gray-500 mt-2"><i class="fas fa-info-circle"></i> Accepted: Vanilla, OneVanilla, Mastercard Gift</p>
                         </div>
                     </div>
                 </div>
 
-                <div id="dynamic-method-panel" class="mt-4"></div>
+                <div id="dynamic-method-panel" class="mt-3"></div>
             </div>
 
             <!-- AMOUNT SECTION -->
-            <div class="mb-8">
-                <h2 class="text-sm font-semibold text-gray-200 mb-4">Amount (USD)</h2>
-                <div class="grid grid-cols-4 gap-2 mb-5">
-                    <button onclick="setPresetAmount(50)" id="preset-50" class="preset-btn bg-white/5 hover:bg-white/10 py-2.5 rounded-xl text-sm font-semibold transition-all">$50</button>
-                    <button onclick="setPresetAmount(100)" id="preset-100" class="preset-btn bg-white/5 hover:bg-white/10 py-2.5 rounded-xl text-sm font-semibold transition-all">$100</button>
-                    <button onclick="setPresetAmount(250)" id="preset-250" class="preset-btn preset-btn-active py-2.5 rounded-xl text-sm font-semibold">$250</button>
-                    <button onclick="setPresetAmount(500)" id="preset-500" class="preset-btn bg-white/5 hover:bg-white/10 py-2.5 rounded-xl text-sm font-semibold transition-all">$500</button>
+            <div class="mb-6">
+                <h2 class="text-sm font-semibold text-gray-200 mb-3">Amount (USD)</h2>
+                <div class="grid grid-cols-4 gap-2 mb-4">
+                    <button onclick="setPresetAmount(50)" id="preset-50" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$50</button>
+                    <button onclick="setPresetAmount(100)" id="preset-100" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$100</button>
+                    <button onclick="setPresetAmount(250)" id="preset-250" class="preset-btn preset-btn-active py-2 rounded-xl text-sm">$250</button>
+                    <button onclick="setPresetAmount(500)" id="preset-500" class="preset-btn bg-white/5 py-2 rounded-xl text-sm">$500</button>
                 </div>
                 
                 <div class="relative">
-                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 text-2xl font-light">$</span>
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">$</span>
                     <input type="number" id="amount-input" value="250.00" step="10" min="10" max="10000"
-                           class="w-full input-premium rounded-2xl py-5 pl-12 pr-20 text-2xl font-bold text-white focus:outline-none">
-                    <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 text-xs font-semibold tracking-wider bg-white/5 px-2 py-1 rounded">USD</span>
+                           class="w-full input-premium rounded-2xl py-4 pl-9 pr-16 text-xl font-bold text-white">
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-[10px] bg-white/5 px-2 py-1 rounded">USD</span>
                 </div>
                 <p id="amount-error" class="text-red-400 text-xs mt-2 hidden">Amount must be between $10 and $10,000</p>
             </div>
 
             <!-- ORDER SUMMARY -->
-            <div class="bg-black/30 rounded-2xl p-5 border border-white/10 mb-8">
-                <div class="flex justify-between text-sm mb-3">
+            <div class="bg-black/30 rounded-2xl p-4 border border-white/10 mb-6">
+                <div class="flex justify-between text-sm mb-2">
                     <span class="text-gray-400">Subtotal</span>
                     <span id="subtotal-display" class="text-white font-medium">$250.00</span>
                 </div>
-                <div class="flex justify-between text-sm mb-3">
+                <div class="flex justify-between text-sm mb-2">
                     <span class="text-gray-400">Processing fee</span>
                     <span class="text-emerald-400">$0.00</span>
                 </div>
-                <div class="border-t border-white/10 my-3"></div>
+                <div class="border-t border-white/10 my-2"></div>
                 <div class="flex justify-between items-center">
-                    <span class="text-xs text-gray-500 font-bold tracking-wider">TOTAL</span>
-                    <span id="total-display" class="text-2xl font-extrabold text-white tracking-tight">$250.00</span>
+                    <span class="text-xs text-gray-500 font-bold">TOTAL</span>
+                    <span id="total-display" class="text-xl font-extrabold text-white">$250.00</span>
                 </div>
             </div>
 
-            <!-- SECURE ACTION BUTTON -->
-            <button id="deposit-button" onclick="processDeposit()" class="btn-primary w-full py-5 rounded-2xl font-bold text-white text-lg flex items-center justify-center gap-3 transition-all">
+            <!-- DEPOSIT BUTTON -->
+            <button id="deposit-button" onclick="processDeposit()" class="btn-primary w-full py-4 rounded-2xl font-bold text-white text-base flex items-center justify-center gap-2">
                 <span id="btn-text">Complete deposit</span>
                 <i id="btn-icon" class="fas fa-arrow-right text-sm"></i>
                 <div id="btn-spinner" class="spinner hidden"></div>
             </button>
 
             <!-- TRUST BADGES -->
-            <div class="flex items-center justify-center gap-6 mt-6 text-gray-500 text-xs">
-                <div class="flex items-center gap-2"><i class="fas fa-shield-alt text-emerald-500 text-xs"></i><span>Fraud protection</span></div>
-                <div class="flex items-center gap-2"><i class="fas fa-clock"></i><span>24/7 support</span></div>
-                <div class="flex items-center gap-2"><i class="fas fa-undo-alt"></i><span>Secure refunds</span></div>
+            <div class="flex items-center justify-center gap-4 mt-5 text-gray-500 text-[10px]">
+                <div class="flex items-center gap-1"><i class="fas fa-shield-alt text-emerald-500"></i><span>Fraud protection</span></div>
+                <div class="flex items-center gap-1"><i class="fas fa-clock"></i><span>24/7 support</span></div>
+                <div class="flex items-center gap-1"><i class="fas fa-undo-alt"></i><span>Secure refunds</span></div>
             </div>
-            <p class="text-center text-[10px] text-gray-600 mt-4">By confirming, you agree to SecurePay's <span class="text-blue-400 cursor-pointer">Terms of Service</span>.</p>
         </div>
     </div>
 
-    <!-- BITCOIN MODAL with QR Code Image and Scrollable Content -->
-    <div id="bitcoin-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bitcoin-modal-bg" style="background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(16px);">
-        <div class="relative max-w-2xl w-full modal-animate">
-            <!-- Close Button -->
-            <button onclick="closeBitcoinModal()" class="absolute -top-12 right-0 text-white/70 hover:text-white text-2xl transition-all z-10">
-                <i class="fas fa-times-circle"></i>
-            </button>
-            
-            <!-- Main Content Card - Scrollable -->
-            <div class="bitcoin-card rounded-2xl overflow-hidden shadow-2xl border border-white/20 modal-scrollable">
-                <div class="p-8 md:p-10">
+    <!-- BITCOIN MODAL - Android Optimized with Scroll -->
+    <div id="bitcoin-modal" style="display: none;">
+        <div class="bitcoin-modal-bg" onclick="closeBitcoinModal(event)">
+            <div class="bitcoin-modal-container" onclick="event.stopPropagation()">
+                <div class="close-modal-btn" onclick="closeBitcoinModal()">
+                    <i class="fas fa-times text-white text-sm"></i>
+                </div>
+                <div class="px-5 pb-6 pt-2">
                     <!-- Header -->
-                    <div class="text-center mb-6">
-                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-orange-500/20 border border-orange-500/30 mb-4">
-                            <i class="fab fa-bitcoin text-3xl text-orange-400"></i>
+                    <div class="text-center mt-2 mb-5">
+                        <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-orange-500/20 border border-orange-500/30 mb-3">
+                            <i class="fab fa-bitcoin text-2xl text-orange-400"></i>
                         </div>
-                        <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Bitcoin (BTC)</h2>
-                        <p class="text-gray-300 text-sm">To deposit funds, make a bitcoin transfer to the BTC-wallet shown below. Copy wallet address or scan QR code with your camera.</p>
+                        <h2 class="text-xl font-bold text-white mb-1">Bitcoin (BTC)</h2>
+                        <p class="text-gray-300 text-xs">To deposit funds, make a bitcoin transfer to the BTC-wallet shown below. Copy wallet address or scan QR code with your camera.</p>
                     </div>
                     
-                    <!-- QR Code Image (Your Unsplash Image) -->
-                    <div class="flex justify-center mb-8">
-                        <div class="qr-container bg-white rounded-2xl shadow-xl">
+                    <!-- Divider -->
+                    <div class="border-t border-white/10 my-4"></div>
+                    
+                    <!-- QR Code Image -->
+                    <div class="flex justify-center mb-5">
+                        <div class="qr-container bg-white rounded-xl shadow-lg">
                             <img 
                                 src="https://images.unsplash.com/photo-1774868693677-c2fd7594825f?q=80&w=876&auto=format&fit=crop"
                                 alt="Bitcoin QR Code"
-                                class="w-48 h-48 md:w-56 md:h-56 object-cover rounded-xl"
-                                onerror="this.onerror=null; this.src='https://placehold.co/400x400/1a1a2e/ff8c00?text=Scan+QR+Code'"
+                                class="w-40 h-40 object-cover rounded-lg"
+                                onerror="this.src='https://placehold.co/400x400/1a1a2e/ff8c00?text=QR+Code'"
                             >
                         </div>
                     </div>
                     
-                    <!-- Wallet Address Section with Copy Button Below - EXACTLY AS IN YOUR IMAGE -->
-                    <div class="bg-black/50 rounded-xl p-5 border border-white/10 mb-6">
-                        <p class="text-gray-400 text-xs uppercase tracking-wider mb-4 text-center">YOUR UNIQUE BITCOIN WALLET ADDRESS</p>
-                        <code id="btc-wallet-address" class="wallet-address block bg-black/60 rounded-lg px-4 py-4 text-orange-300 text-sm md:text-base break-all font-mono text-center mb-5" style="white-space: pre-wrap; line-height: 1.8;">
-bc1qqgy9uf9uzqu4c85kdn
-qkn7vlurwwqjxmwa4wcp
-                        </code>
-                        <button onclick="copyBitcoinAddress()" class="copy-btn w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-5 py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-all">
+                    <!-- Wallet Address Section -->
+                    <div class="mb-5">
+                        <p class="text-gray-400 text-[10px] uppercase tracking-wider text-center mb-2">YOUR UNIQUE BITCOIN WALLET ADDRESS</p>
+                        <div class="wallet-address text-orange-300 font-mono text-center mb-3">
+                            bc1qqgy9uf9uzqu4c85kdn<br>qkn7vlurwwqjxmwa4wcp
+                        </div>
+                        <button onclick="copyBitcoinAddress()" class="copy-btn bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl flex items-center justify-center gap-2">
                             <i class="far fa-copy"></i>
                             <span id="copy-btn-text">Copy address</span>
                         </button>
                     </div>
                     
                     <!-- Terms Section -->
-                    <div class="bg-black/40 rounded-xl p-5 border border-white/10 mb-6">
-                        <div class="flex items-center gap-2 mb-3">
-                            <i class="fas fa-file-contract text-gray-400 text-sm"></i>
-                            <h3 class="text-gray-300 font-semibold text-sm uppercase tracking-wider">Terms</h3>
+                    <div class="bg-black/30 rounded-xl p-4 border border-white/10 mb-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fas fa-file-contract text-gray-400 text-xs"></i>
+                            <h3 class="text-gray-300 font-semibold text-xs uppercase">Terms</h3>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-400 text-xs">Average payment time</span>
+                            <span class="text-emerald-400 text-xs font-semibold"><i class="fas fa-bolt text-[10px]"></i> Instant</span>
                         </div>
                         <div class="flex justify-between items-center mb-3">
-                            <span class="text-gray-400 text-sm">Average payment time</span>
-                            <span class="text-emerald-400 font-semibold text-sm flex items-center gap-1"><i class="fas fa-bolt text-xs"></i> Instant</span>
+                            <span class="text-gray-400 text-xs">Fee</span>
+                            <span class="text-white text-xs font-semibold">0%</span>
                         </div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-gray-400 text-sm">Fee</span>
-                            <span class="text-white font-semibold text-sm">0%</span>
-                        </div>
-                        <div class="border-t border-white/10 pt-3 mt-1">
-                            <p class="text-gray-500 text-xs text-center">
+                        <div class="border-t border-white/10 pt-2">
+                            <p class="text-gray-500 text-[9px] text-center">
                                 All crypto wallet services are provided by Thecorio Ltd, a company incorporated in Seychelles, with registration number 8437417-1.
                             </p>
                         </div>
@@ -453,9 +484,9 @@ qkn7vlurwwqjxmwa4wcp
                     
                     <!-- Scan Hint -->
                     <div class="text-center">
-                        <p class="text-gray-500 text-xs flex items-center justify-center gap-2">
-                            <i class="fas fa-camera"></i>
-                            <span>Scan QR code with your camera app to auto-fill wallet address</span>
+                        <p class="text-gray-500 text-[9px] flex items-center justify-center gap-1">
+                            <i class="fas fa-camera text-[10px]"></i>
+                            <span>Scan QR code with your camera app</span>
                         </p>
                     </div>
                 </div>
@@ -464,7 +495,7 @@ qkn7vlurwwqjxmwa4wcp
     </div>
 
     <script>
-        // ---------- STATE MANAGEMENT ----------
+        // State
         let currentMethod = 'gift';
         let currentAmount = 250.00;
         let isProcessing = false;
@@ -484,23 +515,20 @@ qkn7vlurwwqjxmwa4wcp
         // Bitcoin Modal Functions
         function openBitcoinModal() {
             const modal = document.getElementById('bitcoin-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
 
-        function closeBitcoinModal() {
+        function closeBitcoinModal(event) {
             const modal = document.getElementById('bitcoin-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            modal.style.display = 'none';
             document.body.style.overflow = '';
         }
 
-        // Copy Bitcoin Address Function - Copies the full address without line break
+        // Copy Bitcoin Address
         function copyBitcoinAddress() {
-            // Full address without line break
-            const fullAddress = "bc1qqgy9uf9uzqu4c85kdnqkn7vlurwwqjxmwa4wcp";
-            navigator.clipboard.writeText(fullAddress).then(() => {
+            const address = "bc1qqgy9uf9uzqu4c85kdnqkn7vlurwwqjxmwa4wcp";
+            navigator.clipboard.writeText(address).then(() => {
                 const copyBtnText = document.getElementById('copy-btn-text');
                 const originalText = copyBtnText.innerText;
                 copyBtnText.innerText = 'Copied!';
@@ -509,27 +537,12 @@ qkn7vlurwwqjxmwa4wcp
                     copyBtnText.innerText = originalText;
                     copyBtnText.parentElement.classList.remove('bg-emerald-600');
                 }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-                alert('Failed to copy address. Please select and copy manually.');
+            }).catch(() => {
+                alert('Please copy manually: ' + address);
             });
         }
 
-        // Close modal on escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeBitcoinModal();
-            }
-        });
-
-        // Close modal on backdrop click
-        document.getElementById('bitcoin-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeBitcoinModal();
-            }
-        });
-
-        // Helper: Update all amount displays
+        // Amount Functions
         function updateAmountUI() {
             let rawValue = parseFloat(amountInput.value);
             if (isNaN(rawValue)) rawValue = 0;
@@ -538,30 +551,28 @@ qkn7vlurwwqjxmwa4wcp
                 amountInput.value = rawValue.toFixed(2);
             }
             currentAmount = rawValue;
-            const formatted = currentAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const formatted = currentAmount.toLocaleString('en-US', { minimumFractionDigits: 2 });
             subtotalSpan.innerText = `$${formatted}`;
             totalSpan.innerText = `$${formatted}`;
             
             if (currentAmount < 10 || currentAmount > 10000) {
                 amountError.classList.remove('hidden');
                 return false;
-            } else {
-                amountError.classList.add('hidden');
-                return true;
             }
+            amountError.classList.add('hidden');
+            return true;
         }
 
         function setPresetAmount(value) {
             amountInput.value = value.toFixed(2);
             updateAmountUI();
-            const presets = [50, 100, 250, 500];
-            presets.forEach(p => {
+            [50, 100, 250, 500].forEach(p => {
                 const btn = document.getElementById(`preset-${p}`);
                 if (btn) {
                     if (Math.abs(p - currentAmount) < 0.01) {
-                        btn.className = 'preset-btn preset-btn-active py-2.5 rounded-xl text-sm font-semibold';
+                        btn.className = 'preset-btn preset-btn-active py-2 rounded-xl text-sm';
                     } else {
-                        btn.className = 'preset-btn bg-white/5 hover:bg-white/10 py-2.5 rounded-xl text-sm font-semibold transition-all';
+                        btn.className = 'preset-btn bg-white/5 py-2 rounded-xl text-sm';
                     }
                 }
             });
@@ -572,24 +583,25 @@ qkn7vlurwwqjxmwa4wcp
             setPresetAmount(currentAmount);
         });
 
+        // Payment Method Selection
         function selectMethod(method) {
             if (isProcessing) return;
             currentMethod = method;
             
             document.querySelectorAll('.method-card').forEach(card => {
                 card.classList.remove('active');
-                const existingCheck = card.querySelector('.method-check-icon');
-                if (existingCheck) existingCheck.remove();
+                const check = card.querySelector('.method-check-icon');
+                if (check) check.remove();
             });
             
             const activeCard = document.getElementById(`method-${method}`);
             activeCard.classList.add('active');
             
-            const rightContainer = activeCard.querySelector('.flex.items-center.justify-between');
-            if (rightContainer && !activeCard.querySelector('.method-check-icon')) {
-                const checkIcon = document.createElement('i');
-                checkIcon.className = 'fas fa-check-circle text-blue-500 text-sm method-check-icon';
-                rightContainer.appendChild(checkIcon);
+            const rightDiv = activeCard.querySelector('.flex.items-center.justify-between');
+            if (rightDiv && !activeCard.querySelector('.method-check-icon')) {
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-check-circle text-blue-500 text-sm method-check-icon';
+                rightDiv.appendChild(icon);
             }
             
             if (method === 'gift') {
@@ -600,10 +612,9 @@ qkn7vlurwwqjxmwa4wcp
             
             if (method === 'paypal') {
                 dynamicPanel.innerHTML = `
-                    <div class="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
-                        <label class="text-xs text-gray-400 block mb-2">PayPal email address</label>
-                        <input type="email" id="paypal-email" placeholder="your@email.com" class="w-full input-premium rounded-xl p-3 text-sm text-white">
-                        <p class="text-[10px] text-gray-500 mt-2">You will be redirected to PayPal to complete payment securely.</p>
+                    <div class="bg-blue-500/5 border border-blue-500/20 rounded-xl p-3 mt-2">
+                        <input type="email" id="paypal-email" placeholder="PayPal email" class="w-full input-premium rounded-xl p-3 text-sm text-white">
+                        <p class="text-[9px] text-gray-500 mt-2">You'll be redirected to PayPal</p>
                     </div>
                 `;
             } else {
@@ -613,15 +624,13 @@ qkn7vlurwwqjxmwa4wcp
 
         function validateGiftCard() {
             if (currentMethod !== 'gift') return true;
-            const giftInput = document.getElementById('gift-card-input');
-            if (!giftInput) return false;
-            const code = giftInput.value.trim();
-            if (code === "") {
-                showModal('error', 'Gift card required', 'Please enter a valid gift card code to proceed.');
+            const code = document.getElementById('gift-card-input')?.value.trim();
+            if (!code) {
+                showModal('error', 'Gift card required', 'Please enter a valid gift card code.');
                 return false;
             }
             if (code.length < 8) {
-                showModal('error', 'Invalid code', 'Gift card code must be at least 8 characters.');
+                showModal('error', 'Invalid code', 'Code must be at least 8 characters.');
                 return false;
             }
             return true;
@@ -629,12 +638,9 @@ qkn7vlurwwqjxmwa4wcp
 
         function validatePayPal() {
             if (currentMethod !== 'paypal') return true;
-            const emailInput = document.getElementById('paypal-email');
-            if (!emailInput) return false;
-            const email = emailInput.value.trim();
-            const emailPattern = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
-            if (!emailPattern.test(email)) {
-                showModal('error', 'Invalid email', 'Please enter a valid PayPal email address.');
+            const email = document.getElementById('paypal-email')?.value.trim();
+            if (!email || !/^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(email)) {
+                showModal('error', 'Invalid email', 'Please enter a valid PayPal email.');
                 return false;
             }
             return true;
@@ -642,25 +648,22 @@ qkn7vlurwwqjxmwa4wcp
 
         async function processDeposit() {
             if (isProcessing) return;
-            
             if (!updateAmountUI() || currentAmount < 10 || currentAmount > 10000) {
-                showModal('error', 'Invalid amount', 'Amount must be between $10 and $10,000 USD.');
+                showModal('error', 'Invalid amount', 'Amount must be between $10 and $10,000.');
                 return;
             }
-            
-            if (!validateGiftCard()) return;
-            if (!validatePayPal()) return;
+            if (!validateGiftCard() || !validatePayPal()) return;
             
             isProcessing = true;
             depositBtn.disabled = true;
-            btnText.innerText = "Processing secure transaction";
+            btnText.innerText = "Processing...";
             btnIcon.classList.add('hidden');
             btnSpinner.classList.remove('hidden');
             
             await new Promise(resolve => setTimeout(resolve, 1800));
             
-            let methodName = currentMethod === 'paypal' ? 'PayPal' : 'Gift Card';
-            showModal('success', 'Deposit initiated', `$${currentAmount.toFixed(2)} via ${methodName} has been submitted. Reference ID: SCP-${Math.floor(Math.random() * 1000000)}.`);
+            const methodName = currentMethod === 'paypal' ? 'PayPal' : 'Gift Card';
+            showModal('success', 'Deposit initiated', `$${currentAmount.toFixed(2)} via ${methodName} submitted. Ref: SCP-${Math.floor(Math.random() * 1000000)}`);
             
             resetProcessingState();
         }
@@ -674,51 +677,13 @@ qkn7vlurwwqjxmwa4wcp
         }
         
         function showModal(type, title, message) {
-            const modal = document.getElementById('notification-modal');
-            if (!modal) {
-                alert(`${title}: ${message}`);
-                return;
-            }
-            const modalIcon = document.getElementById('modal-icon');
-            const modalTitle = document.getElementById('modal-title');
-            const modalMsg = document.getElementById('modal-message');
-            
-            modalTitle.innerText = title;
-            modalMsg.innerText = message;
-            
-            if (type === 'success') {
-                modalIcon.innerHTML = '<i class="fas fa-check-circle text-3xl text-emerald-400"></i>';
-                modalIcon.className = 'w-14 h-14 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4';
-            } else {
-                modalIcon.innerHTML = '<i class="fas fa-exclamation-triangle text-3xl text-amber-400"></i>';
-                modalIcon.className = 'w-14 h-14 rounded-full bg-amber-500/20 flex items-center justify-center mx-auto mb-4';
-            }
-            
-            modal.classList.remove('hidden');
+            alert(`${title}\n\n${message}`);
         }
         
-        window.closeModal = function() {
-            const modal = document.getElementById('notification-modal');
-            if (modal) modal.classList.add('hidden');
-        };
-        
-        function init() {
-            selectMethod('gift');
-            updateAmountUI();
-            setPresetAmount(250);
-        }
-        
-        init();
+        // Initialize
+        selectMethod('gift');
+        updateAmountUI();
+        setPresetAmount(250);
     </script>
-
-    <!-- Notification Modal -->
-    <div id="notification-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden transition-all duration-300" style="background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);">
-        <div class="bg-[#0f1119] border border-white/20 rounded-2xl max-w-sm w-full mx-4 p-6 text-center">
-            <div id="modal-icon" class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4"></div>
-            <h3 id="modal-title" class="text-xl font-bold text-white mb-2"></h3>
-            <p id="modal-message" class="text-gray-300 text-sm mb-6"></p>
-            <button onclick="closeModal()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-white font-semibold text-sm w-full">Continue</button>
-        </div>
-    </div>
 </body>
 </html>
