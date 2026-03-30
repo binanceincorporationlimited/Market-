@@ -259,21 +259,21 @@
             }
         }
 
-        /* ========== NEW: LOADING ANIMATION OVERLAY ========== */
+        /* ========== PROFESSIONAL LOADING ANIMATION OVERLAY ========== */
         .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 9999;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(16px);
+            z-index: 10000;
             display: none;
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
 
         .loading-overlay.active {
@@ -282,60 +282,61 @@
         }
 
         .loading-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafc 100%);
             border-radius: 48px;
             padding: 48px 40px;
-            max-width: 450px;
+            max-width: 460px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 40px 60px -20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(59, 130, 246, 0.2);
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
+            box-shadow: 0 50px 70px -30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(59, 130, 246, 0.3);
+            transform: scale(0.96);
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
 
         .loading-overlay.active .loading-card {
             transform: scale(1);
         }
 
-        /* Animated Logo Ring */
-        .logo-ring {
+        /* Animated Ring */
+        .loading-ring {
             position: relative;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 24px;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 28px;
         }
 
-        .ring-spinner {
+        .ring-spinner-gradient {
             position: absolute;
-            top: -8px;
-            left: -8px;
-            right: -8px;
-            bottom: -8px;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
             border-radius: 50%;
-            background: conic-gradient(from 0deg, #3b82f6, #8b5cf6, #3b82f6);
-            animation: spinRing 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-            mask: radial-gradient(transparent 62%, black 63%);
-            -webkit-mask: radial-gradient(transparent 62%, black 63%);
+            background: conic-gradient(from 0deg, #3b82f6, #8b5cf6, #06b6d4, #3b82f6);
+            animation: spinRing 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            mask: radial-gradient(transparent 64%, black 65%);
+            -webkit-mask: radial-gradient(transparent 64%, black 65%);
         }
 
-        .logo-inner {
+        .loading-logo {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            background: linear-gradient(135deg, #2563eb, #1e40af);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
-            animation: pulseLogo 1.2s ease-in-out infinite;
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.4);
+            animation: gentlePulse 1.5s ease-in-out infinite;
         }
 
-        .logo-inner i {
-            font-size: 42px;
+        .loading-logo i {
+            font-size: 48px;
             color: white;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
         @keyframes spinRing {
@@ -347,101 +348,100 @@
             }
         }
 
-        @keyframes pulseLogo {
+        @keyframes gentlePulse {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+                box-shadow: 0 12px 28px rgba(37, 99, 235, 0.4);
             }
             50% {
-                transform: scale(1.05);
-                box-shadow: 0 12px 32px rgba(59, 130, 246, 0.5);
+                transform: scale(1.04);
+                box-shadow: 0 16px 36px rgba(37, 99, 235, 0.6);
             }
         }
 
         /* Progress Bar */
-        .progress-container {
+        .loading-progress-wrapper {
             margin-top: 32px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
-        .progress-bar-bg {
-            background: #e2e8f0;
+        .progress-track {
+            background: #e5e9f0;
             border-radius: 100px;
-            height: 6px;
+            height: 8px;
             overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
 
-        .progress-bar-fill {
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        .progress-fill-animated {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6);
+            background-size: 200% 100%;
             width: 0%;
             height: 100%;
             border-radius: 100px;
-            transition: width 0.1s linear;
+            transition: width 0.08s linear;
+            animation: shimmer 1.2s ease infinite;
         }
 
-        .loading-text {
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .loading-status-text {
             font-size: 14px;
             font-weight: 600;
             color: #1e293b;
-            margin-top: 16px;
-            letter-spacing: 0.3px;
+            margin-top: 18px;
+            letter-spacing: 0.2px;
         }
 
-        .loading-subtext {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 8px;
-        }
-
-        .countdown-timer {
-            font-size: 28px;
+        .loading-timer {
+            font-size: 32px;
             font-weight: 800;
             background: linear-gradient(135deg, #3b82f6, #2563eb);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-top: 8px;
+            margin-top: 6px;
+            font-feature-settings: "tnum";
+            font-variant-numeric: tabular-nums;
         }
 
-        .cancel-btn {
-            margin-top: 28px;
-            background: transparent;
-            border: 1px solid #cbd5e1;
-            color: #475569;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        .loading-sub-message {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
-        .cancel-btn:hover {
-            background: #f1f5f9;
-            border-color: #94a3b8;
-            transform: translateY(-1px);
-        }
-
-        .particle-dots {
+        .loading-dots {
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 24px;
         }
 
-        .particle-dot {
-            width: 6px;
-            height: 6px;
+        .loading-dot {
+            width: 8px;
+            height: 8px;
             background: #3b82f6;
             border-radius: 50%;
-            animation: bounce 1s ease-in-out infinite;
+            animation: loadingBounce 1s ease-in-out infinite;
         }
 
-        .particle-dot:nth-child(1) { animation-delay: 0s; }
-        .particle-dot:nth-child(2) { animation-delay: 0.2s; }
-        .particle-dot:nth-child(3) { animation-delay: 0.4s; }
+        .loading-dot:nth-child(1) { animation-delay: 0s; }
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; background: #8b5cf6; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; background: #06b6d4; }
 
-        @keyframes bounce {
+        @keyframes loadingBounce {
             0%, 80%, 100% {
                 transform: scale(0.6);
                 opacity: 0.4;
@@ -557,7 +557,7 @@
 
                 <div class="space-y-3 mb-8">
                     <!-- Bitcoin -->
-                    <div onclick="selectMethod('bitcoin')" id="method-bitcoin" class="method-card rounded-2xl p-4 flex items-center justify-between group">
+                    <div onclick="selectMethodWithLoading('bitcoin')" id="method-bitcoin" class="method-card rounded-2xl p-4 flex items-center justify-between group">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center">
                                 <i class="fab fa-bitcoin text-2xl text-orange-500"></i>
@@ -613,10 +613,10 @@
                 </div>
             </div>
 
-            <!-- STEP 2: ENTER AMOUNT - FIXED for custom typing (NO AUTO-FORMATTING WHILE TYPING) -->
+            <!-- STEP 2: ENTER AMOUNT -->
             <div id="step2Container" style="display: none;" class="fade-in">
                 <div class="flex items-center gap-3 mb-6">
-                    <button onclick="backToMethods()" class="btn-secondary px-4 py-2 rounded-xl text-sm flex items-center gap-2">
+                    <button onclick="backToMethodsWithLoading()" class="btn-secondary px-4 py-2 rounded-xl text-sm flex items-center gap-2">
                         <i class="fas fa-arrow-left text-xs"></i> Back
                     </button>
                     <div class="h-6 w-px bg-gray-200"></div>
@@ -636,7 +636,7 @@
                     <button onclick="setPresetAmount(500)" id="preset-500" class="preset-btn py-3 rounded-xl text-sm font-semibold">$500</button>
                 </div>
                 
-                <!-- Custom Amount Input - FULLY EDITABLE (NO AUTO-FORMATTING WHILE TYPING) -->
+                <!-- Custom Amount Input -->
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Custom amount</label>
                     <div class="relative">
@@ -670,7 +670,7 @@
                     </div>
                 </div>
 
-                <button onclick="goToBitcoinPayment()" class="btn-primary w-full py-4 rounded-xl font-bold text-white text-base flex items-center justify-center gap-2">
+                <button onclick="goToBitcoinPaymentWithLoading()" class="btn-primary w-full py-4 rounded-xl font-bold text-white text-base flex items-center justify-center gap-2">
                     Continue to Bitcoin Payment <i class="fab fa-bitcoin text-sm"></i>
                 </button>
             </div>
@@ -678,7 +678,7 @@
             <!-- STEP 3: BITCOIN PAYMENT PAGE -->
             <div id="step3Container" style="display: none;" class="fade-in">
                 <div class="flex items-center gap-3 mb-6">
-                    <button onclick="backToAmount()" class="btn-secondary px-4 py-2 rounded-xl text-sm flex items-center gap-2">
+                    <button onclick="backToAmountWithLoading()" class="btn-secondary px-4 py-2 rounded-xl text-sm flex items-center gap-2">
                         <i class="fas fa-arrow-left text-xs"></i> Back
                     </button>
                     <div class="h-6 w-px bg-gray-200"></div>
@@ -771,36 +771,35 @@
         </div>
     </div>
 
-    <!-- NEW: LOADING ANIMATION OVERLAY -->
+    <!-- LOADING ANIMATION OVERLAY -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-card">
-            <div class="logo-ring">
-                <div class="ring-spinner"></div>
-                <div class="logo-inner">
+            <div class="loading-ring">
+                <div class="ring-spinner-gradient"></div>
+                <div class="loading-logo">
                     <i class="fas fa-shield-halved"></i>
                 </div>
             </div>
-            <h3 class="text-xl font-bold text-gray-900 mt-2">SecurePay Protection</h3>
-            <p class="text-sm text-gray-500 mt-1">Securing your transaction</p>
+            <h3 class="text-xl font-bold text-gray-900 mt-2">Secure Processing</h3>
+            <p class="text-sm text-gray-500 mt-1">Protecting your transaction</p>
             
-            <div class="progress-container">
-                <div class="progress-bar-bg">
-                    <div id="progressFill" class="progress-bar-fill"></div>
+            <div class="loading-progress-wrapper">
+                <div class="progress-track">
+                    <div id="progressFillAnimated" class="progress-fill-animated"></div>
                 </div>
-                <div id="loadingMessage" class="loading-text">Initializing secure tunnel...</div>
-                <div id="countdownDisplay" class="countdown-timer">6s</div>
-                <div class="loading-subtext">Please don't close this window</div>
+                <div id="loadingStatusText" class="loading-status-text">Initializing secure gateway...</div>
+                <div id="loadingTimerDisplay" class="loading-timer">6s</div>
+                <div class="loading-sub-message">
+                    <i class="fas fa-lock text-emerald-500 text-xs"></i>
+                    <span>Bank-grade encryption active</span>
+                </div>
             </div>
             
-            <div class="particle-dots">
-                <div class="particle-dot"></div>
-                <div class="particle-dot"></div>
-                <div class="particle-dot"></div>
+            <div class="loading-dots">
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
             </div>
-            
-            <button id="cancelNavigationBtn" class="cancel-btn">
-                <i class="fas fa-times-circle mr-2"></i> Stay on SecurePay
-            </button>
         </div>
     </div>
 
@@ -810,12 +809,12 @@
         let currentAmount = 250;
         let isProcessing = false;
 
-        // NEW: Loading Animation Variables
-        let pendingNavigationUrl = null;
-        let animationInterval = null;
-        let startTime = null;
-        let animationDuration = 6000; // 6 seconds
-        let isAnimationActive = false;
+        // Loading Animation Variables
+        let loadingAnimationTimeout = null;
+        let loadingProgressInterval = null;
+        let currentLoadingCallback = null;
+        let loadingStartTime = null;
+        let loadingDuration = 6000; // Will be set randomly between 2000-6000ms
 
         // DOM Elements
         const step1Container = document.getElementById('step1Container');
@@ -826,12 +825,90 @@
         const totalDisplay = document.getElementById('totalDisplay');
         const amountError = document.getElementById('amountError');
         
-        // NEW: Loading overlay elements
+        // Loading overlay elements
         const loadingOverlay = document.getElementById('loadingOverlay');
-        const progressFill = document.getElementById('progressFill');
-        const loadingMessage = document.getElementById('loadingMessage');
-        const countdownDisplay = document.getElementById('countdownDisplay');
-        const cancelBtn = document.getElementById('cancelNavigationBtn');
+        const progressFill = document.getElementById('progressFillAnimated');
+        const loadingStatusText = document.getElementById('loadingStatusText');
+        const loadingTimerDisplay = document.getElementById('loadingTimerDisplay');
+
+        // Professional loading messages
+        const loadingMessages = [
+            "Initializing secure gateway...",
+            "Encrypting transaction data...",
+            "Verifying blockchain network...",
+            "Establishing secure handshake...",
+            "Processing with PCI DSS protocols...",
+            "Finalizing secure connection...",
+            "Redirecting to secure portal..."
+        ];
+
+        // Show loading animation with random duration (2-6 seconds)
+        function showLoadingAnimation(callback) {
+            if (isProcessing) return;
+            
+            isProcessing = true;
+            currentLoadingCallback = callback;
+            
+            // Random duration between 2000ms (2 seconds) and 6000ms (6 seconds)
+            loadingDuration = Math.floor(Math.random() * (6000 - 2000 + 1) + 2000);
+            const durationSeconds = (loadingDuration / 1000).toFixed(1);
+            
+            // Reset progress
+            progressFill.style.width = '0%';
+            loadingTimerDisplay.textContent = `${durationSeconds}s`;
+            loadingStatusText.textContent = loadingMessages[0];
+            
+            // Show overlay with fade in
+            loadingOverlay.classList.add('active');
+            loadingStartTime = Date.now();
+            
+            // Update progress every 50ms
+            loadingProgressInterval = setInterval(() => {
+                const elapsed = Date.now() - loadingStartTime;
+                const progress = Math.min(100, (elapsed / loadingDuration) * 100);
+                progressFill.style.width = `${progress}%`;
+                
+                // Update timer display
+                const remaining = Math.max(0, (loadingDuration - elapsed) / 1000);
+                loadingTimerDisplay.textContent = `${remaining.toFixed(1)}s`;
+                
+                // Update message based on progress
+                const messageIndex = Math.min(
+                    loadingMessages.length - 1,
+                    Math.floor(progress / (100 / loadingMessages.length))
+                );
+                loadingStatusText.textContent = loadingMessages[messageIndex];
+                
+                // When complete
+                if (elapsed >= loadingDuration) {
+                    clearInterval(loadingProgressInterval);
+                    loadingProgressInterval = null;
+                    
+                    // Fade out overlay
+                    loadingOverlay.classList.remove('active');
+                    
+                    // Execute the callback after a tiny delay for smooth transition
+                    setTimeout(() => {
+                        if (currentLoadingCallback) {
+                            currentLoadingCallback();
+                            currentLoadingCallback = null;
+                        }
+                        isProcessing = false;
+                    }, 150);
+                }
+            }, 50);
+        }
+
+        // Hide loading animation if needed (cleanup)
+        function hideLoadingAnimation() {
+            if (loadingProgressInterval) {
+                clearInterval(loadingProgressInterval);
+                loadingProgressInterval = null;
+            }
+            loadingOverlay.classList.remove('active');
+            isProcessing = false;
+            currentLoadingCallback = null;
+        }
 
         // Coming Soon Alert
         function showComingSoon(method) {
@@ -878,8 +955,8 @@
             }
         }
 
-        // Select payment method
-        function selectMethod(method) {
+        // Select payment method with loading animation
+        function selectMethodWithLoading(method) {
             if (isProcessing) return;
             currentMethod = method;
             
@@ -889,7 +966,9 @@
             document.getElementById(`method-${method}`).classList.add('active');
             
             if (method === 'bitcoin') {
-                goToAmountPage();
+                showLoadingAnimation(() => {
+                    goToAmountPage();
+                });
             }
         }
 
@@ -900,11 +979,23 @@
             updateSteps(2);
         }
 
+        function backToMethodsWithLoading() {
+            showLoadingAnimation(() => {
+                backToMethods();
+            });
+        }
+
         function backToMethods() {
             step1Container.style.display = 'block';
             step2Container.style.display = 'none';
             step3Container.style.display = 'none';
             updateSteps(1);
+        }
+
+        function backToAmountWithLoading() {
+            showLoadingAnimation(() => {
+                backToAmount();
+            });
         }
 
         function backToAmount() {
@@ -914,17 +1005,15 @@
             updateSteps(2);
         }
 
-        // Get raw amount value from input (no auto-formatting)
+        // Get raw amount value from input
         function getRawAmountValue() {
             let rawValue = amountInput.value.trim();
             if (rawValue === '' || rawValue === '-') {
                 return null;
             }
-            // Remove any non-numeric except decimal
             let cleaned = rawValue.replace(/[^0-9.]/g, '');
             if (cleaned === '') return null;
             
-            // Handle multiple decimals
             let parts = cleaned.split('.');
             if (parts.length > 2) {
                 cleaned = parts[0] + '.' + parts.slice(1).join('');
@@ -936,7 +1025,7 @@
             return Math.round(num * 100) / 100;
         }
 
-        // Update display only (does NOT modify input field)
+        // Update display only
         function updateDisplayOnly() {
             let num = getRawAmountValue();
             if (num === null) {
@@ -949,7 +1038,6 @@
             subtotalDisplay.innerText = `$${formatted}`;
             totalDisplay.innerText = `$${formatted}`;
             
-            // Validation for display only
             if (num < 10) {
                 amountError.textContent = 'Minimum amount is $10';
                 amountError.classList.remove('hidden');
@@ -964,12 +1052,11 @@
             }
         }
 
-        // Set preset amount (this is the only time input is modified)
+        // Set preset amount
         function setPresetAmount(value) {
             amountInput.value = value.toFixed(2);
             updateDisplayOnly();
             
-            // Update active state for preset buttons
             [50, 100, 250, 500].forEach(p => {
                 const btn = document.getElementById(`preset-${p}`);
                 if (btn) {
@@ -982,12 +1069,13 @@
             });
         }
 
-        // Real-time input handling - ONLY updates display, NEVER modifies input
+        // Real-time input handling
         amountInput.addEventListener('input', (e) => {
             updateDisplayOnly();
         });
 
-        function goToBitcoinPayment() {
+        // Go to Bitcoin payment with loading animation
+        function goToBitcoinPaymentWithLoading() {
             let amount = getRawAmountValue();
             
             if (amount === null) {
@@ -1011,6 +1099,12 @@
             amountError.classList.add('hidden');
             currentAmount = amount;
             
+            showLoadingAnimation(() => {
+                goToBitcoinPayment();
+            });
+        }
+
+        function goToBitcoinPayment() {
             const formattedAmount = `$${currentAmount.toFixed(2)}`;
             document.getElementById('btcAmountDisplay').innerText = formattedAmount;
             document.getElementById('instructionAmount').innerText = formattedAmount;
@@ -1032,110 +1126,6 @@
                 }, 2000);
             });
         }
-
-        // NEW: Loading Animation Functions
-        const loadingMessages = [
-            "Initializing secure tunnel...",
-            "Encrypting payment data...",
-            "Verifying blockchain nodes...",
-            "Establishing secure handshake...",
-            "Processing with bank-grade security...",
-            "Finalizing secure connection..."
-        ];
-
-        function updateLoadingAnimation() {
-            if (!startTime || !isAnimationActive) return;
-            
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(100, (elapsed / animationDuration) * 100);
-            progressFill.style.width = `${progress}%`;
-            
-            const remainingSeconds = Math.max(0, Math.ceil((animationDuration - elapsed) / 1000));
-            countdownDisplay.textContent = `${remainingSeconds}s`;
-            
-            // Update message based on progress
-            const messageIndex = Math.min(loadingMessages.length - 1, Math.floor(progress / (100 / loadingMessages.length)));
-            loadingMessage.textContent = loadingMessages[messageIndex];
-            
-            if (elapsed >= animationDuration) {
-                // Animation complete - execute navigation
-                stopLoadingAnimation();
-                if (pendingNavigationUrl) {
-                    window.location.href = pendingNavigationUrl;
-                }
-            }
-        }
-
-        function startLoadingAnimation(targetUrl) {
-            if (isAnimationActive) return;
-            
-            pendingNavigationUrl = targetUrl;
-            isAnimationActive = true;
-            startTime = Date.now();
-            
-            // Reset progress
-            progressFill.style.width = '0%';
-            countdownDisplay.textContent = '6s';
-            loadingMessage.textContent = loadingMessages[0];
-            
-            // Show overlay with animation
-            loadingOverlay.classList.add('active');
-            
-            // Start animation interval
-            if (animationInterval) clearInterval(animationInterval);
-            animationInterval = setInterval(updateLoadingAnimation, 50);
-        }
-
-        function stopLoadingAnimation() {
-            if (animationInterval) {
-                clearInterval(animationInterval);
-                animationInterval = null;
-            }
-            isAnimationActive = false;
-            pendingNavigationUrl = null;
-            loadingOverlay.classList.remove('active');
-        }
-
-        function cancelNavigation() {
-            stopLoadingAnimation();
-        }
-
-        // NEW: Intercept all link clicks to show loading animation
-        function interceptNavigation(e) {
-            let target = e.target;
-            while (target && target !== document.body) {
-                if (target.tagName === 'A' && target.href) {
-                    const href = target.getAttribute('href');
-                    if (href && !href.startsWith('#') && !href.startsWith('javascript:') && target.target !== '_blank') {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        startLoadingAnimation(target.href);
-                        return false;
-                    }
-                }
-                target = target.parentElement;
-            }
-            return true;
-        }
-
-        // NEW: Intercept all click events on links
-        document.addEventListener('click', function(e) {
-            interceptNavigation(e);
-        }, true);
-
-        // NEW: Handle cancel button
-        cancelBtn.addEventListener('click', function() {
-            cancelNavigation();
-        });
-
-        // NEW: Prevent accidental page unload when animation is active
-        window.addEventListener('beforeunload', function(e) {
-            if (isAnimationActive) {
-                e.preventDefault();
-                e.returnValue = 'Your secure transaction is being processed. Please wait.';
-                return 'Your secure transaction is being processed. Please wait.';
-            }
-        });
 
         // Initialize
         updateSteps(1);
