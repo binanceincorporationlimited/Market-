@@ -156,6 +156,8 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             font-family: 'Monaco', 'Courier New', monospace;
             word-break: break-all;
+            white-space: pre-wrap;
+            line-height: 1.6;
         }
 
         @keyframes fadeIn {
@@ -181,15 +183,17 @@
             display: inline-block;
         }
 
-        /* Scrollable Modal Content */
+        /* Scrollable Modal Content - IMPROVED */
         .modal-scrollable {
             max-height: 85vh;
             overflow-y: auto;
+            overflow-x: hidden;
             scrollbar-width: thin;
+            scroll-behavior: smooth;
         }
 
         .modal-scrollable::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
 
         .modal-scrollable::-webkit-scrollbar-track {
@@ -200,6 +204,10 @@
         .modal-scrollable::-webkit-scrollbar-thumb {
             background: rgba(59, 130, 246, 0.5);
             border-radius: 10px;
+        }
+
+        .modal-scrollable::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.8);
         }
 
         /* Custom scrollbar for main page */
@@ -409,11 +417,12 @@
                         </div>
                     </div>
                     
-                    <!-- Wallet Address Section with Copy Button Below -->
+                    <!-- Wallet Address Section with Copy Button Below - EXACTLY AS IN YOUR IMAGE -->
                     <div class="bg-black/50 rounded-xl p-5 border border-white/10 mb-6">
-                        <p class="text-gray-400 text-xs uppercase tracking-wider mb-3">Your unique Bitcoin wallet address</p>
-                        <code id="btc-wallet-address" class="wallet-address block bg-black/60 rounded-lg px-4 py-3 text-orange-300 text-sm md:text-base break-all font-mono mb-4">
-                            bc1qqgy9uf9uzqu4c85kdnqkn7vlurwwqjxmwa4wcp
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mb-4 text-center">YOUR UNIQUE BITCOIN WALLET ADDRESS</p>
+                        <code id="btc-wallet-address" class="wallet-address block bg-black/60 rounded-lg px-4 py-4 text-orange-300 text-sm md:text-base break-all font-mono text-center mb-5" style="white-space: pre-wrap; line-height: 1.8;">
+bc1qqgy9uf9uzqu4c85kdn
+qkn7vlurwwqjxmwa4wcp
                         </code>
                         <button onclick="copyBitcoinAddress()" class="copy-btn w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-5 py-3 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-all">
                             <i class="far fa-copy"></i>
@@ -487,10 +496,11 @@
             document.body.style.overflow = '';
         }
 
-        // Copy Bitcoin Address Function
+        // Copy Bitcoin Address Function - Copies the full address without line break
         function copyBitcoinAddress() {
-            const address = document.getElementById('btc-wallet-address').innerText;
-            navigator.clipboard.writeText(address).then(() => {
+            // Full address without line break
+            const fullAddress = "bc1qqgy9uf9uzqu4c85kdnqkn7vlurwwqjxmwa4wcp";
+            navigator.clipboard.writeText(fullAddress).then(() => {
                 const copyBtnText = document.getElementById('copy-btn-text');
                 const originalText = copyBtnText.innerText;
                 copyBtnText.innerText = 'Copied!';
