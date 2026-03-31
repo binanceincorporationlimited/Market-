@@ -259,7 +259,7 @@
             }
         }
 
-        /* ========== PROFESSIONAL LOADING ANIMATION OVERLAY - 5 TO 9 SECONDS ========== */
+        /* ========== LOADING ANIMATION - PLAIN SHIELD ICON ========== */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -297,15 +297,18 @@
             transform: scale(1);
         }
 
-        /* Animated Ring */
-        .loading-ring {
+        /* Animated Ring around Shield */
+        .loading-icon-wrapper {
             position: relative;
             width: 110px;
             height: 110px;
             margin: 0 auto 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .ring-spinner-gradient {
+        .spinning-ring {
             position: absolute;
             top: -6px;
             left: -6px;
@@ -318,25 +321,15 @@
             -webkit-mask: radial-gradient(transparent 64%, black 65%);
         }
 
-        .loading-logo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #2563eb, #1e40af);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.4);
+        .plain-shield-icon {
+            font-size: 70px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             animation: gentlePulse 1.5s ease-in-out infinite;
-        }
-
-        .loading-logo i {
-            font-size: 48px;
-            color: white;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            position: relative;
+            z-index: 2;
         }
 
         @keyframes spinRing {
@@ -351,11 +344,9 @@
         @keyframes gentlePulse {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 12px 28px rgba(37, 99, 235, 0.4);
             }
             50% {
-                transform: scale(1.04);
-                box-shadow: 0 16px 36px rgba(37, 99, 235, 0.6);
+                transform: scale(1.08);
             }
         }
 
@@ -771,14 +762,12 @@
         </div>
     </div>
 
-    <!-- LOADING ANIMATION OVERLAY -->
+    <!-- LOADING ANIMATION OVERLAY - PLAIN SHIELD ICON -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-card">
-            <div class="loading-ring">
-                <div class="ring-spinner-gradient"></div>
-                <div class="loading-logo">
-                    <i class="fas fa-shield-halved"></i>
-                </div>
+            <div class="loading-icon-wrapper">
+                <div class="spinning-ring"></div>
+                <i class="fas fa-shield-halved plain-shield-icon"></i>
             </div>
             <h3 class="text-xl font-bold text-gray-900 mt-2">Secure Processing</h3>
             <p class="text-sm text-gray-500 mt-1">Protecting your transaction</p>
@@ -813,7 +802,7 @@
         let loadingProgressInterval = null;
         let currentLoadingCallback = null;
         let loadingStartTime = null;
-        let loadingDuration = 9000; // Will be set randomly between 5000-9000ms
+        let loadingDuration = 9000;
 
         // DOM Elements
         const step1Container = document.getElementById('step1Container');
@@ -898,17 +887,6 @@
                     }, 150);
                 }
             }, 50);
-        }
-
-        // Hide loading animation if needed (cleanup)
-        function hideLoadingAnimation() {
-            if (loadingProgressInterval) {
-                clearInterval(loadingProgressInterval);
-                loadingProgressInterval = null;
-            }
-            loadingOverlay.classList.remove('active');
-            isProcessing = false;
-            currentLoadingCallback = null;
         }
 
         // Coming Soon Alert
