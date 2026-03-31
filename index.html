@@ -259,7 +259,7 @@
             }
         }
 
-        /* ========== PROFESSIONAL LOADING ANIMATION OVERLAY ========== */
+        /* ========== PROFESSIONAL LOADING ANIMATION OVERLAY - 5 TO 9 SECONDS ========== */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -788,7 +788,7 @@
                     <div id="progressFillAnimated" class="progress-fill-animated"></div>
                 </div>
                 <div id="loadingStatusText" class="loading-status-text">Initializing secure gateway...</div>
-                <div id="loadingTimerDisplay" class="loading-timer">6s</div>
+                <div id="loadingTimerDisplay" class="loading-timer">9s</div>
                 <div class="loading-sub-message">
                     <i class="fas fa-lock text-emerald-500 text-xs"></i>
                     <span>Bank-grade encryption active</span>
@@ -810,11 +810,10 @@
         let isProcessing = false;
 
         // Loading Animation Variables
-        let loadingAnimationTimeout = null;
         let loadingProgressInterval = null;
         let currentLoadingCallback = null;
         let loadingStartTime = null;
-        let loadingDuration = 6000; // Will be set randomly between 2000-6000ms
+        let loadingDuration = 9000; // Will be set randomly between 5000-9000ms
 
         // DOM Elements
         const step1Container = document.getElementById('step1Container');
@@ -838,19 +837,21 @@
             "Verifying blockchain network...",
             "Establishing secure handshake...",
             "Processing with PCI DSS protocols...",
+            "Validating payment route...",
+            "Securing with 256-bit encryption...",
             "Finalizing secure connection...",
             "Redirecting to secure portal..."
         ];
 
-        // Show loading animation with random duration (2-6 seconds)
+        // Show loading animation with random duration (5-9 seconds)
         function showLoadingAnimation(callback) {
             if (isProcessing) return;
             
             isProcessing = true;
             currentLoadingCallback = callback;
             
-            // Random duration between 2000ms (2 seconds) and 6000ms (6 seconds)
-            loadingDuration = Math.floor(Math.random() * (6000 - 2000 + 1) + 2000);
+            // Random duration between 5000ms (5 seconds) and 9000ms (9 seconds)
+            loadingDuration = Math.floor(Math.random() * (9000 - 5000 + 1) + 5000);
             const durationSeconds = (loadingDuration / 1000).toFixed(1);
             
             // Reset progress
